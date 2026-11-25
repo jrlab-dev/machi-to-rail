@@ -1,0 +1,938 @@
+{
+  "version": 1,
+  "units": "meters_model",
+  "coordinates": "Blender XY plane, Z up; GLB uses X,Z,-Y",
+  "gauge_center": 1.137,
+  "rail_top_z": 0.0,
+  "rail_width": 0.065,
+  "bed_width": 3.0,
+  "radius": 40.0,
+  "curve_angle": 0.5235987755982988,
+  "pieces": {
+    "straight_long": {
+      "id": "straight_long",
+      "name": "長い直線",
+      "ports": [
+        {
+          "id": "A",
+          "position": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "outward": 3.141592653589793,
+          "position_gltf": [
+            0.0,
+            0.0,
+            -0.0
+          ]
+        },
+        {
+          "id": "B",
+          "position": [
+            20.0,
+            0.0,
+            0.0
+          ],
+          "outward": 0.0,
+          "position_gltf": [
+            20.0,
+            0.0,
+            -0.0
+          ]
+        }
+      ],
+      "routes": [
+        {
+          "kind": "line",
+          "length": 20.0,
+          "from": "A",
+          "to": "B"
+        }
+      ],
+      "default_route": "B",
+      "asset": "v02/straight_long.glb"
+    },
+    "straight_short": {
+      "id": "straight_short",
+      "name": "短い直線",
+      "ports": [
+        {
+          "id": "A",
+          "position": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "outward": 3.141592653589793,
+          "position_gltf": [
+            0.0,
+            0.0,
+            -0.0
+          ]
+        },
+        {
+          "id": "B",
+          "position": [
+            10.0,
+            0.0,
+            0.0
+          ],
+          "outward": 0.0,
+          "position_gltf": [
+            10.0,
+            0.0,
+            -0.0
+          ]
+        }
+      ],
+      "routes": [
+        {
+          "kind": "line",
+          "length": 10.0,
+          "from": "A",
+          "to": "B"
+        }
+      ],
+      "default_route": "B",
+      "asset": "v02/straight_short.glb"
+    },
+    "curve_left": {
+      "id": "curve_left",
+      "name": "左カーブ",
+      "ports": [
+        {
+          "id": "A",
+          "position": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "outward": 3.141592653589793,
+          "position_gltf": [
+            0.0,
+            0.0,
+            -0.0
+          ]
+        },
+        {
+          "id": "B",
+          "position": [
+            19.999999999999996,
+            5.358983848622452,
+            0.0
+          ],
+          "outward": 0.5235987755982988,
+          "position_gltf": [
+            19.999999999999996,
+            0.0,
+            -5.358983848622452
+          ]
+        }
+      ],
+      "routes": [
+        {
+          "kind": "arc",
+          "radius": 40.0,
+          "angle": 0.5235987755982988,
+          "length": 20.94395102393195,
+          "from": "A",
+          "to": "B"
+        }
+      ],
+      "default_route": "B",
+      "asset": "v02/curve_left.glb"
+    },
+    "curve_right": {
+      "id": "curve_right",
+      "name": "右カーブ",
+      "ports": [
+        {
+          "id": "A",
+          "position": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "outward": 3.141592653589793,
+          "position_gltf": [
+            0.0,
+            0.0,
+            -0.0
+          ]
+        },
+        {
+          "id": "B",
+          "position": [
+            19.999999999999996,
+            -5.358983848622452,
+            0.0
+          ],
+          "outward": -0.5235987755982988,
+          "position_gltf": [
+            19.999999999999996,
+            0.0,
+            5.358983848622452
+          ]
+        }
+      ],
+      "routes": [
+        {
+          "kind": "arc",
+          "radius": 40.0,
+          "angle": -0.5235987755982988,
+          "length": 20.94395102393195,
+          "from": "A",
+          "to": "B"
+        }
+      ],
+      "default_route": "B",
+      "asset": "v02/curve_right.glb"
+    },
+    "turnout_left": {
+      "id": "turnout_left",
+      "name": "左分岐",
+      "ports": [
+        {
+          "id": "A",
+          "position": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "outward": 3.141592653589793,
+          "position_gltf": [
+            0.0,
+            0.0,
+            -0.0
+          ]
+        },
+        {
+          "id": "B",
+          "position": [
+            20.0,
+            0.0,
+            0.0
+          ],
+          "outward": 0.0,
+          "position_gltf": [
+            20.0,
+            0.0,
+            -0.0
+          ]
+        },
+        {
+          "id": "C",
+          "position": [
+            19.999999999999996,
+            5.358983848622452,
+            0.0
+          ],
+          "outward": 0.5235987755982988,
+          "position_gltf": [
+            19.999999999999996,
+            0.0,
+            -5.358983848622452
+          ]
+        }
+      ],
+      "routes": [
+        {
+          "kind": "line",
+          "length": 20.0,
+          "from": "A",
+          "to": "B"
+        },
+        {
+          "kind": "arc",
+          "radius": 40.0,
+          "angle": 0.5235987755982988,
+          "length": 20.94395102393195,
+          "from": "A",
+          "to": "C"
+        }
+      ],
+      "default_route": "B",
+      "asset": "v02/turnout_left.glb"
+    },
+    "turnout_right": {
+      "id": "turnout_right",
+      "name": "右分岐",
+      "ports": [
+        {
+          "id": "A",
+          "position": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "outward": 3.141592653589793,
+          "position_gltf": [
+            0.0,
+            0.0,
+            -0.0
+          ]
+        },
+        {
+          "id": "B",
+          "position": [
+            20.0,
+            0.0,
+            0.0
+          ],
+          "outward": 0.0,
+          "position_gltf": [
+            20.0,
+            0.0,
+            -0.0
+          ]
+        },
+        {
+          "id": "C",
+          "position": [
+            19.999999999999996,
+            -5.358983848622452,
+            0.0
+          ],
+          "outward": -0.5235987755982988,
+          "position_gltf": [
+            19.999999999999996,
+            0.0,
+            5.358983848622452
+          ]
+        }
+      ],
+      "routes": [
+        {
+          "kind": "line",
+          "length": 20.0,
+          "from": "A",
+          "to": "B"
+        },
+        {
+          "kind": "arc",
+          "radius": 40.0,
+          "angle": -0.5235987755982988,
+          "length": 20.94395102393195,
+          "from": "A",
+          "to": "C"
+        }
+      ],
+      "default_route": "B",
+      "asset": "v02/turnout_right.glb"
+    },
+    "crossing": {
+      "id": "crossing",
+      "name": "踏切",
+      "ports": [
+        {
+          "id": "A",
+          "position": [
+            0,
+            0,
+            0
+          ],
+          "outward": 3.141592653589793
+        },
+        {
+          "id": "B",
+          "position": [
+            10,
+            0,
+            0
+          ],
+          "outward": 0
+        }
+      ],
+      "routes": [
+        {
+          "kind": "line",
+          "length": 10,
+          "from": "A",
+          "to": "B"
+        }
+      ],
+      "default_route": "B",
+      "asset": "crossing.glb"
+    },
+    "viaduct_straight": {
+      "id": "viaduct_straight",
+      "name": "高架の直線",
+      "ports": [
+        {
+          "id": "A",
+          "position": [
+            0.0,
+            0.0,
+            8
+          ],
+          "outward": 3.141592653589793
+        },
+        {
+          "id": "B",
+          "position": [
+            20.0,
+            0.0,
+            8
+          ],
+          "outward": 0.0
+        }
+      ],
+      "routes": [
+        {
+          "kind": "line",
+          "length": 20.0,
+          "from": "A",
+          "to": "B",
+          "heightStart": 8,
+          "heightEnd": 8
+        }
+      ],
+      "default_route": "B",
+      "procedural": true
+    },
+    "viaduct_left": {
+      "id": "viaduct_left",
+      "name": "高架の左カーブ",
+      "ports": [
+        {
+          "id": "A",
+          "position": [
+            0.0,
+            0.0,
+            8
+          ],
+          "outward": 3.141592653589793
+        },
+        {
+          "id": "B",
+          "position": [
+            19.999999999999996,
+            5.358983848622452,
+            8
+          ],
+          "outward": 0.5235987755982988
+        }
+      ],
+      "routes": [
+        {
+          "kind": "arc",
+          "radius": 40.0,
+          "angle": 0.5235987755982988,
+          "length": 20.94395102393195,
+          "from": "A",
+          "to": "B",
+          "heightStart": 8,
+          "heightEnd": 8
+        }
+      ],
+      "default_route": "B",
+      "procedural": true
+    },
+    "viaduct_right": {
+      "id": "viaduct_right",
+      "name": "高架の右カーブ",
+      "ports": [
+        {
+          "id": "A",
+          "position": [
+            0.0,
+            0.0,
+            8
+          ],
+          "outward": 3.141592653589793
+        },
+        {
+          "id": "B",
+          "position": [
+            19.999999999999996,
+            -5.358983848622452,
+            8
+          ],
+          "outward": -0.5235987755982988
+        }
+      ],
+      "routes": [
+        {
+          "kind": "arc",
+          "radius": 40.0,
+          "angle": -0.5235987755982988,
+          "length": 20.94395102393195,
+          "from": "A",
+          "to": "B",
+          "heightStart": 8,
+          "heightEnd": 8
+        }
+      ],
+      "default_route": "B",
+      "procedural": true
+    },
+    "ramp_up": {
+      "id": "ramp_up",
+      "name": "上り坂（地上→高架）",
+      "ports": [
+        {
+          "id": "A",
+          "position": [
+            0.0,
+            0.0,
+            0
+          ],
+          "outward": 3.141592653589793
+        },
+        {
+          "id": "B",
+          "position": [
+            240,
+            0.0,
+            8
+          ],
+          "outward": 0.0
+        }
+      ],
+      "routes": [
+        {
+          "kind": "line",
+          "length": 240,
+          "from": "A",
+          "to": "B",
+          "heightStart": 0,
+          "heightEnd": 8
+        }
+      ],
+      "default_route": "B",
+      "procedural": true
+    },
+    "ramp_down": {
+      "id": "ramp_down",
+      "name": "下り坂（高架→地上）",
+      "ports": [
+        {
+          "id": "A",
+          "position": [
+            0.0,
+            0.0,
+            8
+          ],
+          "outward": 3.141592653589793
+        },
+        {
+          "id": "B",
+          "position": [
+            240,
+            0.0,
+            0
+          ],
+          "outward": 0.0
+        }
+      ],
+      "routes": [
+        {
+          "kind": "line",
+          "length": 240,
+          "from": "A",
+          "to": "B",
+          "heightStart": 8,
+          "heightEnd": 0
+        }
+      ],
+      "default_route": "B",
+      "procedural": true
+    },
+    "intercity_straight": {
+      "name": "都市間専用線",
+      "procedural": true,
+      "intercity": true,
+      "ports": [
+        {
+          "id": "A",
+          "position": [
+            0,
+            0,
+            8
+          ],
+          "outward": 3.141592653589793
+        },
+        {
+          "id": "B",
+          "position": [
+            6000,
+            0,
+            8
+          ],
+          "outward": 0
+        }
+      ],
+      "routes": [
+        {
+          "from": "A",
+          "to": "B",
+          "kind": "line",
+          "length": 6000,
+          "heightStart": 8,
+          "heightEnd": 8
+        }
+      ]
+    },
+    "intercity_turn": {
+      "name": "都市間専用線",
+      "procedural": true,
+      "intercity": true,
+      "ports": [
+        {
+          "id": "A",
+          "position": [
+            0,
+            0,
+            8
+          ],
+          "outward": 3.141592653589793
+        },
+        {
+          "id": "B",
+          "position": [
+            0,
+            800,
+            8
+          ],
+          "outward": 3.141592653589793
+        }
+      ],
+      "routes": [
+        {
+          "from": "A",
+          "to": "B",
+          "kind": "arc",
+          "length": 1256.6370614359173,
+          "heightStart": 8,
+          "heightEnd": 8,
+          "radius": 400,
+          "angle": 3.141592653589793
+        }
+      ]
+    }
+  },
+  "presets": {
+    "circle": [
+      {
+        "uid": 1,
+        "piece": "curve_left",
+        "pose": [
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      {
+        "uid": 2,
+        "piece": "curve_left",
+        "pose": [
+          19.999999999999996,
+          5.358983848622452,
+          0.5235987755982987
+        ]
+      },
+      {
+        "uid": 3,
+        "piece": "curve_left",
+        "pose": [
+          34.64101615137754,
+          19.999999999999993,
+          1.0471975511965974
+        ]
+      },
+      {
+        "uid": 4,
+        "piece": "curve_left",
+        "pose": [
+          40.00000000000001,
+          39.99999999999999,
+          1.5707963267948966
+        ]
+      },
+      {
+        "uid": 5,
+        "piece": "curve_left",
+        "pose": [
+          34.641016151377556,
+          59.999999999999986,
+          2.094395102393195
+        ]
+      },
+      {
+        "uid": 6,
+        "piece": "curve_left",
+        "pose": [
+          20.000000000000025,
+          74.64101615137754,
+          2.617993877991493
+        ]
+      },
+      {
+        "uid": 7,
+        "piece": "curve_left",
+        "pose": [
+          3.6415315207705135e-14,
+          80.00000000000001,
+          3.1415926535897913
+        ]
+      },
+      {
+        "uid": 8,
+        "piece": "curve_left",
+        "pose": [
+          -19.99999999999997,
+          74.6410161513776,
+          3.6651914291880896
+        ]
+      },
+      {
+        "uid": 9,
+        "piece": "curve_left",
+        "pose": [
+          -34.64101615137755,
+          60.00000000000009,
+          4.188790204786389
+        ]
+      },
+      {
+        "uid": 10,
+        "piece": "curve_left",
+        "pose": [
+          -40.00000000000004,
+          40.00000000000011,
+          4.712388980384688
+        ]
+      },
+      {
+        "uid": 11,
+        "piece": "curve_left",
+        "pose": [
+          -34.641016151377634,
+          20.0000000000001,
+          5.235987755982986
+        ]
+      },
+      {
+        "uid": 12,
+        "piece": "curve_left",
+        "pose": [
+          -20.000000000000128,
+          5.358983848622517,
+          5.759586531581284
+        ]
+      }
+    ],
+    "oval": [
+      {
+        "uid": 1,
+        "piece": "straight_long",
+        "pose": [
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      {
+        "uid": 2,
+        "piece": "straight_long",
+        "pose": [
+          20.0,
+          0.0,
+          0.0
+        ]
+      },
+      {
+        "uid": 3,
+        "piece": "curve_left",
+        "pose": [
+          40.0,
+          0.0,
+          0.0
+        ]
+      },
+      {
+        "uid": 4,
+        "piece": "curve_left",
+        "pose": [
+          60.0,
+          5.358983848622452,
+          0.5235987755982987
+        ]
+      },
+      {
+        "uid": 5,
+        "piece": "curve_left",
+        "pose": [
+          74.64101615137754,
+          19.999999999999993,
+          1.0471975511965974
+        ]
+      },
+      {
+        "uid": 6,
+        "piece": "curve_left",
+        "pose": [
+          80.0,
+          39.99999999999999,
+          1.5707963267948966
+        ]
+      },
+      {
+        "uid": 7,
+        "piece": "curve_left",
+        "pose": [
+          74.64101615137754,
+          59.999999999999986,
+          2.094395102393195
+        ]
+      },
+      {
+        "uid": 8,
+        "piece": "curve_left",
+        "pose": [
+          60.000000000000014,
+          74.64101615137754,
+          2.617993877991493
+        ]
+      },
+      {
+        "uid": 9,
+        "piece": "straight_long",
+        "pose": [
+          40.00000000000003,
+          80.00000000000001,
+          3.1415926535897913
+        ]
+      },
+      {
+        "uid": 10,
+        "piece": "straight_long",
+        "pose": [
+          20.00000000000003,
+          80.00000000000006,
+          3.1415926535897913
+        ]
+      },
+      {
+        "uid": 11,
+        "piece": "curve_left",
+        "pose": [
+          2.842170943040401e-14,
+          80.0000000000001,
+          3.1415926535897913
+        ]
+      },
+      {
+        "uid": 12,
+        "piece": "curve_left",
+        "pose": [
+          -19.99999999999998,
+          74.64101615137768,
+          3.6651914291880896
+        ]
+      },
+      {
+        "uid": 13,
+        "piece": "curve_left",
+        "pose": [
+          -34.64101615137756,
+          60.00000000000018,
+          4.188790204786389
+        ]
+      },
+      {
+        "uid": 14,
+        "piece": "curve_left",
+        "pose": [
+          -40.00000000000006,
+          40.00000000000019,
+          4.712388980384688
+        ]
+      },
+      {
+        "uid": 15,
+        "piece": "curve_left",
+        "pose": [
+          -34.64101615137765,
+          20.000000000000185,
+          5.235987755982986
+        ]
+      },
+      {
+        "uid": 16,
+        "piece": "curve_left",
+        "pose": [
+          -20.000000000000142,
+          5.358983848622603,
+          5.759586531581284
+        ]
+      }
+    ],
+    "branch": [
+      {
+        "uid": 1,
+        "piece": "straight_long",
+        "pose": [
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      {
+        "uid": 2,
+        "piece": "turnout_left",
+        "pose": [
+          20.0,
+          0.0,
+          0.0
+        ]
+      },
+      {
+        "uid": 3,
+        "piece": "straight_long",
+        "pose": [
+          40.0,
+          0.0,
+          0.0
+        ]
+      },
+      {
+        "uid": 4,
+        "piece": "straight_short",
+        "pose": [
+          60.0,
+          0.0,
+          0.0
+        ]
+      },
+      {
+        "uid": 5,
+        "piece": "curve_right",
+        "pose": [
+          40.0,
+          5.358983848622452,
+          0.5235987755982987
+        ]
+      },
+      {
+        "uid": 6,
+        "piece": "straight_long",
+        "pose": [
+          59.99999999999999,
+          10.717967697244903,
+          0.0
+        ]
+      },
+      {
+        "uid": 7,
+        "piece": "straight_short",
+        "pose": [
+          80.0,
+          10.717967697244903,
+          0.0
+        ]
+      }
+    ]
+  }
+}
