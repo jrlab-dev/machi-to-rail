@@ -1,5 +1,5 @@
 import * as T from 'three';
-import {decorationApplies,drawDecoration} from './train-decorations.mjs?v=marks-88';
+import {decorationApplies,drawDecoration} from './train-decorations.mjs?v=rail-90';
 
 // Length, width, lowest and highest paintable body heights, in car coordinates.
 const profiles={

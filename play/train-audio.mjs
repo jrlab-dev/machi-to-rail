@@ -1,7 +1,7 @@
-import {createSoundPlayer} from './train-sound-player.mjs?v=departure-35';
-import {createSoundEvents} from './train-sound-events.mjs?v=sound-workshop-23';
-import {hasWorkshopSound} from './train-sound-recipe.mjs?v=departure-35';
-import {brakeLoop,runningLoop} from './train-samples.mjs?v=express-sound-1';
+import {createSoundPlayer} from './train-sound-player.mjs?v=rail-90';
+import {createSoundEvents} from './train-sound-events.mjs?v=rail-90';
+import {hasWorkshopSound} from './train-sound-recipe.mjs?v=rail-90';
+import {brakeLoop,runningLoop} from './train-samples.mjs?v=rail-90';
 const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
 export function trainSoundGain(distance,inside=false){
   if(inside)return .95;

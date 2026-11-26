@@ -1,11 +1,11 @@
-import {MOUNTAIN_HOTELS} from './mountain-data.mjs?v=retro-87';
-import {mountainBedSection,mountainRiverSpans} from './mountain-rail-bed.mjs?v=retro-87';
-import {batchMountainBoxes} from './mountain-batching.mjs?v=rail-connector-52';
-import {MOUNTAIN_ROAD,MOUNTAIN_MUSEUM_ROAD,MOUNTAIN_BUS_SPUR,MOUNTAIN_BUS_MERGE,MOUNTAIN_MUSEUM_TURN,museumRoadWidth,MOUNTAIN_ROAD_WIDTH,MOUNTAIN_LOWER_APRON,nearestMountainRoad,MOUNTAIN_TURNTABLE,mountainTurntableState} from './mountain-road.mjs?v=train-limit-65';
+import {MOUNTAIN_HOTELS} from './mountain-data.mjs?v=rail-90';
+import {mountainBedSection,mountainRiverSpans} from './mountain-rail-bed.mjs?v=rail-90';
+import {batchMountainBoxes} from './mountain-batching.mjs?v=rail-90';
+import {MOUNTAIN_ROAD,MOUNTAIN_MUSEUM_ROAD,MOUNTAIN_BUS_SPUR,MOUNTAIN_BUS_MERGE,MOUNTAIN_MUSEUM_TURN,museumRoadWidth,MOUNTAIN_ROAD_WIDTH,MOUNTAIN_LOWER_APRON,nearestMountainRoad,MOUNTAIN_TURNTABLE,mountainTurntableState} from './mountain-road.mjs?v=rail-90';
 import * as T from 'three';
-import {summitCrossingState,SUMMIT_CROSSING,inSummitCrossingSpace} from './mountain-crossing.mjs?v=mountain-gentle-55';
-import {MOUNTAIN_LOWER_GATE,MOUNTAIN_UPPER_GATE} from './mountain-traffic.mjs?v=retro-87';
-import {MOUNTAIN_ROUTES,MOUNTAIN_MIDDLE,MOUNTAIN_MUSEUM,museumPoint,inMuseumPlaza,MOUNTAIN_TRACKS,mountainHeight,naturalMountainHeight,MOUNTAIN_RIVER,riverFrame,riverNearest,riverWidth,RIVER_TOWN_START,terrainRandom,mountainTrackNearest,mountainSurfaceHeight} from './mountain-data.mjs?v=retro-87';
+import {summitCrossingState,SUMMIT_CROSSING,inSummitCrossingSpace} from './mountain-crossing.mjs?v=rail-90';
+import {MOUNTAIN_LOWER_GATE,MOUNTAIN_UPPER_GATE} from './mountain-traffic.mjs?v=rail-90';
+import {MOUNTAIN_ROUTES,MOUNTAIN_MIDDLE,MOUNTAIN_MUSEUM,museumPoint,inMuseumPlaza,MOUNTAIN_TRACKS,mountainHeight,naturalMountainHeight,MOUNTAIN_RIVER,riverFrame,riverNearest,riverWidth,RIVER_TOWN_START,terrainRandom,mountainTrackNearest,mountainSurfaceHeight} from './mountain-data.mjs?v=rail-90';
 export function createMountainRenderer(){
  const root=new T.Group();root.name='mountain-course';const mats=[],geos=[],textures=[],labels=[],obj=new T.Object3D();
  const mat=(color,extra={})=>{const m=new T.MeshStandardMaterial({color,roughness:.9,...extra});mats.push(m);return m;};
@@ -70,7 +70,7 @@ export function createMountainRenderer(){
  museumBox(0,-70,2.8,44,17,6.2,museumWhite);museumBox(0,-60.9,2.8,38,.18,4.6,glass);museumBox(0,-68,6.1,48,22,.35,roof);
  for(const a of[-19,-9,1,11,19])museumBox(a,-59,2.7,.3,.3,5.6,wood);
  museumBox(0,-58,.15,12,5,.9,stone);museumBox(0,-55,-.08,14,3,.4,stone);
- const plazaSign=museumPoint(0,-57);label('森の美術館・彫刻の庭',plazaSign[0],museumLevel+11,plazaSign[1]);
+ const plazaSign=museumPoint(0,-57);label('森の美術館・ちょうこくの庭',plazaSign[0],museumLevel+11,plazaSign[1]);
  for(const [a,b,kind]of[[-28,-36,0],[0,-42,1],[28,-36,2]]){museumBox(a,b,.15,5,5,1,stone);const p=museumPoint(a,b),g=geo(kind===0?new T.TorusGeometry(2.5,.35,8,24):kind===1?new T.IcosahedronGeometry(2.4,0):new T.ConeGeometry(2.1,5,5)),o=new T.Mesh(g,kind===1?red:bronze);o.position.set(p[0],museumLevel+(kind===1?3.2:3.3),-p[1]);o.rotation.y=museumYaw;o.castShadow=true;root.add(o);}
  for(const a of[-40,40])for(const b of[-25,-48,-72]){if(a===40&&b===-48)continue;museumBox(a,b,.7,5,.8,.25,wood);for(const da of[-1.8,1.8])museumBox(a+da,b,.2,.2,.6,.8,stone);}
  const gardenCrown=geo(new T.IcosahedronGeometry(1,1));for(const a of[-46,46])for(const b of[-20,-37,-55,-76]){const entrance=museumPoint(a,b);if(nearestMountainRoad(entrance[0],entrance[1]).distance<12)continue;museumBox(a,b,-.05,3.5,3.5,.5,stone);museumBox(a,b,2,.35,.35,4,wood);const p=museumPoint(a,b),o=new T.Mesh(gardenCrown,green);o.position.set(p[0],museumLevel+4,-p[1]);o.scale.set(2.2,2.8,2.2);root.add(o);}
@@ -78,7 +78,7 @@ export function createMountainRenderer(){
  for(const a of[-17,17]){museumBox(a,-35,-.25,9,18,.13,gardenGrass);museumBox(a,-48,.25,8,2.2,1,stone);for(const da of[-2,0,2]){const p=museumPoint(a+da,-48),o=new T.Mesh(gardenCrown,green);o.position.set(p[0],museumLevel+.9,-p[1]);o.scale.set(1.1,.8,1.1);root.add(o);}}
  // A woodland edge around the sculpture garden, kept away from all tracks.
  for(let i=0;i<36;i++){const a=i<18?-58:58,b=-18-(i%18)*4,p=museumPoint(a,b);if(mountainTrackNearest(p[0],p[1]).distance<13||nearestMountainRoad(p[0],p[1]).distance<8)continue;const base=mountainSurfaceHeight(p[0],p[1]),height=5+terrainRandom(i+808)*4;box(p[0],base+height*.35,p[1],.3,height*.7,.3,wood);for(let j=0;j<2;j++){const crown=new T.Mesh(cedarCrown,green);crown.position.set(p[0],base+height*(.55+j*.2),-p[1]);crown.scale.set(2.4-j*.7,height*.65,2.4-j*.7);root.add(crown);}}
- const signals=[];for(const [leg,d,offset]of[[0,MOUNTAIN_LOWER_GATE,-5],[3,MOUNTAIN_UPPER_GATE,11],[MOUNTAIN_MUSEUM.leg,MOUNTAIN_MUSEUM.s+30,-4],[MOUNTAIN_MUSEUM.leg,MOUNTAIN_MUSEUM.s-30,12]]){const p=MOUNTAIN_ROUTES[leg].sample(d),x=p[0]-Math.sin(p[2])*offset,y=p[1]+Math.cos(p[2])*offset;box(x,p[3]+2,y,.15,4,.15,rail);box(x,p[3]+4.2,y,.7,1.1,.4,roof);const sm=mat('#bb3028',{emissive:'#bb3028',emissiveIntensity:.8});const lamp=new T.Mesh(geo(new T.SphereGeometry(.22,8,6)),sm);lamp.position.set(x,p[3]+4.2,-y);root.add(lamp);signals.push(sm);}label('すれ違い待ち',MOUNTAIN_ROUTES[0].sample(MOUNTAIN_LOWER_GATE)[0],MOUNTAIN_ROUTES[0].sample(MOUNTAIN_LOWER_GATE)[3]+13,MOUNTAIN_ROUTES[0].sample(MOUNTAIN_LOWER_GATE)[1]-15);
+ const signals=[];for(const [leg,d,offset]of[[0,MOUNTAIN_LOWER_GATE,-5],[3,MOUNTAIN_UPPER_GATE,11],[MOUNTAIN_MUSEUM.leg,MOUNTAIN_MUSEUM.s+30,-4],[MOUNTAIN_MUSEUM.leg,MOUNTAIN_MUSEUM.s-30,12]]){const p=MOUNTAIN_ROUTES[leg].sample(d),x=p[0]-Math.sin(p[2])*offset,y=p[1]+Math.cos(p[2])*offset;box(x,p[3]+2,y,.15,4,.15,rail);box(x,p[3]+4.2,y,.7,1.1,.4,roof);const sm=mat('#bb3028',{emissive:'#bb3028',emissiveIntensity:.8});const lamp=new T.Mesh(geo(new T.SphereGeometry(.22,8,6)),sm);lamp.position.set(x,p[3]+4.2,-y);root.add(lamp);signals.push(sm);}label('すれちがい待ち',MOUNTAIN_ROUTES[0].sample(MOUNTAIN_LOWER_GATE)[0],MOUNTAIN_ROUTES[0].sample(MOUNTAIN_LOWER_GATE)[3]+13,MOUNTAIN_ROUTES[0].sample(MOUNTAIN_LOWER_GATE)[1]-15);
  // Small plots follow the bend of the river, with foundations anchored to each plot.
  const hotelMats=[cream,mat('#c3b299'),mat('#d3c3a5'),mat('#b7b7a4')],steamMat=mat('#eff4e8',{transparent:true,opacity:.26,depthWrite:false}),steamGeo=geo(new T.IcosahedronGeometry(1,1)),plots=[];
  for(let i=0,d=RIVER_TOWN_START;i<13;i++){

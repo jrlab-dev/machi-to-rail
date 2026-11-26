@@ -1,6 +1,6 @@
-import {normalizeDesign} from './train-design.mjs?v=marks-88';
-import {largeTown} from './large-town.mjs?v=marks-88';
-import {ROAD_TYPES,defaultFormation,makeRoute,transform,point,sampleRoute,formationLength} from './core.mjs?v=marks-88';
+import {normalizeDesign} from './train-design.mjs?v=rail-90';
+import {largeTown} from './large-town.mjs?v=rail-90';
+import {ROAD_TYPES,defaultFormation,makeRoute,transform,point,sampleRoute,formationLength} from './core.mjs?v=rail-90';
 export const DISTRICT='midori-central-v1';
 export const STATION={name:'みどり中央',start:90,end:330,offset:10,dwell:8};
 export function districtTown(kit){
@@ -37,11 +37,13 @@ export function parallelRoute(route,offset=STATION.offset){
   });return{parts,length,closed:route.closed};
 }
 export function trainPoses(route,state,formation,carLength=20.9,bogieOffset=6.9){
+  const leadDistance=route?.trackDistance?route.trackDistance(state.s):state.s;
+  route=route?.track||route;
   const dir=state.dir<0?-1:1,spacing=carLength+.45,facing=formation.locomotiveDirection||dir,backing=facing!==dir;
   return formation.cars.map((car,i)=>{
     const spec=Array.isArray(bogieOffset)?(bogieOffset[i]||[6.9,-6.9]):[bogieOffset,-bogieOffset],offsets=spec.bogies||spec,tail=!formation.locomotiveDirection&&formation.count>1&&i===formation.count-1;
     const local=tail?[-offsets[1],-offsets[0]]:offsets;
-    const slot=backing?formation.count-1-i:i,d=state.s-dir*slot*spacing,forward=sampleRoute(route,d+facing*local[0]),rear=sampleRoute(route,d+facing*local[1]),weight=-local[1]/(local[0]-local[1]);
+    const slot=backing?formation.count-1-i:i,d=leadDistance-dir*slot*spacing,forward=sampleRoute(route,d+facing*local[0]),rear=sampleRoute(route,d+facing*local[1]),weight=-local[1]/(local[0]-local[1]);
     const body=[rear[0]+(forward[0]-rear[0])*weight,rear[1]+(forward[1]-rear[1])*weight,Math.atan2(forward[1]-rear[1],forward[0]-rear[0])];
     if(forward.length===5||rear.length===5){body.push((rear[3]||0)+((forward[3]||0)-(rear[3]||0))*weight,Math.atan2((forward[3]||0)-(rear[3]||0),Math.hypot(forward[0]-rear[0],forward[1]-rear[1])));for(const p of[forward,rear]){if(p.length===3)p.push(0,0);p[4]*=facing;}}forward[2]+=facing<0?Math.PI:0;rear[2]+=facing<0?Math.PI:0;
     if(Number.isFinite(spec.bodyAnchor)){

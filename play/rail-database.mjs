@@ -1,9 +1,9 @@
 // The old localStorage keys are the rollback copy. Never update them after migration.
-import {recoverStorage,JOURNAL_KEY,withStorageLock} from './train-storage.mjs?v=rail-storage-68';
-import {packTowns,unpackTowns,slotsKey,liveKey} from './town-save-format.mjs';
+import {recoverStorage,JOURNAL_KEY,withStorageLock} from './train-storage.mjs?v=rail-90';
+import {packTowns,unpackTowns,slotsKey,liveKey} from './town-save-format.mjs?v=rail-90';
 const keys=['rail-town-v2','rail-town-slots-v1','rail-train-library-v1','rail-train-library-v2','rail-train-pending-v1','rail-train-usage-v1','rail-town-replay',JOURNAL_KEY];
-const unavailable=()=>new DOMException('端末に保存できません。街をファイル保存してください。','QuotaExceededError');
-const conflict=()=>Error('別の画面で変更されています。作品をファイルに保存し、開き直してください。');
+const unavailable=()=>new DOMException('このスマホ・パソコンに保存できません。街をファイル保存してください。','QuotaExceededError');
+const conflict=()=>Error('別の画面で変えられています。作品をファイルに保存し、開き直してください。');
 function request(r){return new Promise((resolve,reject)=>{r.onsuccess=()=>resolve(r.result);r.onerror=()=>reject(r.error);});}
 function finished(tx){return new Promise((resolve,reject)=>{tx.oncomplete=resolve;tx.onabort=()=>reject(tx.error||Error('保存を中断しました。'));});}
 function readable(values){return {

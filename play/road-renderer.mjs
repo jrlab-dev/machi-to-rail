@@ -1,5 +1,5 @@
 import * as THREE from 'three';
-import {ROAD_CATALOG,canonicalRoadType,validateRoadNetwork} from './road-network.mjs?v=train-order-47';
+import {ROAD_CATALOG,canonicalRoadType,validateRoadNetwork} from './road-network.mjs?v=rail-90';
 
 const asphalt='#30363a',sidewalk='#c5c8bd',marking='#f6f0d7',signal='#26363a';
 const shape=(points)=>{const s=new THREE.Shape();s.moveTo(points[0][0],points[0][1]);for(const p of points.slice(1))s.lineTo(p[0],p[1]);s.closePath();return s};

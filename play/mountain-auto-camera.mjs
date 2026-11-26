@@ -1,6 +1,6 @@
-import {MOUNTAIN_MUSEUM,museumPoint,mountainSurfaceHeight} from './mountain-data.mjs?v=retro-87';
-import {mountainSceneryCamera,mountainExteriorCamera,clearMountainTerrain} from './mountain-camera.mjs?v=train-limit-65';
-import {cameraBasis} from './camera-composition.mjs?v=auto-film-29';
+import {MOUNTAIN_MUSEUM,museumPoint,mountainSurfaceHeight} from './mountain-data.mjs?v=rail-90';
+import {mountainSceneryCamera,mountainExteriorCamera,clearMountainTerrain} from './mountain-camera.mjs?v=rail-90';
+import {cameraBasis} from './camera-composition.mjs?v=rail-90';
 const center=v=>{const cars=v.cars||[{body:v.body}],n=cars.length;return cars.reduce((a,c)=>a.map((x,i)=>x+c.body[[0,3,1][i]]*(i===2?-1:1)/n),[0,0,0]);};
 export function mountainFeatureCamera(v,kind,{aspect=1.6,carLength=20.9,traffic=[],height=mountainSurfaceHeight}={}){
  if(kind==='scenery')return mountainSceneryCamera(v,{aspect,carLength,height});

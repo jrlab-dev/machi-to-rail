@@ -1,6 +1,6 @@
 import * as T from 'three';
-import {islandCarLength} from './island-route.mjs?v=rail-towns-71';
-import {suspendedLivery} from './suspended-livery.mjs?v=marks-88';
+import {islandCarLength} from './island-route.mjs?v=rail-90';
+import {suspendedLivery} from './suspended-livery.mjs?v=rail-90';
 
 export function createSuspendedTrain(formation,other,design=null){
   const root=new T.Group(),resources=[],colors=new Map(),cube=new T.BoxGeometry(),wheel=new T.CylinderGeometry(1,1,1,16);
@@ -99,7 +99,8 @@ export function createSuspendedTrain(formation,other,design=null){
     box(body,0,.99,0,14.35,.12,2.75,'#818687');
     box(body,0,3.17,0,13.39,.07,2.76,'#e4dfc6');
     for(const x of doorXs){
-      for(const offset of [-.86,.86])box(body,x+offset,2.07,0,.09,2.17,2.7,'#d6d5bf');
+      // Short vestibule screens leave a passage to the passenger seats.
+      for(const offset of [-.86,.86])for(const side of [-1,1])box(body,x+offset,1.65,side*1.12,.09,1.17,.44,'#d6d5bf');
       for(const sign of [-1,1]){
         box(body,x,1.03,sign*1.38,1.56,.07,.19,'#b9ad76');
         for(const half of [-1,1]){
@@ -114,8 +115,6 @@ export function createSuspendedTrain(formation,other,design=null){
       badge.position.set(1.72,1.70,sign*1.467);badge.rotation.y=sign>0?0:Math.PI;
       for(const x of [-2.7,0,2.7])box(body,x,.84,sign*1.08,2.1,.09,.20,'#92a1a2');
     }
-    for(let j=0;j<6;j++)box(body,-7.33-.078*j,2.09,0,.083,1.93+(j%2)*.08,1.64+(j%2)*.12,j%2?'#475458':'#263438');
-    box(body,-7.58,1.03,0,.65,.18,.42,'#48575d');
     for(const x of [-1.9,1.6]){
       box(body,x,3.66,0,2.40,.27,1.39,'#a9b7b9');
       for(let j=0;j<8;j++)box(body,x-.88+j*.25,3.804,0,.13,.025,.99,'#66777d');
@@ -124,5 +123,30 @@ export function createSuspendedTrain(formation,other,design=null){
     batchHardware(body);
     return {setDestination(seaward){sign.material=skin.destinations[Number(seaward)];},parts:{body,bogieFront:bogie(4.7),bogieBack:bogie(-4.7)},doors,doorTargets:[],bogieOffsets:[4.7,-4.7],bogieOffset:4.7,tail:i===formation.count-1};
   });
+  if(cars.length===2){
+    const lead=cars[0].parts.body,tail=cars[1].parts.body;
+    // Corresponding corners of the two inward-facing end walls share each ring.
+    const rings=11,corners=[[-1,-1],[1,-1],[1,1],[-1,1]];
+    const pos=new T.BufferAttribute(new Float32Array(rings*4*3),3).setUsage(T.DynamicDrawUsage);
+    const indices=[];
+    for(let i=0;i<rings-1;i++)for(let j=0;j<4;j++){
+      const a=i*4+j,b=i*4+(j+1)%4;indices.push(a,b,b+4,a,b+4,a+4);
+    }
+    const geometry=new T.BufferGeometry();geometry.setAttribute('position',pos);geometry.setIndex(indices);
+    const rubber=new T.MeshStandardMaterial({color:'#445059',roughness:.95,side:T.DoubleSide,flatShading:true});
+    const bellows=new T.Mesh(geometry,rubber);bellows.name='連結幌';bellows.frustumCulled=false;
+    lead.add(bellows);resources.push(geometry,rubber);
+    const relative=new T.Matrix4(),a=new T.Vector3(),b=new T.Vector3();
+    cars[0].updateGangway=()=>{
+      lead.updateMatrix();tail.updateMatrix();relative.copy(lead.matrix).invert().multiply(tail.matrix);
+      for(let i=0;i<rings;i++)for(let j=0;j<4;j++){
+        const [vertical,lateral]=corners[j],rib=i%2*.075;
+        a.set(-7.19,2.13+vertical*(1.02+rib),lateral*(.81+rib));
+        b.set(-7.19,a.y,-a.z).applyMatrix4(relative);
+        a.lerp(b,i/(rings-1));pos.setXYZ(i*4+j,a.x,a.y,a.z);
+      }
+      pos.needsUpdate=true;
+    };
+  }
   return {root,cars,length:islandCarLength,train:'suspended-monorail',paint:{apply:skin.apply,dispose(){resources.forEach(r=>r.dispose());}}};
 }

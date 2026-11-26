@@ -1,4 +1,4 @@
-import {mountainLead} from './mountain-data.mjs?v=retro-87';
+import {mountainLead} from './mountain-data.mjs?v=rail-90';
 const clamp=x=>Math.max(0,Math.min(1,x));
 export function movingView(v){
   if(v?.service?.mountain)return v;

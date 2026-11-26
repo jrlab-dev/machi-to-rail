@@ -1,6 +1,6 @@
-import {isHighSpeed} from './train-types.mjs?v=retro-87';
-import {fullPowerLimit} from './cab-power.mjs?v=cab-84';
-import {nearestMountainRoad} from './mountain-road.mjs?v=train-limit-65';
+import {isHighSpeed} from './train-types.mjs?v=rail-90';
+import {fullPowerLimit} from './cab-power.mjs?v=rail-90';
+import {nearestMountainRoad} from './mountain-road.mjs?v=rail-90';
 export const MOUNTAIN_ID='onsen-mountain-v1';
 export const isMountain=scene=>scene?.mountain===MOUNTAIN_ID;
 export const mountainTypeAllowed=type=>!isHighSpeed(type);
@@ -8,7 +8,7 @@ export const MOUNTAIN_HOTELS=[20,65,110,155,200].map((x,i)=>({x,y:165,width:28,d
 export const MOUNTAIN_STATIONS=['温泉街','森の美術館前','山腹','見晴らし'];
 export function mountainTown(){return {format:'rail-town',version:3,mountain:MOUNTAIN_ID,rails:[],props:[],train:'original',oppositeTrain:'original',formation:{count:2,assetVersion:'legacy-cab-v1',cars:[{id:'car-1',kind:'cab',orientation:'front',roofVariant:'pantograph'},{id:'car-2',kind:'cab',orientation:'rear',roofVariant:'plain'}]}};}
 
-import {routeFrom,line,LOWER_CURVES,FIRST_CLIMB_CURVES,MUSEUM_CLIMB_CURVES,mountainElevation} from './mountain-route-geometry.mjs?v=train-limit-65';
+import {routeFrom,line,LOWER_CURVES,FIRST_CLIMB_CURVES,MUSEUM_CLIMB_CURVES,mountainElevation} from './mountain-route-geometry.mjs?v=rail-90';
 export {mountainElevation};
 const a=[20,260,24],ae=[100,260,24],b=[-300,380,35],be=[-380,380,35],c=[80,600,39.7],ce=[160,600,39.7];
 export const MOUNTAIN_ROUTES=[

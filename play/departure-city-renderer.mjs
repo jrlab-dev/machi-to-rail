@@ -1,6 +1,6 @@
 import * as T from 'three';
 import {mergeGeometries} from './vendor/utils/BufferGeometryUtils.js';
-import {departurePlan,departureFootprint} from './departure-city-layout.mjs?v=city-life-32';
+import {departurePlan,departureFootprint} from './departure-city-layout.mjs?v=rail-90';
 export function createDepartureCity(blockers=[]){const root=new T.Group(),details=new T.Group();root.name='akatsuki-city';root.add(details);const materials=[],textures=[],buckets=new Map(),detailBuckets=new Map(),plan=departurePlan(blockers);
  const mat=(color,extra={})=>{const m=new T.MeshStandardMaterial({color,roughness:.85,...extra});materials.push(m);return m;};
  const paving=mat('#c6c5b9'),road=mat('#687778'),line=mat('#e5e2cb'),roof=mat('#6c7778'),garden=mat('#97a47c'),base=mat('#dbd7c7'),shopGlass=mat('#3f636d',{emissive:'#d9c7a0',emissiveIntensity:0,roughness:.3}),accents=['#5c807c','#84705c','#7b8170'].map(color=>mat(color));

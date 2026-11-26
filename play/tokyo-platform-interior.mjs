@@ -1,6 +1,6 @@
 import * as T from 'three';
-import {tokyoPose,tokyoTrackSpacing,tokyoStations} from './tokyo-route.mjs?v=rail-towns-71';
-import {createStationAds} from './station-ads.mjs?v=marks-88';
+import {tokyoPose,tokyoTrackSpacing,tokyoStations} from './tokyo-route.mjs?v=rail-90';
+import {createStationAds} from './station-ads.mjs?v=rail-90';
 
 function painted(w,h,draw){
   const c=document.createElement('canvas');c.width=w;c.height=h;
@@ -52,7 +52,7 @@ function departures(cool){
     g.fillStyle='#0d191a';g.fillRect(9,56,750,158);
     const stops=cool?['丸の内地下','東 京']:['東 京','有楽町'];
     for(let i=0;i<2;i++){const y=111+i*74;g.fillStyle=i?'#b7c7ac':'#89dca8';g.font='bold 36px system-ui';g.fillText(i?'その次':'次の駅',28,y);g.fillStyle='#ffd577';g.fillText(stops[i],203,y);}
-    g.fillStyle='#dae3dc';g.font='25px system-ui';g.fillText('環状線',622,111);
+    g.fillStyle='#dae3dc';g.font='25px system-ui';g.fillText('かんじょう線',622,111);
   });
 }
 function tactilePaving(){

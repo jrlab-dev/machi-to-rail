@@ -1,6 +1,6 @@
-import {BOATS} from './boats-data.mjs?v=fuji-land-31';
-import {countryAvailable,countryGeometry} from './country-camera.mjs?v=auto-film-29';
-import {windowCamera,frameSubject,projectPoint,projectedBounds,inSafe,boundsSafe,cameraClear,shiftVisual,facePoints,segmentHitsBox} from './camera-composition.mjs?v=auto-film-29';
+import {BOATS} from './boats-data.mjs?v=rail-90';
+import {countryAvailable,countryGeometry} from './country-camera.mjs?v=rail-90';
+import {windowCamera,frameSubject,projectPoint,projectedBounds,inSafe,boundsSafe,cameraClear,shiftVisual,facePoints,segmentHitsBox} from './camera-composition.mjs?v=rail-90';
 // Fixed public viewpoints in the station district; coordinates are world-space.
 export function pedestrianCrossingView(visual, carLength = 20.9) {
   const position = [187, 1.65, -300];

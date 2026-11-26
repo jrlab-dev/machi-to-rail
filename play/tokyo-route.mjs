@@ -1,4 +1,4 @@
-import {initialLoop,stepLoop} from './station-loop.mjs?v=rail-towns-71';
+import {initialLoop,stepLoop} from './station-loop.mjs?v=rail-90';
 const straight=2200, radius=140, turn=Math.PI*radius;
 export const tokyoLength=2*(straight+turn);
 const wrap=d=>(d%tokyoLength+tokyoLength)%tokyoLength;

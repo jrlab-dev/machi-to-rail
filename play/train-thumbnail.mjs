@@ -1,6 +1,6 @@
-import {drawDecoration,decorationApplies} from './train-decorations.mjs?v=marks-88';
-import {drawLivery} from './train-livery.mjs';
-import {drawLetter} from './train-lettering.mjs';
+import {drawDecoration,decorationApplies} from './train-decorations.mjs?v=rail-90';
+import {drawLivery} from './train-livery.mjs?v=rail-90';
+import {drawLetter} from './train-lettering.mjs?v=rail-90';
 
 // Small side illustrations share the actual livery, without another 3D renderer.
 function drawSideDecorations(ctx,design,x,y,w,h){

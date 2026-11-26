@@ -292,3 +292,56 @@ body #transport{position:relative;inset:auto;grid-row:3;height:auto;min-height:8
 .deco-editor details{border-top:1px solid #cbd7cb;padding-top:5px}
 .deco-editor summary{cursor:pointer;min-height:32px;display:list-item}
 .deco-legend{font-size:12px;margin:0;color:#4a6459}
+
+/* 2026-11-26 子ども向けの使いやすさ */
+/* 案内の吹き出しは7秒で薄く消える（文字は読み上げ用に残す） */
+#toast{transition:opacity .45s}
+#toast.toast-away{opacity:0}
+/* 運転席：前方の線路に重ならないよう、行き先表示の下（左上）へ */
+#stage:has(#cab-control:not([hidden])) #toast{top:186px;bottom:auto;left:24px;transform:none;max-width:min(300px,42%);text-align:left}
+/* 出典は右上（線路数の表示の下）。警笛・⌂・拡大縮小から離す */
+#tokyo-attribution{right:22px;top:62px;bottom:auto;font-size:11px;padding:.2rem .5rem;white-space:nowrap}
+/* 街をつくる：見出しと「戻す・やり直す」を欄の上に固定 */
+#editor{padding-top:0}
+#editor .panel-title{position:sticky;top:0;z-index:3;background:#fffdf8;margin:0 0 10px;padding:14px 0 8px;gap:8px}
+#editor .edit-history{display:flex;gap:6px;margin-left:auto}
+#editor .edit-history button{border:1px solid #b6caba;background:#fffdf8;border-radius:10px;min-width:0;min-height:40px;padding:6px 10px;font-size:12px;font-weight:700;white-space:nowrap}
+#editor .edit-history button:disabled{opacity:.45}
+/* 街の削除は一覧の一番下に小さく */
+#town-delete-open{display:block;align-self:auto;margin:34px 0 4px auto;padding:6px 10px;min-height:0;font-size:11px;font-weight:400;color:#7a6a64;background:none;border:1px solid #ddd5cf;border-radius:8px}
+@media(max-width:600px){
+ #stage:has(#cab-control:not([hidden])) #toast{top:146px;left:12px;max-width:46%}
+ #tokyo-attribution{right:12px;top:140px;font-size:10px}
+ /* 視点えらび：カードと重なる「車窓を見る」は隠してカードを広く見せる（前面展望席がある電車では残す） */
+ body:not(.has-panorama) #cameras #window-view{display:none}
+ /* 街づくり中：視点の列と列車の行を畳み、発車だけ残して編集欄を広げる */
+ body.editing #cameras{display:none}
+ body.editing #transport>:not(#play){display:none}
+ body.editing #transport,body.editing.dual-trains #transport{display:flex;grid-row:3;height:auto;min-height:0;padding:6px 10px calc(6px + env(safe-area-inset-bottom))}
+ body.editing #transport #play{flex:1;min-height:44px}
+ body.editing main{grid-template-rows:minmax(0,1fr) minmax(0,1.15fr) auto}
+ #editor .panel-title{padding:8px 0 6px;margin-bottom:6px}
+ #editor .panel-title small{display:none}
+ #editor .panel-title h2{font-size:16px}
+}
+/* 街をつくる（広い画面の左パネル）：戻す・やり直すは見出しの下の段に */
+@media(min-width:601px){
+ #editor .panel-title{flex-wrap:wrap}
+ #editor .edit-history{order:3;flex-basis:100%;margin:8px 0 0}
+ #editor .edit-history button{flex:1}
+ /* 編集パネルの裏に案内が隠れないよう、パネルの右へ */
+ body.editing #toast{left:328px;right:76px;transform:none;max-width:none;text-align:left}
+}
+@media(max-width:600px){
+ /* 視点えらび：小さな選択（列車・オート視点など）は2段に重ね、絵カードを2〜3枚見せる */
+ #camera-scroll{display:grid;grid-auto-flow:column dense;grid-template-rows:1fr 1fr;grid-auto-columns:max-content;align-items:center;column-gap:6px;row-gap:4px;padding:5px 0}
+ #camera-scroll>button[data-camera]{grid-row:1 / span 2}
+ #camera-scroll>:not([data-camera]){min-height:38px;height:38px;padding-top:4px;padding-bottom:4px;font-size:11px}
+ #camera-scroll #auto-camera{min-height:38px;white-space:nowrap}
+ #camera-scroll #traffic-picker{height:auto}
+}
+@media(max-height:500px){#stage:has(#cab-control:not([hidden])) #toast{top:8px;left:50%;transform:translateX(-50%);max-width:40%}}
+/* 自由編集の駅（えき の道具と、選んだ駅の操作） */
+#palette .station-options{grid-column:1/-1;display:flex;flex-wrap:wrap;gap:6px}#palette .station-options button{flex:1 1 calc(50% - 6px);min-width:0;text-align:center;padding:9px 6px;font-size:12px;min-height:40px;word-break:keep-all;overflow-wrap:normal}#palette .station-options .station-small{flex:0 1 auto;font-size:11px;min-height:32px;padding:5px 9px}#palette .station-edit{border-top:1px dashed #c4d2c5;padding-top:6px}.station-name-form{display:flex;gap:6px;flex:1 1 100%}.station-name-form input{flex:1;min-width:0;font-size:16px;padding:6px 8px;border:1px solid #b7cabb;border-radius:8px;background:#fff}.station-name-form button{flex:0 0 auto!important}
+/* 型えらび：言葉の途中で折り返さない（リニア／モーターカー の切れ目だけで折れる） */
+.train-kind-cards strong{word-break:keep-all;overflow-wrap:normal;line-height:1.2}

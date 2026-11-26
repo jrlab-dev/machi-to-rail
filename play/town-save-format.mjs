@@ -1,4 +1,4 @@
-import {presets} from './town-presets-v1.mjs';
+import {presets} from './town-presets-v1.mjs?v=rail-90';
 
 export const slotsKey = 'rail-town-slots-v1';
 export const liveKey = 'rail-town-v2';
@@ -28,7 +28,7 @@ export function townSaveLabel(id, scene) {
 
 function unpackScene(entry) {
   if (!entry || !Object.hasOwn(entry, 'preset') || Object.hasOwn(entry, 'rails')) return entry;
-  if (!Object.hasOwn(presets, entry.preset)) throw Error('見本の街を読み込めません。');
+  if (!Object.hasOwn(presets, entry.preset)) throw Error('見本の街を読みこめません。');
   const scene = {...presets[entry.preset], ...entry.changes};
   for (const key of entry.omitted || []) delete scene[key];
   return scene;

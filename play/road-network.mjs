@@ -1,5 +1,5 @@
-import {railHeight,CLEARANCE} from './rail-elevation.mjs';
-// Road layout data is deliberately renderer-independent.  Coordinates follow core.mjs?v=train-order-47:
+import {railHeight,CLEARANCE} from './rail-elevation.mjs?v=rail-90';
+// Road layout data is deliberately renderer-independent.  Coordinates follow core.mjs:
 // Blender-style XY ground plane, with an angle in radians.  The renderer maps Y to -Z.
 export const ROAD_TOLERANCE=0.001;
 const TAU=Math.PI*2;
@@ -12,7 +12,7 @@ export const ROAD_CATALOG=Object.freeze({
   corner:Object.freeze({type:'corner',label:'曲がり角',width:8,ports:Object.freeze([PORT('A',10,0,0),PORT('B',0,10,Math.PI/2)]),segments:Object.freeze([[[10,0],[0,0]],[[0,0],[0,10]]])}),
   tee:Object.freeze({type:'tee',label:'T字路',width:8,ports:Object.freeze([PORT('A',-10,0,Math.PI),PORT('B',10,0,0),PORT('C',0,10,Math.PI/2)]),segments:Object.freeze([[[-10,0],[10,0]],[[0,0],[0,10]]])}),
   junction:Object.freeze({type:'junction',label:'十字路',width:8,ports:Object.freeze([PORT('A',-10,0,Math.PI),PORT('B',10,0,0),PORT('C',0,10,Math.PI/2),PORT('D',0,-10,-Math.PI/2)]),segments:Object.freeze([[[-10,0],[10,0]],[[0,-10],[0,10]]])}),
-  crossing:Object.freeze({type:'crossing',label:'踏切道路',width:8,ports:Object.freeze([PORT('A',-10,0,Math.PI),PORT('B',10,0,0)]),segments:Object.freeze([[[-10,0],[10,0]]])})
+  crossing:Object.freeze({type:'crossing',label:'ふみきり道路',width:8,ports:Object.freeze([PORT('A',-10,0,Math.PI),PORT('B',10,0,0)]),segments:Object.freeze([[[-10,0],[10,0]]])})
 });
 
 const ALIASES=Object.freeze({straight:'road',t:'tee',cross:'junction',rail_crossing:'crossing',road_crossing:'crossing'});
@@ -44,7 +44,7 @@ export function roadPorts(props){
 export function snapRoad(type,selectedPort,uid){
   const canonical=canonicalRoadType(type);
   if(!canonical)throw Error('未知の道路部品です。');
-  if(!selectedPort||![selectedPort.x,selectedPort.y,selectedPort.a].every(finite))throw Error('接続する道路端が不正です。');
+  if(!selectedPort||![selectedPort.x,selectedPort.y,selectedPort.a].every(finite))throw Error('接続する道路のはしが不正です。');
   if(!Number.isInteger(uid)||uid<1)throw Error('道路IDは1以上の整数にしてください。');
   const anchor=ROAD_CATALOG[canonical].ports[0];
   const angle=norm(selectedPort.a+Math.PI-anchor.outward),offset=rotate(anchor.position,angle);
@@ -86,17 +86,17 @@ export function validateRoadNetwork(props,rails=[],kit){
   for(const [uid,count] of uidCount)if(count>1)errors.push({code:'duplicate_uid',uid,message:'道路IDが重複しています。'});
   for(const p of ports){const matches=ports.filter(q=>q.key!==p.key&&compatible(p,q));
     if(matches.length===1){if(p.key<matches[0].key)connections.push({a:p.key,b:matches[0].key});}
-    else if(matches.length>1)errors.push({code:'ambiguous_port',port:p.key,message:'1つの道路端に複数の道路が重なっています。'});
+    else if(matches.length>1)errors.push({code:'ambiguous_port',port:p.key,message:'1つの道路のはしに複数の道路が重なっています。'});
     else openPorts.push(p);
   }
   const intentionalEnds=openPorts.filter(intentionalEnd),danglingPorts=openPorts.filter(p=>!intentionalEnd(p));
-  for(const p of danglingPorts)warnings.push({code:'open_port',port:p.key,message:'道路の端がつながっていません。終端なら roadEnds:[端ID] を指定してください。'});
+  for(const p of danglingPorts)warnings.push({code:'open_port',port:p.key,message:'道路のはしがつながっていません。行き止まりなら roadEnds:[はしID] を指定してください。'});
   const duplicates=[];for(let i=0;i<roads.length;i++)for(let j=i+1;j<roads.length;j++){const a=roads[i],b=roads[j],samePlace=Math.hypot(a.pose[0]-b.pose[0],a.pose[1]-b.pose[1])<ROAD_TOLERANCE,sameAngle=Math.abs(Math.sin(a.pose[2]-b.pose[2]))<1e-7;if(samePlace&&sameAngle){duplicates.push([a.uid,b.uid]);errors.push({code:'overlapping_surface',uids:[a.uid,b.uid],message:'同じ場所に道路面が重なっています。'});}}
   const crossingMap=new Map();for(const segment of roadSegments(roads))for(const rail of railSegments(rails,kit)){const at=segmentHit(segment.a,segment.b,rail.a,rail.b);if(at){const len=Math.hypot(rail.b[0]-rail.a[0],rail.b[1]-rail.a[1]),t=len?Math.hypot(at.x-rail.a[0],at.y-rail.a[1])/len:0;if(rail.h0+(rail.h1-rail.h0)*t>=CLEARANCE)continue;const item={roadUid:segment.prop.uid,roadType:canonicalRoadType(segment.prop.type),railUid:rail.rail.uid,railPiece:rail.rail.piece,at};const key=[item.roadUid,item.railUid,Math.round(at.x*1e6),Math.round(at.y*1e6)].join(':');crossingMap.set(key,item);}}
   const crossings=[...crossingMap.values()];
   const badRailCrossings=crossings.filter(x=>!(x.roadType==='crossing'&&x.railPiece==='crossing'));
-  for(const x of badRailCrossings)errors.push({code:'rail_crossing_without_module',...x,message:'通常道路が線路を横切っています。踏切道路を使ってください。'});
-  for(const p of roads.filter(p=>canonicalRoadType(p.type)==='crossing')){const count=crossings.filter(x=>x.roadUid===p.uid&&x.railPiece==='crossing').length;if(count!==1)errors.push({code:'invalid_crossing_module',uid:p.uid,message:'踏切道路は踏切レールを1か所だけ横切る必要があります。'});}
+  for(const x of badRailCrossings)errors.push({code:'rail_crossing_without_module',...x,message:'通常道路が線路を横切っています。ふみきり道路を使ってください。'});
+  for(const p of roads.filter(p=>canonicalRoadType(p.type)==='crossing')){const count=crossings.filter(x=>x.roadUid===p.uid&&x.railPiece==='crossing').length;if(count!==1)errors.push({code:'invalid_crossing_module',uid:p.uid,message:'ふみきり道路はふみきりレールを1か所だけ横切る必要があります。'});}
   const connected=new Set(connections.flatMap(x=>[x.a,x.b]));
   const isolated=roads.filter(p=>roadPorts([p]).every(port=>!connected.has(port.key)&&intentionalEnd(port))).map(p=>p.uid);
   for(const uid of isolated)warnings.push({code:'isolated_road',uid,message:'他の道路につながらない道路です。'});

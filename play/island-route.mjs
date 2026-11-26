@@ -10,7 +10,7 @@ export const islandStations=[
   {name:'海風マリーナ',s:north(565),accent:'#326a99'},
   {name:'星の温室',s:north(35),accent:'#537f55'},
   {name:'風の発電所',s:north(-560),accent:'#626d9c'},
-  {name:'岬の灯台',s:south(-550),accent:'#a54b4e'}
+  {name:'みさきの灯台',s:south(-550),accent:'#a54b4e'}
 ];
 export const isIsland=town=>town?.island==='yume-v1';
 export const islandTrackSpacing=5.2;

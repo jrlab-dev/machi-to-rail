@@ -16,10 +16,10 @@ export async function listCollections(){
  finally{db.close();}
 }
 export function validateBundle(bundle){
- if(bundle?.format!=='rail-collection'||bundle.version!==1||!bundle.values||typeof bundle.values!=='object'||Array.isArray(bundle.values))throw Error('全作品の引っ越しファイルを選んでください。');
+ if(bundle?.format!=='rail-collection'||bundle.version!==1||!bundle.values||typeof bundle.values!=='object'||Array.isArray(bundle.values))throw Error('全作品の引っこしファイルを選んでください。');
  const values={};
  for(const key of Object.keys(bundle.values)){
-  if(![...workKeys,adsKey].includes(key)||typeof bundle.values[key]!=='string')throw Error('未対応の作品データが含まれています。');
+  if(![...workKeys,adsKey].includes(key)||typeof bundle.values[key]!=='string')throw Error('未対応の作品データがふくまれています。');
   JSON.parse(bundle.values[key]);values[key]=bundle.values[key];
  }
  if(!Object.keys(values).length)throw Error('保存された作品が見つかりません。以前遊んだブラウザで開いてください。');
@@ -43,7 +43,7 @@ export async function getCollection(id){
  const db=await catalog();
  try{
   const bundle=await request(db.transaction('collections').objectStore('collections').get(id));
-  if(!bundle)throw Error('このブラウザに保存庫が見つかりません。引っ越し画面から作品を受け取ってください。');
+  if(!bundle)throw Error('このブラウザに保存庫が見つかりません。引っこし画面から作品を受け取ってください。');
   return {id,values:bundle.values};
  }finally{db.close();}
 }

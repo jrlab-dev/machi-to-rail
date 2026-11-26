@@ -1,6 +1,6 @@
 import * as T from 'three';
 import {mergeGeometries} from './vendor/utils/BufferGeometryUtils.js';
-import {cityPlan,cityFootprint,overlaps} from './arrival-city-layout.mjs?v=city-life-32';
+import {cityPlan,cityFootprint,overlaps} from './arrival-city-layout.mjs?v=rail-90';
 
 // City coordinates use the same map convention as the railway (world z = -map y).
 export function createArrivalCity(blockers=[]){

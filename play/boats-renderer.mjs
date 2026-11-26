@@ -1,5 +1,5 @@
 import * as T from 'three';
-import {BOAT_COLORS,buildBoats} from './boats-data.mjs?v=fuji-land-31';
+import {BOAT_COLORS,buildBoats} from './boats-data.mjs?v=rail-90';
 export function createBoats(){
  const root=new T.Group();root.name='sea-boats';const data=buildBoats(),materials=[],geometries=[];
  for(const batch of data.geometry){const geometry=new T.BufferGeometry();geometry.setAttribute('position',new T.BufferAttribute(batch.positions,3));geometry.setAttribute('normal',new T.BufferAttribute(batch.normals,3));geometry.setIndex(new T.BufferAttribute(batch.indices,1));geometry.computeBoundingSphere();geometries.push(geometry);const color=BOAT_COLORS[batch.color],material=new T.MeshStandardMaterial({color,roughness:.84,metalness:0,side:T.DoubleSide});materials.push({material,color});const mesh=new T.Mesh(geometry,material);mesh.name='boat-'+batch.color;root.add(mesh);}

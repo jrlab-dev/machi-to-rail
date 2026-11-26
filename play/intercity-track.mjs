@@ -1,4 +1,4 @@
-import {sampleRoute} from './core.mjs?v=marks-88';
+import {sampleRoute} from './core.mjs?v=rail-90';
 
 export function trackSamples(route){
  const distances=[];for(const part of route.parts){const count=Math.ceil(part.r.length/(part.r.kind==='line'?40:2));for(let i=0;i<count;i++)distances.push(part.start+part.r.length*i/count);}

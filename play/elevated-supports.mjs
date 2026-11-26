@@ -1,10 +1,14 @@
-import {sampleItem} from './core.mjs?v=marks-88';
+import {sampleItem} from './core.mjs?v=rail-90';
+import {stationGeometry,stationFootprint} from './free-station.mjs?v=rail-90';
+// 自由編集の駅の足あとの中には柱を立てない（道路と同じく間引く）。
+function stationAreas(town,kit){const out=[];for(const st of town.stations||[]){const g=stationGeometry(st,town.rails,kit);if(g)out.push(...stationFootprint(g,st.side));}return out;}
+const insideArea=(r,x,y)=>{const c=Math.cos(r.angle),s=Math.sin(r.angle),dx=x-r.cx,dy=y-r.cy;return Math.abs(c*dx+s*dy)<=r.hx+.5&&Math.abs(-s*dx+c*dy)<=r.hy+.5;};
 export function elevatedSupportPlan(town,kit){
  const tracks=town.rails.flatMap(it=>kit.pieces[it.piece].routes.flatMap(r=>{const n=Math.ceil(r.length/2);return Array.from({length:n+1},(_,i)=>({uid:it.uid,p:sampleItem(it,r,i/n)}));}));
- const byUid=new Map(),supports=[],deck=[],nodes=[],ends=[];
+ const byUid=new Map(),supports=[],deck=[],nodes=[],ends=[],areas=stationAreas(town,kit);
  for(const it of town.rails){if(!kit.pieces[it.piece].procedural)continue;const r=kit.pieces[it.piece].routes[0],n=Math.max(1,Math.ceil(r.length/24)),rows=[];
   for(let i=0;i<n;i++){const p=sampleItem(it,r,(i+.5)/n);if(p[3]<=1.65)continue;
-   const blocked=town.props.some(x=>['road','corner','tee','junction','crossing'].includes(x.type)&&Math.hypot(x.pose[0]-p[0],x.pose[1]-p[1])<15)||tracks.some(x=>x.uid!==it.uid&&(x.p[3]||0)<p[3]-2&&Math.hypot(x.p[0]-p[0],x.p[1]-p[1])<8);
+   const blocked=town.props.some(x=>['road','corner','tee','junction','crossing'].includes(x.type)&&Math.hypot(x.pose[0]-p[0],x.pose[1]-p[1])<15)||tracks.some(x=>x.uid!==it.uid&&(x.p[3]||0)<p[3]-2&&Math.hypot(x.p[0]-p[0],x.p[1]-p[1])<8)||areas.some(r=>insideArea(r,p[0],p[1]));
    if(!blocked){rows.push(i);supports.push(p);}
   }
   byUid.set(it.uid,rows);

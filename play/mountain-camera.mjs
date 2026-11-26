@@ -1,4 +1,4 @@
-import {cameraBasis} from './camera-composition.mjs';
+import {cameraBasis} from './camera-composition.mjs?v=rail-90';
 const dot=(a,b)=>a.reduce((s,x,i)=>s+x*b[i],0),sub=(a,b)=>a.map((x,i)=>x-b[i]),length=a=>Math.hypot(...a);
 function corners(cars,carLength){return cars.flatMap(({body:p})=>[-1,1].flatMap(end=>[-1,1].flatMap(side=>[0,4].map(h=>{const x=end*carLength/2,c=Math.cos(p[2]),s=Math.sin(p[2]),g=p[4]||0,a=x*Math.cos(g)-h*Math.sin(g);return [p[0]+c*a+s*side*1.8,(p[3]||0)+x*Math.sin(g)+h*Math.cos(g),-p[1]-s*a+c*side*1.8];}))));}
 function fit(position,target,points,aspect,fov){

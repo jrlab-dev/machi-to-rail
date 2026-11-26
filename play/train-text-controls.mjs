@@ -1,5 +1,5 @@
-import {syncColorButtons} from './color-picker.mjs?v=palette-36';
-import {LETTER_FONTS,normalizeLetter,normalizeLettering} from './train-lettering.mjs';
+import {syncColorButtons} from './color-picker.mjs?v=rail-90';
+import {LETTER_FONTS,normalizeLetter,normalizeLettering} from './train-lettering.mjs?v=rail-90';
 export function setupTextControls({getDraft,onChange,onView}){
  const $=s=>document.querySelector(s);let target='side',composing=false;
  for(const [k,v] of Object.entries(LETTER_FONTS))$('#letter-font').add(new Option(v,k));

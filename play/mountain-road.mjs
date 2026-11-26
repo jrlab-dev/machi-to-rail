@@ -1,4 +1,4 @@
-import {routeFrom,LOWER_CURVES,FIRST_CLIMB_CURVES,MUSEUM_CLIMB_CURVES} from './mountain-route-geometry.mjs?v=train-limit-65';
+import {routeFrom,LOWER_CURVES,FIRST_CLIMB_CURVES,MUSEUM_CLIMB_CURVES} from './mountain-route-geometry.mjs?v=rail-90';
 export const MOUNTAIN_BUS_ID='mountain-tour-bus';
 export const MOUNTAIN_MINIBUS_ID='kindergarten-minibus';
 export const MOUNTAIN_ROAD_WIDTH=8;

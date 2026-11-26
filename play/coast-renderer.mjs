@@ -1,6 +1,6 @@
 import * as T from 'three';
-import {coastEdge} from './coast-data.mjs?v=fuji-land-31';
-import {createBoats} from './boats-renderer.mjs?v=fuji-land-31';
+import {coastEdge} from './coast-data.mjs?v=rail-90';
+import {createBoats} from './boats-renderer.mjs?v=rail-90';
 export function createCoast(){
  const root=new T.Group();root.name='coast';const materials=[];
  const canvas=document.createElement('canvas');canvas.width=canvas.height=512;const ctx=canvas.getContext('2d');ctx.fillStyle='#ffffff';ctx.fillRect(0,0,512,512);

@@ -26,8 +26,8 @@ function unpackWrite(row){
 export function recoverStorage(storage){
  const text=storage.getItem(JOURNAL_KEY);if(text===null)return;
  let j;try{j=JSON.parse(text);if(![1,2].includes(j.version)||!Array.isArray(j.writes))throw Error();if(j.version===2)j.writes=j.writes.map(unpackWrite);if(j.writes.some(w=>!Array.isArray(w)||w.length!==3||typeof w[0]!=='string'||w[0]===JOURNAL_KEY||w.slice(1).some(v=>v!==null&&typeof v!=='string'))||new Set(j.writes.map(w=>w[0])).size!==j.writes.length)throw Error();}catch{throw Error('保存の復旧情報を読めません。元データを保護しています。');}
- for(const [key,before,after]of j.writes){const current=storage.getItem(key);if(current!==before&&current!==after)throw Error('別の画面の変更があるため復旧を止めました。元データと復旧情報は残っています。');}
- const restore=()=>{for(const [key,before,after]of j.writes){const current=storage.getItem(key);if(current!==before&&current!==after)throw Error('別の画面の変更があるため復旧を止めました。元データと復旧情報は残っています。');}for(const [key,before]of j.writes)put(storage,key,before);storage.removeItem(JOURNAL_KEY);};
+ for(const [key,before,after]of j.writes){const current=storage.getItem(key);if(current!==before&&current!==after)throw Error('別の画面で変えたところがあるため復旧を止めました。元データと復旧情報は残っています。');}
+ const restore=()=>{for(const [key,before,after]of j.writes){const current=storage.getItem(key);if(current!==before&&current!==after)throw Error('別の画面で変えたところがあるため復旧を止めました。元データと復旧情報は残っています。');}for(const [key,before]of j.writes)put(storage,key,before);storage.removeItem(JOURNAL_KEY);};
  try{restore();}catch(error){
   if(!isQuotaError(error)||!j.writes.length||j.writes.some(([key])=>!protectedKeys.has(key)))throw error;
   for(const [key,before,after]of j.writes){const current=storage.getItem(key);if(current!==before&&current!==after)throw error;}
@@ -44,13 +44,13 @@ export function commitStorage(storage,writes,{expected=[]}={}){
  }
 }
 function commitOnce(storage,writes,{expected=[]}={}){
- recoverStorage(storage);for(const [key,value]of expected)if(storage.getItem(key)!==value)throw Error('別の画面で変更されています。下書きは残しています。最新を読むか、別名で保存してください。');
- if(writes.some(([key,value])=>typeof key!=='string'||key===JOURNAL_KEY||(value!==null&&typeof value!=='string'))||new Set(writes.map(w=>w[0])).size!==writes.length)throw Error('保存内容が不正です。元データは変更していません。');
+ recoverStorage(storage);for(const [key,value]of expected)if(storage.getItem(key)!==value)throw Error('別の画面で変えられています。下書きは残しています。最新を読むか、別名で保存してください。');
+ if(writes.some(([key,value])=>typeof key!=='string'||key===JOURNAL_KEY||(value!==null&&typeof value!=='string'))||new Set(writes.map(w=>w[0])).size!==writes.length)throw Error('保存内容が不正です。元データは変えていません。');
  const journal={version:2,writes:writes.map(([key,value])=>[key,storage.getItem(key),value]).filter(([,before,after])=>before!==after)};
  if(!journal.writes.length)return;
  // A single localStorage operation is atomic and needs no duplicate backup.
- if(journal.writes.length===1){const [key,,value]=journal.writes[0];try{put(storage,key,value);}catch(error){throw Error('端末に保存できないため、変更前のデータを保持しています。編集内容をファイルに保存してください。',{cause:error});}return;}
+ if(journal.writes.length===1){const [key,,value]=journal.writes[0];try{put(storage,key,value);}catch(error){throw Error('このスマホ・パソコンに保存できないため、変える前のデータを保持しています。編集内容をファイルに保存してください。',{cause:error});}return;}
  try{storage.setItem(JOURNAL_KEY,JSON.stringify({...journal,writes:journal.writes.map(packWrite)}));}catch(error){throw Error('復旧用の空き容量が足りません。作品をファイルに保存してください。下書きは残しています。',{cause:error});}
- try{for(const [key,,value]of journal.writes)put(storage,key,value);storage.removeItem(JOURNAL_KEY);}catch(error){let recovered=false;try{recoverStorage(storage);recovered=true;}catch{}throw Error(recovered?'端末に保存できないため、変更前へ戻しました。編集内容は残しています。下書きをファイルに書き出してください。':'保存は未確定です。復旧情報と下書きを保持しています。ファイルに書き出し、この画面で保存を続けないでください。',{cause:error});}
+ try{for(const [key,,value]of journal.writes)put(storage,key,value);storage.removeItem(JOURNAL_KEY);}catch(error){let recovered=false;try{recoverStorage(storage);recovered=true;}catch{}throw Error(recovered?'このスマホ・パソコンに保存できないため、変える前へもどしました。編集内容は残しています。下書きをファイルに書き出してください。':'保存は未確定です。復旧情報と下書きを保持しています。ファイルに書き出し、この画面で保存を続けないでください。',{cause:error});}
 }
-export async function withStorageLock(action){if(!globalThis.navigator?.locks?.request)throw Error('この環境は安全な端末保存に対応していません。「街をファイル保存」で作品を残してください。');return navigator.locks.request(STORAGE_LOCK,{mode:'exclusive'},action);}
+export async function withStorageLock(action){if(!globalThis.navigator?.locks?.request)throw Error('このブラウザは安全な保存に対応していません。「街をファイル保存」で作品を残してください。');return navigator.locks.request(STORAGE_LOCK,{mode:'exclusive'},action);}

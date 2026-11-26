@@ -1,4 +1,4 @@
-import {cameraBasis,projectedBounds,boundsSafe,segmentHitsBox} from './camera-composition.mjs?v=auto-film-29';
+import {cameraBasis,projectedBounds,boundsSafe,segmentHitsBox} from './camera-composition.mjs?v=rail-90';
 
 // Bounds are read from the closed, prepared door leaves; motion and meshes are untouched.
 export function pairDoorLeaves(leaves){
@@ -61,8 +61,9 @@ export function platformDoorShot(visual,doorSets,{centerX=210,platform=5,elevate
 export function mountainDoorShot(visual,doorSets,{platform,viewport}={}){
  for(let i=0;i<(visual?.cars?.length||0);i++){
   const car=visual.cars[i],p=car.body,a=p[2]+(car.tail?Math.PI:0),z=typeof platform==='function'?platform(car):platform;
-  const side=Math.sign((z+p[1])*Math.cos(a))||1;
-  const door=(doorSets[i]||[]).filter(d=>d.side===side).sort((a,b)=>Math.abs(a.center[0])-Math.abs(b.center[0]))[0];
+  // 数なら今まで通り。{side} の形（自由編集の駅）なら側をそのまま使う：0＝この車両はホームの外、2＝両側。
+  const sides=z&&typeof z==='object'?(z.side===2?[1,-1]:z.side?[z.side]:[]):[Math.sign((z+p[1])*Math.cos(a))||1];
+  let door=null,side=0;for(const k of sides){door=(doorSets[i]||[]).filter(d=>d.side===k).sort((a,b)=>Math.abs(a.center[0])-Math.abs(b.center[0]))[0];if(door){side=k;break;}}
   if(!door)continue;
   const target=doorWorld(car,door.center),normal=[Math.sin(a)*side,0,Math.cos(a)*side],axis=[Math.cos(a),0,-Math.sin(a)],position=target.map((x,k)=>x+normal[k]*2.7+axis[k]*1.1+(k===1?.12:0)),corners=sweptCorners(car,door);
   for(const fov of [54,66,78,90,102,114]){const pose=frameDoor(position,target,corners,fov,viewport);if(boundsSafe(projectedBounds(corners,pose,viewport),viewport))return {...pose,selection:{carIndex:i,doorId:door.id}};}

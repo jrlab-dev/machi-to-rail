@@ -1,5 +1,5 @@
-import {normalizeDecorations,drawDecoration,decorationApplies} from './train-decorations.mjs?v=marks-88';
-import {syncColorButtons} from './color-picker.mjs';
+import {normalizeDecorations,drawDecoration,decorationApplies} from './train-decorations.mjs?v=rail-90';
+import {syncColorButtons} from './color-picker.mjs?v=rail-90';
 
 const STAMPS='rail-workshop-marks-v1';
 const shapes={star:'星',wing:'つばさ',wave:'波',mountain:'山',circle:'丸',diamond:'ひし形',line:'線',text:'文字だけ'};
@@ -7,7 +7,7 @@ const shapeSymbols={star:'★',wing:'🪽',wave:'〰',mountain:'▲',circle:'●
 const shapeOptions=Object.fromEntries(Object.entries(shapes).map(([key,name])=>[key,shapeSymbols[key]+' '+name]));
 const surfaces={side:'側面（左右共通）',front:'前面'};
 const targets={all:'全車両',lead:'先頭の1両',middle:'中間車',car:'号車を指定'};
-const bases={none:'なし',circle:'丸',square:'四角',shield:'盾'};
+const bases={none:'なし',circle:'丸',square:'四角',shield:'たて'};
 const clamp=(n,min,max)=>Math.min(max,Math.max(min,n));
 const options=map=>Object.entries(map).map(([val,name])=>'<option value="'+val+'">'+name+'</option>').join('');
 const stampName=item=>[shapes[item.shape],item.text].filter(Boolean).join('・');
@@ -19,7 +19,7 @@ function controls(kind){
  const select=(key,label,values)=>'<label>'+label+'<select id="'+id(key)+'">'+options(values)+'</select></label>';
  const range=(key,label,min,max)=>'<label>'+label+' <output></output><input type="range" min="'+min+'" max="'+max+'" id="'+id(key)+'"></label>';
  const color=(key,label)=>'<label>'+label+'<input type="color" id="'+id(key)+'" aria-label="'+label+'"></label>';
- return '<div class="deco-actions">'+button('add',name+'を追加')+button('undo','ひとつ戻す')+'</div>'+
+ return '<div class="deco-actions">'+button('add',name+'を追加')+button('undo','ひとつもどす')+'</div>'+
  '<div id="'+id('placed')+'">'+select('items','付けた'+name,{})+'<canvas id="'+id('placed-preview')+'" aria-label="付けた帯やマークをタップして編集"></canvas><div class="deco-actions">'+button('edit','編集')+button('copy','複製')+button('remove','外す')+'</div></div>'+
  (mark?'<details><summary>保存したマークを使う</summary>'+select('library','マーク帳',{})+'<div class="deco-actions">'+button('load-stamp','このマークを使う')+button('remove-stamp','帳面から外す')+'</div></details>':'')+
  '<fieldset id="'+id('form')+'" hidden><legend>'+name+'をデザイン</legend><div class="deco-grid">'+select('surface','付ける面',surfaces)+
@@ -99,7 +99,7 @@ export function setupDecorationEditor({getDesign,onChange,getType=()=>'',getForm
     const input=el(key);input.value=draft[key];
     if(input.type==='range')input.previousElementSibling.textContent=draft[key]+'%';
    }
-   el('apply').textContent=index<0?name+'を付ける':'変更を反映';
+   el('apply').textContent=index<0?name+'を付ける':'これに変える';
    if(mark)syncMarkColors();
    syncColorButtons();canvas();
   }
@@ -152,12 +152,12 @@ export function setupDecorationEditor({getDesign,onChange,getType=()=>'',getForm
   el('edit').onclick=()=>open(designItems()[Number(list.value)],Number(list.value));
   el('copy').onclick=()=>open(designItems()[Number(list.value)]);
   el('remove').onclick=()=>{const items=designItems();items.splice(Number(list.value),1);replace(items);status.textContent=name+'を外しました。';};
-  el('undo').onclick=()=>{const items=history.pop();if(items){panels.forEach(p=>p.reset());onChange(items);refresh();status.textContent='ひとつ戻しました。';}};
+  el('undo').onclick=()=>{const items=history.pop();if(items){panels.forEach(p=>p.reset());onChange(items);refresh();status.textContent='ひとつもどしました。';}};
   el('cancel').onclick=()=>{reset();render();};
   function apply(){
    if(!draft)return true;
    if(mark&&draft.shape==='text'&&!normalizeDecorations([draft])[0].text){status.textContent='入れたい文字を書いてね。';el('text').focus();return false;}
-   if(!mark&&draft.start===draft.end){status.textContent='帯の始まりと終わりを少し離してね。';return false;}
+   if(!mark&&draft.start===draft.end){status.textContent='帯の始まりと終わりを少しはなしてね。';return false;}
    const items=designItems(),idx=index<0?items.length:index;
    if(idx>=24){status.textContent='付けられる帯とマークは合わせて24個です。';return false;}
    items[idx]=normalizeDecorations([draft])[0];reset();replace(items);list.value=String(idx);drawPlaced();status.textContent=name+'を付けました。';return true;
@@ -200,7 +200,7 @@ export function setupDecorationEditor({getDesign,onChange,getType=()=>'',getForm
    }
    function saveLibrary(next){
     try{localStorage.setItem(STAMPS,JSON.stringify(next));readLibrary();return true;}
-    catch{status.textContent='この端末のマーク帳に保存できませんでした。';return false;}
+    catch{status.textContent='このスマホ・パソコンのマーク帳に保存できませんでした。';return false;}
    }
    el('save-stamp').onclick=()=>{
     if(!draft)return;
@@ -213,7 +213,7 @@ export function setupDecorationEditor({getDesign,onChange,getType=()=>'',getForm
     if(saveLibrary([...stamps,item])){library.value=String(stamps.length-1);status.textContent='マーク帳に保存しました。別の電車でも使えます。';}
    };
    el('load-stamp').onclick=()=>{
-    if(draft){status.textContent='編集中のマークを付けるか「やめる」を押してね。';return;}
+    if(draft){status.textContent='編集中のマークを付けるか「やめる」をおしてね。';return;}
     if(designItems().length>=24){status.textContent='帯かマークを外すと追加できます。';return;}
     if(library.value!=='')open(stamps[Number(library.value)]);
    };

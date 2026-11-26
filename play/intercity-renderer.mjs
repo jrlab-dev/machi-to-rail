@@ -1,15 +1,15 @@
-import {createDepartureCity} from './departure-city-renderer.mjs?v=city-life-32';
-import {createFuji} from './fuji-renderer.mjs?v=fuji-depth-28';
-import {createCoast} from './coast-renderer.mjs?v=fuji-land-31';
-import {coastalLand} from './coast-data.mjs?v=fuji-land-31';
+import {createDepartureCity} from './departure-city-renderer.mjs?v=rail-90';
+import {createFuji} from './fuji-renderer.mjs?v=rail-90';
+import {createCoast} from './coast-renderer.mjs?v=rail-90';
+import {coastalLand} from './coast-data.mjs?v=rail-90';
 import * as T from 'three';
-import {trackSamples,trackRibbon} from './intercity-track.mjs?v=marks-88';
-import {INTERCITY_LANES} from './intercity-traffic.mjs?v=marks-88';
-import {STATIONS,STATION_LANES} from './intercity-stations.mjs?v=marks-88';
-import {createStations} from './intercity-station-renderer.mjs?v=marks-88';
-import {createArrivalCity} from './arrival-city-renderer.mjs?v=city-life-32';
-import {sampleRoute} from './core.mjs?v=marks-88';
-import {TURN_LENGTH,INTERCITY_LENGTH,intercityZone} from './intercity-data.mjs';
+import {trackSamples,trackRibbon} from './intercity-track.mjs?v=rail-90';
+import {INTERCITY_LANES} from './intercity-traffic.mjs?v=rail-90';
+import {STATIONS,STATION_LANES} from './intercity-stations.mjs?v=rail-90';
+import {createStations} from './intercity-station-renderer.mjs?v=rail-90';
+import {createArrivalCity} from './arrival-city-renderer.mjs?v=rail-90';
+import {sampleRoute} from './core.mjs?v=rail-90';
+import {TURN_LENGTH,INTERCITY_LENGTH,intercityZone} from './intercity-data.mjs?v=rail-90';
 export function distanceForBody(p){const [x,y]=p;if(x>=0&&x<=6000)return y<400?x:6000+TURN_LENGTH+6000-x;if(x>6000)return 6000+Math.atan2(x-6000,400-y)*400;return 12000+TURN_LENGTH+Math.atan2(-x,y-400)*400;}
 export function createIntercityRenderer(route,stationsEnabled=false,customProps=[]){
  const root=new T.Group(),rails=new T.Group(),land=new T.Group(),tunnels=new T.Group();root.add(rails,land,tunnels);const obj=new T.Object3D(),materials=[],pools=[];let last=-Infinity,lastSpan=0;

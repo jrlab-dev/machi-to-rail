@@ -1,7 +1,7 @@
-import {prepareLettering} from './train-lettering-3d.mjs?v=marks-89';
+import {prepareLettering} from './train-lettering-3d.mjs?v=rail-90';
 import * as T from 'three';
-import {normalizeDesign} from './train-design.mjs?v=marks-88';
-import {drawLivery} from './train-livery.mjs';
+import {normalizeDesign} from './train-design.mjs?v=rail-90';
+import {drawLivery} from './train-livery.mjs?v=rail-90';
 
 const roleOf=m=>m.name.replace(/^Paint_/,'').replace(/\.\d+$/,'');
 // Car-space UVs keep the skin continuous across separate body and door meshes.

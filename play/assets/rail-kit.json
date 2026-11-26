@@ -323,7 +323,7 @@
     },
     "crossing": {
       "id": "crossing",
-      "name": "踏切",
+      "name": "ふみきり",
       "ports": [
         {
           "id": "A",
@@ -357,7 +357,7 @@
     },
     "viaduct_straight": {
       "id": "viaduct_straight",
-      "name": "高架の直線",
+      "name": "こうかの直線",
       "ports": [
         {
           "id": "A",
@@ -393,7 +393,7 @@
     },
     "viaduct_left": {
       "id": "viaduct_left",
-      "name": "高架の左カーブ",
+      "name": "こうかの左カーブ",
       "ports": [
         {
           "id": "A",
@@ -431,7 +431,7 @@
     },
     "viaduct_right": {
       "id": "viaduct_right",
-      "name": "高架の右カーブ",
+      "name": "こうかの右カーブ",
       "ports": [
         {
           "id": "A",
@@ -469,7 +469,7 @@
     },
     "ramp_up": {
       "id": "ramp_up",
-      "name": "上り坂（地上→高架）",
+      "name": "上り坂（地上→こうか）",
       "ports": [
         {
           "id": "A",
@@ -505,7 +505,7 @@
     },
     "ramp_down": {
       "id": "ramp_down",
-      "name": "下り坂（高架→地上）",
+      "name": "下り坂（こうか→地上）",
       "ports": [
         {
           "id": "A",

@@ -1,4 +1,4 @@
-import {attachDecorations} from './train-decoration-3d.mjs?v=marks-88';
+import {attachDecorations} from './train-decoration-3d.mjs?v=rail-90';
 
 // The train loader transfers the car groups out of root before live editing.
 export function decoratePaint(model,design){

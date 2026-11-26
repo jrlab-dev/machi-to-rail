@@ -1,4 +1,4 @@
-import {intercityTown} from './intercity-data.mjs';
+import {intercityTown} from './intercity-data.mjs?v=rail-90';
 
 const originals=new Map(intercityTown().props.filter(p=>p.pose[0]>5000).map(p=>[p.uid,JSON.stringify(p)]));
 export function isArrivalTemplateProp(p){return originals.get(p.uid)===JSON.stringify(p);}

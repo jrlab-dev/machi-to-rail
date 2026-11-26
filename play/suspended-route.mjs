@@ -1,4 +1,4 @@
-import {stepLoop} from './station-loop.mjs?v=rail-towns-71';
+import {stepLoop} from './station-loop.mjs?v=rail-90';
 export const isSuspended=t=>t?.suspended==='shiomi-v1';
 export const suspendedStations=[
   {name:'潮見中央ビル',s:70},{name:'桜ヶ丘住宅前',s:540},{name:'緑谷公園',s:1040},
@@ -26,10 +26,30 @@ export function railSample(x,offset){
   return [x-offset*Math.sin(yaw),northing(x)+offset*Math.cos(yaw),yaw,floorHeight(x),Math.atan((floorHeight(x+.1)-floorHeight(x-.1))*5/Math.hypot(1,slope))];
 }
 export function lane(x,dir){return dir>0?4.5-9*ease(x,1895,1980):4.5-9*ease(x,145,230);}
-function serviceRoute(dir){return {length,closed:false,parts:[],sample(x){
-  const p=railSample(x,lane(x,dir)),a=railSample(x-.1,lane(x-.1,dir)),b=railSample(x+.1,lane(x+.1,dir));
-  p[2]=Math.atan2(b[1]-a[1],b[0]-a[0]);return p;
-}};}
+function serviceRoute(dir){
+  const route={length,closed:false,parts:[],sample(x){
+    const p=railSample(x,lane(x,dir)),a=railSample(x-.1,lane(x-.1,dir)),b=railSample(x+.1,lane(x+.1,dir));
+    p[2]=Math.atan2(b[1]-a[1],b[0]-a[0]);return p;
+  }};
+  // Stations and scenery are indexed by map x. Cars and bogies are spaced in track metres.
+  const distances=new Float64Array(length+1);
+  let previous=route.sample(0);
+  for(let x=1;x<=length;x++){
+    const point=route.sample(x);
+    distances[x]=distances[x-1]+Math.hypot(point[0]-previous[0],point[1]-previous[1],point[3]-previous[3]);
+    previous=point;
+  }
+  route.trackDistance=x=>{
+    const clamped=Math.min(length,Math.max(0,x)),i=Math.min(length-1,Math.floor(clamped));
+    return distances[i]+(clamped-i)*(distances[i+1]-distances[i]);
+  };
+  route.track={length:distances[length],closed:false,parts:[],sample(distance){
+    let low=0,high=length;
+    while(high-low>1){const mid=(low+high)>>1;if(distances[mid]<=distance)low=mid;else high=mid;}
+    return route.sample(low+(distance-distances[low])/(distances[high]-distances[low]));
+  }};
+  return route;
+}
 export const suspendedRoutes=[serviceRoute(1),serviceRoute(-1)];
 export const lineFor=state=>suspendedRoutes[state.dir>0?0:1];
 export function startSuspended(other=false){

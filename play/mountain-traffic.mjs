@@ -1,4 +1,4 @@
-import {MOUNTAIN_ROUTES,MOUNTAIN_MIDDLE,MOUNTAIN_MUSEUM_DISTANCE,initialMountainState,advanceMountain} from './mountain-data.mjs?v=retro-87';
+import {MOUNTAIN_ROUTES,MOUNTAIN_MIDDLE,MOUNTAIN_MUSEUM_DISTANCE,initialMountainState,advanceMountain} from './mountain-data.mjs?v=rail-90';
 export const MOUNTAIN_LOWER_GATE=MOUNTAIN_ROUTES[0].length-170;
 export const MOUNTAIN_UPPER_GATE=MOUNTAIN_MIDDLE;
 export function initialMountainOpponent(carLength=20.9){return {...initialMountainState(carLength),leg:3,s:MOUNTAIN_ROUTES[3].length-carLength-.225,trip:-1,dir:-1,facing:-1,label:'見晴らし'};}

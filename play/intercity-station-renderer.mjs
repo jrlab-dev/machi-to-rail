@@ -1,6 +1,6 @@
-import {createStationAds} from "./station-ads.mjs?v=marks-88";
+import {createStationAds} from "./station-ads.mjs?v=rail-90";
 import * as T from 'three';
-import {STATIONS} from './intercity-stations.mjs?v=marks-88';
+import {STATIONS} from './intercity-stations.mjs?v=rail-90';
 export function createStations(){
  const root=new T.Group();root.name='intercity-stations';const groups=new Map(),materials=[],textures=[],lamps=[],dummy=new T.Object3D();
  const material=(color,extra={})=>{const m=new T.MeshStandardMaterial({color,roughness:.8,...extra});materials.push(m);return m;};
@@ -20,7 +20,7 @@ export function createStations(){
    box(roof,s.x,13.15,z,244,.22,5.8);box(accent,s.x,13.04,z-2.88,244,.25,.1);box(accent,s.x,13.04,z+2.88,244,.25,.1);
    for(let dx=-112;dx<=112;dx+=16){if(Math.abs(dx)<20)continue;box(steel,s.x+dx,11.06,z,.22,4,.22);box(steel,s.x+dx,12.92,z,.16,.24,5.6);box(white,s.x+dx,12.76,z+1.4,5,.07,.18);}
    for(const dx of[-88,72,110]){box(wood,s.x+dx,9.5,z,4,.12,.7);for(const a of[-1.5,1.5])box(steel,s.x+dx+a,9.25,z,.12,.45,.55);}
-   for(const dx of[-72,56]){for(const a of[-2.8,2.8])box(steel,s.x+dx+a,12.5,z,.06,.8,.06);sign(s.name,z<0?'1 普通 / 2 高速':'3 高速 / 4 普通',s.color,s.x+dx,11.5,z,7,1.2);sign(s.name,z<0?'1 普通 / 2 高速':'3 高速 / 4 普通',s.color,s.x+dx,11.5,z-.03,7,1.2,true);}
+   for(const dx of[-72,56]){for(const a of[-2.8,2.8])box(steel,s.x+dx+a,12.5,z,.06,.8,.06);sign(s.name,z<0?'1 ふつう / 2 高速':'3 高速 / 4 ふつう',s.color,s.x+dx,11.5,z,7,1.2);sign(s.name,z<0?'1 ふつう / 2 高速':'3 高速 / 4 ふつう',s.color,s.x+dx,11.5,z-.03,7,1.2,true);}
    // Enclosed stairs are kept in the island centre; edge corridors remain clear.
    for(let i=0;i<45;i++)box(concrete,s.x-15+i*.66,.1+i*.1,z,.68,.2+i*.2,2.4);
    box(floor,s.x+15.15,8.95,z,1.7,.16,2.6);

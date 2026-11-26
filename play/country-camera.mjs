@@ -1,4 +1,4 @@
-import {frameSubject,facePoints,consistPoints,projectPoint,projectedBounds,boundsSafe,cameraClear,shiftVisual} from './camera-composition.mjs?v=auto-film-29';
+import {frameSubject,facePoints,consistPoints,projectPoint,projectedBounds,boundsSafe,cameraClear,shiftVisual} from './camera-composition.mjs?v=rail-90';
 // Fifteen metres covers the longest half-car plus its lateral extent on straight track.
 export function countryAvailable(v){return !!v?.cars?.length&&v.cars.every(c=>c.body[0]-15>1450&&c.body[0]+15<4550&&Math.abs(Math.sin(c.body[2]))<.01);}
 export function countryGeometry(v){const cars=v.cars,p=v.body||cars[0].body,dir=Math.sign(Math.cos(p[2]))||1;return{dir,x:cars.reduce((s,c)=>s+c.body[0],0)/cars.length,z:-p[1],y:p[3]||0,lead:dir>0?Math.max(...cars.map(c=>c.body[0])):Math.min(...cars.map(c=>c.body[0]))};}

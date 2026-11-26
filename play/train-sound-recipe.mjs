@@ -1,7 +1,7 @@
-import {SOUND_SLOTS,INSTRUMENTS,presetFor} from './train-sound-presets.mjs?v=departure-35';
+import {SOUND_SLOTS,INSTRUMENTS,presetFor} from './train-sound-presets.mjs?v=rail-90';
 export const copySound=value=>JSON.parse(JSON.stringify(value));
 export const legacyProfile=()=>({version:1,departure:{mode:'legacy'},signal:{mode:'legacy'},close:{mode:'legacy'}});
-const fail=()=>{throw Error('音のデータが正しくありません。元の作品を残して読み込みを止めました。');};
+const fail=()=>{throw Error('音のデータが正しくありません。元の作品を残して読みこみを止めました。');};
 const finite=(v,min,max)=>typeof v==='number'&&Number.isFinite(v)&&v>=min&&v<=max;
 export function validateRecipe(raw,slot){
  if(!raw||!Array.isArray(raw.tracks)||raw.tracks.length<1||raw.tracks.length>3)fail();
@@ -33,8 +33,8 @@ export function soundHint(recipe,slot){
  const notes=recipe.tracks.flatMap((t,track)=>t.notes.map((n,index)=>({...n,track,index}))).sort((a,b)=>a.start-b.start),last=notes.at(-1);
  if(!last)return null;
  const n=notes.length===1?notes[0]:last;
- if(notes.some(o=>o!==n&&o.start===n.start))return recipe.tracks.length>1&&new Set(recipe.tracks.map(t=>t.instrument)).size===1?{type:'timbre',text:'片方を木琴にしたら、どんな音？'}:null;
+ if(notes.some(o=>o!==n&&o.start===n.start))return recipe.tracks.length>1&&new Set(recipe.tracks.map(t=>t.instrument)).size===1?{type:'timbre',text:'片方をもっきんにしたら、どんな音？'}:null;
  const candidates=[4,7].filter(delta=>{if(n.pitch+delta>84)return false;try{const r=copySound(recipe);r.tracks[n.track].notes.push({...n,pitch:n.pitch+delta});validateRecipe(r,slot);return true;}catch{return false;}});
- return candidates.length?{type:'chord',text:notes.length===1?'同じタイミングに、もう一音足してみる？':'最後の音だけ、ふたつにしてみる？',note:n,candidates}:recipe.tracks.length>1&&new Set(recipe.tracks.map(t=>t.instrument)).size===1?{type:'timbre',text:'片方を木琴にしたら、どんな音？'}:null;
+ return candidates.length?{type:'chord',text:notes.length===1?'同じタイミングに、もう一音足してみる？':'最後の音だけ、ふたつにしてみる？',note:n,candidates}:recipe.tracks.length>1&&new Set(recipe.tracks.map(t=>t.instrument)).size===1?{type:'timbre',text:'片方をもっきんにしたら、どんな音？'}:null;
 }
 export function applySoundHint(recipe,hint,delta=4){const r=copySound(recipe);if(hint.type==='timbre')r.tracks[1].instrument='xylophone';else{const n=hint.note;r.tracks[n.track].notes.push({pitch:n.pitch+delta,start:n.start,duration:n.duration,velocity:n.velocity});}return r;}

@@ -1,5 +1,5 @@
-import {formationAdvance} from './core.mjs?v=marks-88';
-import {coachDoorPositions} from './scenic-cameras.mjs';
+import {formationAdvance} from './core.mjs?v=rail-90';
+import {coachDoorPositions} from './scenic-cameras.mjs?v=rail-90';
 export const STATIONS=[{id:'akatsuki',name:'あかつき中央',x:300,color:'#c46b42'},{id:'minato',name:'みなと中央',x:5700,color:'#29888c'}];
 export const STATION_LANES=[-9,0,9,18],PLATFORM_LENGTH=260;
 export function stationAt(body,margin=0){return STATIONS.find(s=>Math.abs(body?.[1]||0)<24&&Math.abs((body?.[0]||0)-s.x)<PLATFORM_LENGTH/2+margin);}

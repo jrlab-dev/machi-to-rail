@@ -1,4 +1,4 @@
-import {floorHeight,lane,northing,portal,rockCuts,suspendedStations} from './suspended-route.mjs?v=shiomi-77';
+import {floorHeight,lane,northing,portal,rockCuts,suspendedStations} from './suspended-route.mjs?v=rail-90';
 
 // Use the consist midpoint so reversing at a terminus keeps the platform shot continuous.
 export function suspendedShot(v,aspect){

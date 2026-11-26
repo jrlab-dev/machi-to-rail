@@ -1,9 +1,9 @@
 import * as T from 'three';
-import {glassHall,plazaCrowns} from './tokyo-landmarks.mjs';
-import {createSurfaceArt} from './tokyo-surface-art.mjs?v=tokyo-75';
-import {createSurfaceDetails,platformSlab} from './tokyo-surface-platform.mjs?v=tokyo-detail-74';
-import {createPlatformInteriors} from './tokyo-platform-interior.mjs?v=marks-88';
-import {tokyoStations,tokyoLength,tokyoTrackSpacing,tokyoInnerDistance,tokyoPose} from './tokyo-route.mjs?v=rail-towns-71';
+import {glassHall,plazaCrowns} from './tokyo-landmarks.mjs?v=rail-90';
+import {createSurfaceArt} from './tokyo-surface-art.mjs?v=rail-90';
+import {createSurfaceDetails,platformSlab} from './tokyo-surface-platform.mjs?v=rail-90';
+import {createPlatformInteriors} from './tokyo-platform-interior.mjs?v=rail-90';
+import {tokyoStations,tokyoLength,tokyoTrackSpacing,tokyoInnerDistance,tokyoPose} from './tokyo-route.mjs?v=rail-90';
 
 function facadeTexture(){
   const canvas=document.createElement('canvas');canvas.width=256;canvas.height=512;
@@ -363,14 +363,14 @@ export function createTokyoRenderer(loader,onError){
   async function loadStation(){
     try{
       const r=await fetch(new URL('./assets/tokyo-marunouchi.glb.gz',import.meta.url));
-      if(!r.ok)throw Error('駅舎を読み込めませんでした');
+      if(!r.ok)throw Error('駅舎を読みこめませんでした');
       const buffer=await new Response(r.body.pipeThrough(new DecompressionStream('gzip'))).arrayBuffer();
       if(disposed)return;
       const {scene}=await loader.parseAsync(buffer,'');
       landmark=scene;
       if(disposed){releaseLandmark();return;}
       scene.position.set(0,11,89);surface.add(scene);
-    }catch(e){if(!disposed)onError('東京駅舎の読み込みに失敗しました。'+e.message);}
+    }catch(e){if(!disposed)onError('東京駅舎の読みこみに失敗しました。'+e.message);}
   }
   function releaseLandmark(){landmark?.traverse(o=>{o.geometry?.dispose();if(o.material)for(const m of [].concat(o.material))m.dispose();});}
   loadStation();

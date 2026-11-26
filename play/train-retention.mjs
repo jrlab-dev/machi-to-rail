@@ -1,5 +1,5 @@
-import {normalizeLibrary,saveTrain,sameTrain,applySavedTrain,mergeSceneLibrary} from './train-library.mjs?v=marks-88';
-import {DAY,USAGE_KEY,normalizeUsage,markCreated,rankTrains} from './train-ranking.mjs?v=rail-storage-68';
+import {normalizeLibrary,saveTrain,sameTrain,applySavedTrain,mergeSceneLibrary} from './train-library.mjs?v=rail-90';
+import {DAY,USAGE_KEY,normalizeUsage,markCreated,rankTrains} from './train-ranking.mjs?v=rail-90';
 export const PENDING_KEY='rail-train-pending-v1';
 export function normalizePending(raw={version:1,items:[]}){
  if(raw?.version!==1||!Array.isArray(raw.items))throw Error('保管中の電車を読めません。元の作品を保持しています。');
@@ -18,7 +18,7 @@ export function saveUniqueTrain(items,scene,input,pending){
  return saveTrain(current,scene,input);
 }
 export function planRetention(previous,items,scene,usage,pending,{now=Date.now(),createdId=null}={}){
- if(!Number.isSafeInteger(now)||now<0)throw Error('削除時刻を確認できません。');
+ if(!Number.isSafeInteger(now)||now<0)throw Error('消した時刻を確認できません。');
  const old=normalizeLibrary(previous),next=normalizeLibrary(items),town=JSON.parse(JSON.stringify(scene));
  let stats=normalizeUsage(usage);if(createdId&&next.some(e=>e.id===createdId)&&!old.some(e=>e.id===createdId))stats=markCreated(stats,createdId,now);
  const retained=rankTrains(next,stats,now),active=new Map(retained.map(entry=>[entry.id,entry]));
@@ -29,7 +29,7 @@ export function planRetention(previous,items,scene,usage,pending,{now=Date.now()
   else if(!sameTrain(match,row.entry))throw Error('保管中の電車と保存庫でIDが重複しています。');
  }
  const removed=old.filter(entry=>!active.has(entry.id));
- for(const entry of removed){const found=queue.find(row=>row.entry.id===entry.id);if(found){if(!sameTrain(found.entry,entry))throw Error('保管中の作品が変更されています。');}else queue.push({entry,removedAt:now,deleteAt:null});}
+ for(const entry of removed){const found=queue.find(row=>row.entry.id===entry.id);if(found){if(!sameTrain(found.entry,entry))throw Error('保管中の作品が変えられています。');}else queue.push({entry,removedAt:now,deleteAt:null});}
  for(const key of ['trainId','oppositeTrainId'])if(town[key]&&!active.has(town[key]))delete town[key];
  const pendingIds=new Set(queue.map(row=>row.entry.id));for(const id of Object.keys(stats.items))if(!active.has(id)&&!pendingIds.has(id))delete stats.items[id];
  return {items:retained,scene:town,usage:stats,pending:{version:1,items:queue},moved:removed.length,extraWrites:[[PENDING_KEY,JSON.stringify({version:1,items:queue})],[USAGE_KEY,JSON.stringify(stats)]]};

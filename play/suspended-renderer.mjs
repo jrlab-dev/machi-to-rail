@@ -1,8 +1,8 @@
-import {stationSigns} from './suspended-signs.mjs?v=shiomi-76';
+import {stationSigns} from './suspended-signs.mjs?v=rail-90';
 import * as T from 'three';
-import {shiomiMaterials,shiomiCoast} from './suspended-art.mjs?v=shiomi-77';
-import {dressStation} from './suspended-stations.mjs?v=rail-towns-71';
-import {railSample,northing,floorHeight,suspendedStations,portal,lane,rockCuts,cutProfile} from './suspended-route.mjs?v=shiomi-77';
+import {shiomiMaterials,shiomiCoast} from './suspended-art.mjs?v=rail-90';
+import {dressStation} from './suspended-stations.mjs?v=rail-90';
+import {railSample,northing,floorHeight,suspendedStations,portal,lane,rockCuts,cutProfile} from './suspended-route.mjs?v=rail-90';
 
 export function createSuspendedTown(){
   const root=new T.Group(),rows=new Map(),resources=[],dummy=new T.Object3D();
@@ -213,7 +213,7 @@ export function createSuspendedTown(){
     const x=275+i*26,h=floorHeight(x)-9.1,side=i%2?1:-1;
     parkedCar(x,h,-northing(x)+side*(15+i%3*9),['#ac6559','#ddd7c5','#7b9ba7','#77877d'][i%4]);
   }
-  const shopNames=['潮見書房','喫茶 はとば','桜ヶ丘商店','街角ベーカリー'];
+  const shopNames=['潮見書店','きっさ はとば','桜ヶ丘商店','街角ベーカリー'];
   shopNames.forEach((name,i)=>{
     const x=[122,202,475,568][i],h=floorHeight(x)-9.1,z=-northing(x)-18.5;
     box(x,h+2.16,z,12.8,4.32,6.9,'#ddcfb9');

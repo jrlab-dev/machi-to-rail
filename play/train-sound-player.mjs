@@ -1,6 +1,6 @@
-import {presetFor} from './train-sound-presets.mjs?v=departure-35';
-import {validateRecipe} from './train-sound-recipe.mjs?v=departure-35';
-import {soundBudget,NOTE_LEVEL} from './train-sound-budget.mjs?v=sound-workshop-23';
+import {presetFor} from './train-sound-presets.mjs?v=rail-90';
+import {validateRecipe} from './train-sound-recipe.mjs?v=rail-90';
+import {soundBudget,NOTE_LEVEL} from './train-sound-budget.mjs?v=rail-90';
 // The partial ratios follow the shared lightweight keyboard instruments.
 const partials={piano:[[1,.78,1.8],[2,.16,.5],[3,.06,.2]],musicbox:[[1,.76,3.8],[2,.17,1.4],[3,.05,.55],[4,.02,.25]],xylophone:[[1,.84,1.35],[4,.14,.22],[10,.02,.08]],chime:[[1,.7,2],[2,.2,.65],[3,.1,.3]]};
 export function createSoundPlayer(context,output){

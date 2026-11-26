@@ -1,9 +1,9 @@
-import {decoratePaint} from './train-decorated-paint.mjs?v=marks-88';
+import {decoratePaint} from './train-decorated-paint.mjs?v=rail-90';
 import * as T from 'three';
-import {preparePaint} from './train-paint.mjs?v=marks-89';
-import {setupPreviewOrbit} from './preview-orbit.mjs?v=train-chooser-56';
-import {createIslandTrain} from './island-train.mjs?v=marks-88';
-import {isLimitedExpress,isMonorail,hasNamedParts} from './train-types.mjs?v=retro-87';
+import {preparePaint} from './train-paint.mjs?v=rail-90';
+import {setupPreviewOrbit} from './preview-orbit.mjs?v=rail-90';
+import {createIslandTrain} from './island-train.mjs?v=rail-90';
+import {isLimitedExpress,isMonorail,hasNamedParts} from './train-types.mjs?v=rail-90';
 
 export function createTrainPreview(canvas,loadAsset,onManual=()=>{}){
  const renderer=new T.WebGLRenderer({canvas,antialias:true,alpha:false});renderer.setPixelRatio(Math.min(devicePixelRatio,1.5));renderer.outputColorSpace=T.SRGBColorSpace;
@@ -27,7 +27,7 @@ export function createTrainPreview(canvas,loadAsset,onManual=()=>{}){
   async show(type,design,spec){const own=++ticket;clear();
    let root;
    if(isLimitedExpress(type)){
-     const {createLimitedExpress}=await import('./limited-express-model.mjs?v=marks-88');
+     const {createLimitedExpress}=await import('./limited-express-model.mjs?v=rail-90');
      if(own!==ticket||!active)return false;
      const model=createLimitedExpress(type,{count:1,cars:[{kind:'cab',orientation:'front',roofVariant:'plain'}]},design);
      root=model.root;paint=decoratePaint(model,design).paint;
@@ -44,7 +44,7 @@ export function createTrainPreview(canvas,loadAsset,onManual=()=>{}){
    }
    const cars=[{parts}];
    paint=decoratePaint({root,cars,train:type,length:spec?.cab?.bodyLength,paint:preparePaint(root,cars,design,spec?.paintProfile)},design).paint;
-   const painted=await paint.ready();if(own!==ticket||!active)return false;if(!painted){clear();throw Error('ラッピング画像を読み込めません。');}
+   const painted=await paint.ready();if(own!==ticket||!active)return false;if(!painted){clear();throw Error('ラッピング画像を読みこめません。');}
    }
    const bounds=new T.Box3().setFromObject(root),size=bounds.getSize(new T.Vector3()),center=bounds.getCenter(new T.Vector3());radius=size.length()/2;modelHeight=size.y;centerHeight=center.y;root.position.sub(center);pivot.add(root);pivot.rotation.y=-.45;viewPitch=.3;
    canvas.dataset.ready='true';canvas.dataset.type=type;canvas.dataset.design=JSON.stringify(design);canvas.dataset.cars='1';canvas.dataset.height=String(centerHeight);return true;

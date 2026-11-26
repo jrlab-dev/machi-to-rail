@@ -1,10 +1,10 @@
 import * as T from 'three';
 import {GLTFLoader} from './vendor/loaders/GLTFLoader.js';
-import {MOUNTAIN_BUS_ID,MOUNTAIN_MINIBUS_ID} from './mountain-road.mjs?v=train-limit-65';
-import {carTex,vehicleRaw} from './vehicle-source.mjs?v=palette-36';
-import {loadRoadVehicle} from './road-vehicle-assets.mjs?v=palette-36';
-import {selectedVehicles} from './traffic-selection.mjs';
-import {TRAFFIC_VEHICLES,trafficFrame} from './traffic-route.mjs?v=marks-88';
+import {MOUNTAIN_BUS_ID,MOUNTAIN_MINIBUS_ID} from './mountain-road.mjs?v=rail-90';
+import {carTex,vehicleRaw} from './vehicle-source.mjs?v=rail-90';
+import {loadRoadVehicle} from './road-vehicle-assets.mjs?v=rail-90';
+import {selectedVehicles} from './traffic-selection.mjs?v=rail-90';
+import {TRAFFIC_VEHICLES,trafficFrame} from './traffic-route.mjs?v=rail-90';
 export function createTrafficRenderer(){
  const root=new T.Group();root.name='street-traffic';
  const texture=new T.CanvasTexture(carTex());texture.flipY=false;texture.colorSpace=T.SRGBColorSpace;texture.anisotropy=4;
@@ -20,7 +20,7 @@ export function createTrafficRenderer(){
  async function buildMountainBus(id=MOUNTAIN_BUS_ID){
   const asset=new URL(`./assets/road-vehicles/${id}.glb.gz`,import.meta.url);
   const response=await fetch(asset);
-  if(!response.ok)throw Error('観光バスを読み込めません。');
+  if(!response.ok)throw Error('観光バスを読みこめません。');
   const bytes=await response.arrayBuffer(),magic=new Uint8Array(bytes,0,2);
   // A host may decode gzip on transfer; the GLB still reaches the loader unchanged.
   const buffer=magic[0]===0x1f&&magic[1]===0x8b

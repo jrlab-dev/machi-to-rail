@@ -1,4 +1,4 @@
-import {sampleRoute,distanceOnRoute,formationOccupiesDistance} from './core.mjs?v=marks-88';
+import {sampleRoute,distanceOnRoute,formationOccupiesDistance} from './core.mjs?v=rail-90';
 
 export const CROSSING={uid:900001,x:185,y:280,outerY:290,width:6};
 export function crossingDistance(route,y){
@@ -7,7 +7,7 @@ export function crossingDistance(route,y){
     const a=sampleRoute(route,p.start),b=sampleRoute(route,p.start+p.r.length);
     if(Math.abs(a[1]-y)<.01&&Math.abs(b[1]-y)<.01&&CROSSING.x>=Math.min(a[0],b[0])&&CROSSING.x<=Math.max(a[0],b[0]))return p.start+Math.abs(CROSSING.x-a[0]);
   }
-  throw Error('踏切を置ける直線がありません');
+  throw Error('ふみきりを置ける直線がありません');
 }
 export function crossingDemand(route,state,formation,cross,carLength){
   const ahead=distanceOnRoute(route,cross,state.s)*state.dir;

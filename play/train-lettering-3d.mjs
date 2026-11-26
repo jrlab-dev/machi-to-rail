@@ -1,6 +1,6 @@
 import * as T from 'three';
-import {drawLetter} from './train-lettering.mjs';
-import {attachDoorLettering} from './train-doors.mjs?v=retro-87';
+import {drawLetter} from './train-lettering.mjs?v=rail-90';
+import {attachDoorLettering} from './train-doors.mjs?v=rail-90';
 
 export function prepareLettering(cars,profile={length:20,width:3,height:2.75,bottom:1,front:9.835,side:1.51,doubleEnded:false}){
  if(profile.surfacePaint)return prepareSurfaceLettering(cars,profile);

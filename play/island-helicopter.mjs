@@ -1,4 +1,4 @@
-import {helicopterPose} from './island-air-traffic.mjs?v=rail-towns-71';
+import {helicopterPose} from './island-air-traffic.mjs?v=rail-90';
 import * as T from 'three';
 
 // The cabin, main rotor and tail rotor each use a single vertex-coloured mesh.
@@ -16,7 +16,7 @@ export function createHelicopter(root,box,round,resources){
   box(padX,deck+.016,padZ,3.3,.026,.76,'#f7eed6');
   for(let i=0;i<8;i++){const a=i*Math.PI/4;round(padX+10.4*Math.cos(a),deck+.07,padZ+10.4*Math.sin(a),.37,.23,.37,'#eac474');}
 
-  const aircraft=new T.Group();aircraft.name='未来島・島内連絡ヘリ';root.add(aircraft);
+  const aircraft=new T.Group();aircraft.name='未来島・島内れんらくヘリ';root.add(aircraft);
   const cube=new T.BoxGeometry(),ball=new T.SphereGeometry(1,18,10),tube=new T.CylinderGeometry(1,1,1,12);
   const transform=new T.Object3D(),point=new T.Vector3(),normal=new T.Vector3(),nm=new T.Matrix3();
   const material=new T.MeshStandardMaterial({vertexColors:true,roughness:.48,metalness:.1,side:T.DoubleSide});

@@ -1,8 +1,8 @@
-import {syncColorButtons} from './color-picker.mjs?v=palette-36';
-import {setupTextControls} from './train-text-controls.mjs?v=palette-36';
-import {setupFaceControls} from './train-face-controls.mjs?v=marks-88';
-import {PATTERNS,DESIGN_PRESETS} from './train-design.mjs?v=marks-88';
-import {drawLivery,readWrapFile} from './train-livery.mjs';
+import {syncColorButtons} from './color-picker.mjs?v=rail-90';
+import {setupTextControls} from './train-text-controls.mjs?v=rail-90';
+import {setupFaceControls} from './train-face-controls.mjs?v=rail-90';
+import {PATTERNS,DESIGN_PRESETS} from './train-design.mjs?v=rail-90';
+import {drawLivery,readWrapFile} from './train-livery.mjs?v=rail-90';
 
 export function setupPaintControls({getDraft,onChange,onPreset,onView}){
  const $=s=>document.querySelector(s);
@@ -33,7 +33,7 @@ export function setupPaintControls({getDraft,onChange,onPreset,onView}){
  for(const id of ['wrap-file','wrap-camera'])$('#'+id).onchange=async event=>{
   const file=event.target.files?.[0];event.target.value='';if(!file)return;
   const draft=getDraft(),id=++ticket;busy=true;$('#paint-save').disabled=true;$('#wrap-status').textContent='写真を整えています…';
-  try{const image=await readWrapFile(file);if(id!==ticket||getDraft()!==draft)return;draft.wrap={image,mode:'repeat',repeat:4,scale:1,y:0,front:true};$('#wrap-status').textContent='写真を貼りました。位置や大きさを調整できます。';update();}
+  try{const image=await readWrapFile(file);if(id!==ticket||getDraft()!==draft)return;draft.wrap={image,mode:'repeat',repeat:4,scale:1,y:0,front:true};$('#wrap-status').textContent='写真をはりました。位置や大きさを調整できます。';update();}
   catch(error){if(id===ticket&&getDraft()===draft)$('#wrap-status').textContent=error.message;}
   finally{if(id===ticket){busy=false;$('#paint-save').disabled=false;}}
  };
@@ -53,5 +53,5 @@ export function setupPaintControls({getDraft,onChange,onPreset,onView}){
   if(next!==source){source=next;image=null;if(next){const im=new Image();im.onload=()=>{if(source===next){image=im;preview();}};im.src=next;}}
   preview();syncColorButtons();
  }
- return {sync,get busy(){return busy||letters.composing;},cancel(){ticket++;busy=false;source='';image=null;$('#wrap-status').textContent='写真はこの端末内で処理します。';}};
+ return {sync,get busy(){return busy||letters.composing;},cancel(){ticket++;busy=false;source='';image=null;$('#wrap-status').textContent='写真はこのスマホ・パソコンの中で処理します。';}};
 }

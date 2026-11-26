@@ -1,4 +1,4 @@
-import {coastEdge} from './coast-data.mjs?v=fuji-land-31';
+import {coastEdge} from './coast-data.mjs?v=rail-90';
 export const BOAT_COLORS={white:'#e3e4db',navy:'#203e50',deck:'#a8b0a4',metal:'#788b89',orange:'#e58a35',red:'#b94b37'};
 export const BOATS=Object.freeze([
  {id:'ferry',kind:'ferry',x:2900,z:coastEdge(2900)+240,length:61,width:14,height:12,yaw:.04},

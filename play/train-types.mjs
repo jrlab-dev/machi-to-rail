@@ -1,4 +1,4 @@
-export const TRAIN_TYPES={original:'普通の電車',tram:'路面電車', 'express-short':'新幹線（短い先頭）','express-long':'新幹線（長い先頭）','express-retro':'新幹線（丸い先頭・旧型）','limited-classic':'王道の特急','limited-stream':'流線形の特急','limited-panorama':'展望特急',steam:'蒸気機関車',maglev:'リニアモーターカー',monorail:'跨座式モノレール','suspended-monorail':'懸垂式モノレール',freight:'貨物列車'};
+export const TRAIN_TYPES={original:'ふつうの電車',tram:'路面電車', 'express-short':'新幹線（短い先頭）','express-long':'新幹線（長い先頭）','express-retro':'新幹線（丸い先頭・旧型）','limited-classic':'王道の特急','limited-stream':'流線形の特急','limited-panorama':'展望特急',steam:'蒸気機関車',maglev:'リニアモーターカー',monorail:'こざしきモノレール','suspended-monorail':'けんすいしきモノレール',freight:'貨物列車'};
 export const limitedExpressTypes=['limited-classic','limited-stream','limited-panorama'];
 export const isLimitedExpress=type=>limitedExpressTypes.includes(type);
 export const isMonorail=type=>type==='monorail'||type==='suspended-monorail';

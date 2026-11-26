@@ -3,10 +3,10 @@ const validId=id=>typeof id==='string'&&/^saved-[a-zA-Z0-9_-]{1,80}$/.test(id);
 const time=x=>x===null||(Number.isFinite(x)&&x>=0);
 const elapsed=(now,then)=>Math.max(0,now-then)/DAY;
 export function normalizeUsage(value={version:1,items:{}}){
- if(value?.version!==1||!value.items||typeof value.items!=='object'||Array.isArray(value.items))throw Error('電車の利用履歴を読めません。');
+ if(value?.version!==1||!value.items||typeof value.items!=='object'||Array.isArray(value.items))throw Error('電車の使った記録を読めません。');
  const items=Object.create(null);
  for(const [id,row]of Object.entries(value.items)){
-  if(!validId(id)||!row||!['createdAt','lastUsedAt','frequencyUpdatedAt','lastCountedAt'].every(k=>time(row[k]))||!Number.isFinite(row.frequencyValue)||row.frequencyValue<0)throw Error('電車の利用履歴を読めません。');
+  if(!validId(id)||!row||!['createdAt','lastUsedAt','frequencyUpdatedAt','lastCountedAt'].every(k=>time(row[k]))||!Number.isFinite(row.frequencyValue)||row.frequencyValue<0)throw Error('電車の使った記録を読めません。');
   items[id]={createdAt:row.createdAt,lastUsedAt:row.lastUsedAt,frequencyUpdatedAt:row.frequencyUpdatedAt,lastCountedAt:row.lastCountedAt,frequencyValue:row.frequencyValue};
  }
  return {version:1,items};
@@ -14,11 +14,11 @@ export function normalizeUsage(value={version:1,items:{}}){
 export const readUsage=storage=>{const text=storage.getItem(USAGE_KEY);return normalizeUsage(text===null?undefined:JSON.parse(text));};
 const empty=()=>({createdAt:null,lastUsedAt:null,frequencyValue:0,frequencyUpdatedAt:null,lastCountedAt:null});
 export function markCreated(usage,id,now=Date.now()){
- if(!validId(id)||!Number.isFinite(now)||now<0)throw Error('電車の利用履歴が不正です。');
+ if(!validId(id)||!Number.isFinite(now)||now<0)throw Error('電車の使った記録が不正です。');
  const next=normalizeUsage(usage),row=next.items[id]||empty();if(row.createdAt===null)row.createdAt=now;next.items[id]=row;return next;
 }
 export function markUsed(usage,ids,now=Date.now()){
- if(!Number.isFinite(now)||now<0)throw Error('電車の利用履歴が不正です。');
+ if(!Number.isFinite(now)||now<0)throw Error('電車の使った記録が不正です。');
  const next=normalizeUsage(usage);
  for(const id of new Set(ids)){
   if(!validId(id))continue;

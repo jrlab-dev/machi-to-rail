@@ -1,4 +1,4 @@
-import {commitStorage,recoverStorage,isQuotaError,REPLAY_KEY} from './train-storage.mjs?v=rail-storage-68';
+import {commitStorage,recoverStorage,isQuotaError,REPLAY_KEY} from './train-storage.mjs?v=rail-90';
 export const REPLAY_BYTES=384*1024,REPLAY_SECONDS=60,OPTIONAL_TOTAL_BYTES=4*1024*1024;
 export const storageBytes=text=>text===null?0:text.length*2;
 export function storageUsage(storage){let total=0;for(let i=0;i<storage.length;i++){const key=storage.key(i);if(key!==null)total+=storageBytes(key)+storageBytes(storage.getItem(key));}return {total,replay:storageBytes(storage.getItem(REPLAY_KEY))};}

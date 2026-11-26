@@ -1,7 +1,7 @@
-import {elevatedSupportPlan} from './elevated-supports.mjs?v=marks-88';
+import {elevatedSupportPlan} from './elevated-supports.mjs?v=rail-90';
 import * as T from 'three';
 import {mergeGeometries} from './vendor/utils/BufferGeometryUtils.js';
-import {sampleItem} from './core.mjs?v=marks-88';
+import {sampleItem} from './core.mjs?v=rail-90';
 // All repeating structures share instanced geometry, including the ramp sleepers.
 export function buildElevatedRails(town,kit){
  const root=new T.Group(),buckets=new Map(),strips=new Map(),colors={concrete:'#c1c4be',edge:'#d9dbd4',bed:'#888c89',sleeper:'#b9b9ac',rail:'#77838a',wire:'#54646b',cap:'#858e8a'};

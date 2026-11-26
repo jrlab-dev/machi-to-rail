@@ -1,9 +1,9 @@
-import {normalizeDecorations} from './train-decorations.mjs?v=marks-88';
-import {designKey,EXPRESS_DESIGNS} from './train-types.mjs?v=retro-87';
-import {normalizeLettering} from './train-lettering.mjs';
+import {normalizeDecorations} from './train-decorations.mjs?v=rail-90';
+import {designKey,EXPRESS_DESIGNS} from './train-types.mjs?v=rail-90';
+import {normalizeLettering} from './train-lettering.mjs?v=rail-90';
 export const PAINT_PARTS={body:'車体',stripe:'帯1',stripe2:'帯2',door:'ドア',face:'前面',roof:'屋根'};
-export const PATTERNS={legacy:'従来の上下帯',plain:'無地',single:'一本帯',double:'二本帯',edges:'上下に帯',windows:'窓まわり',twoTone:'ツートン',diagonal:'斜め帯',gradient:'二色のぼかし帯'};
-export const FRONT_PATTERNS={plain:'無地',single:'横帯',double:'二本帯',lower:'下半分',frame:'囲み枠',round:'丸いパネル',chevron:'V字',gradient:'二色ぼかし'};
+export const PATTERNS={legacy:'従来の上下帯',plain:'無地',single:'一本帯',double:'二本帯',edges:'上下に帯',windows:'窓まわり',twoTone:'ツートン',diagonal:'ななめ帯',gradient:'二色のぼかし帯'};
+export const FRONT_PATTERNS={plain:'無地',single:'横帯',double:'二本帯',lower:'下半分',frame:'囲みわく',round:'丸いパネル',chevron:'V字',gradient:'二色ぼかし'};
 const defaults={stripe2:'#f4c95d',pattern:'legacy',bandPosition:28,bandWidth:14,doorSeparate:true,wrap:null,front:null,lettering:null};
 export const DESIGN_PRESETS=[
  {name:'あかつき',body:'#eee6d4',stripe:'#e87638',door:'#263e51',face:'#e87638',roof:'#5c6873'},
@@ -11,9 +11,9 @@ export const DESIGN_PRESETS=[
  {name:'すみれ',body:'#f4eef9',stripe:'#8861bc',door:'#b899d4',face:'#8861bc',roof:'#686779'},
  {name:'銀と青',body:'#bcc8d0',stripe:'#168acf',stripe2:'#203f77',door:'#bcc8d0',face:'#168acf',roof:'#63717b',pattern:'double',doorSeparate:false},
  {name:'銀と緑',body:'#c4cdd0',stripe:'#72b741',stripe2:'#e6cf45',door:'#c4cdd0',face:'#72b741',roof:'#63717b',pattern:'single',doorSeparate:false},
- {name:'クリームと朱色',body:'#f1d8ac',stripe:'#bb4039',stripe2:'#d6b57e',door:'#bb4039',face:'#bb4039',roof:'#6b655f',pattern:'twoTone',doorSeparate:false},
+ {name:'クリームとしゅ色',body:'#f1d8ac',stripe:'#bb4039',stripe2:'#d6b57e',door:'#bb4039',face:'#bb4039',roof:'#6b655f',pattern:'twoTone',doorSeparate:false},
  {name:'深紅',body:'#86293e',stripe:'#e4cda7',stripe2:'#b77965',door:'#86293e',face:'#86293e',roof:'#56555a',pattern:'single',bandWidth:5,doorSeparate:false},
- {name:'白と紺',body:'#f1f2ec',stripe:'#263d68',stripe2:'#dca747',door:'#263d68',face:'#263d68',roof:'#727b83',pattern:'windows',doorSeparate:false},
+ {name:'白とこん色',body:'#f1f2ec',stripe:'#263d68',stripe2:'#dca747',door:'#263d68',face:'#263d68',roof:'#727b83',pattern:'windows',doorSeparate:false},
  {name:'ひまわり',body:'#f2c83e',stripe:'#ea7838',stripe2:'#fff0ad',door:'#f2c83e',face:'#f2c83e',roof:'#62676d',pattern:'plain',doorSeparate:false}
 ].map(d=>({...defaults,...d}));
 const clamp=(v,min,max,fallback)=>typeof v==='number'&&Number.isFinite(v)?Math.min(max,Math.max(min,v)):fallback;

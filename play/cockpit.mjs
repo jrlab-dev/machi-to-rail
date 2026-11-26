@@ -4,7 +4,7 @@ const profiles={
   original:['電車',140],tram:['路面電車',80],steam:['蒸気機関車',80],freight:['電気機関車',140],
   'limited-classic':['特急',140],'limited-stream':['特急',140],'limited-panorama':['展望特急',140],
   'express-short':['新幹線',320],'express-long':['新幹線',320],'express-retro':['新幹線',320],maglev:['リニア',500],
-  monorail:['跨座式モノレール',100],'suspended-monorail':['懸垂式モノレール',100]
+  monorail:['こざしきモノレール',100],'suspended-monorail':['けんすいしきモノレール',100]
 };
 
 function drawInstruments(ctx,profile,speed,night,steam){

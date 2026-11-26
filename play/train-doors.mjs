@@ -1,5 +1,5 @@
 import * as T from 'three';
-import {doorOpening} from './service-presentation.mjs?v=retro-87';
+import {doorOpening} from './service-presentation.mjs?v=rail-90';
 const cache=new WeakMap();
 const floors=new Map(),floorMaterial=new T.MeshStandardMaterial({color:'#555d60',roughness:.95});
 // Clip each triangle, retaining all vertex attributes and the original paint UVs.
@@ -60,8 +60,10 @@ export function attachDoorLettering(mesh,car){
 }
 export function animateDoors(parts,cars,visual,enabled,platformCenter=5){
   const amount=enabled?doorOpening(visual?.service,visual?.speed):0;
-  for(let i=0;i<parts.length;i++){const c=cars[i]||cars[0];if(!c)continue;const center=typeof platformCenter==='function'?platformCenter(c):platformCenter;const platformSide=Math.sign((center+c.body[1])*Math.cos(c.body[2]+(c.tail?Math.PI:0)));
-    for(const {row,side} of parts[i].riderRows||[])row.visible=side===platformSide&&amount>0;
-    for(const leaf of parts[i].doors||[]){const a=leaf.userData.side===platformSide?amount:0;leaf.position.x=(leaf.userData.baseX||0)+leaf.userData.half*(leaf.userData.travel||.69)*a;leaf.position.z=(leaf.userData.baseZ||0)-leaf.userData.side*.08*a;}
+  for(let i=0;i<parts.length;i++){const c=cars[i]||cars[0];if(!c)continue;const center=typeof platformCenter==='function'?platformCenter(c):platformCenter;
+    // 数なら今まで通り（x軸沿いの線路）。{side} の形なら側をそのまま使う：0＝開けない、±1＝片側、2＝両側（自由編集の駅）。
+    const platformSide=center&&typeof center==='object'?center.side:Math.sign((center+c.body[1])*Math.cos(c.body[2]+(c.tail?Math.PI:0))),opens=side=>platformSide===2?side!==0:side===platformSide;
+    for(const {row,side} of parts[i].riderRows||[])row.visible=opens(side)&&amount>0;
+    for(const leaf of parts[i].doors||[]){const a=opens(leaf.userData.side)?amount:0;leaf.position.x=(leaf.userData.baseX||0)+leaf.userData.half*(leaf.userData.travel||.69)*a;leaf.position.z=(leaf.userData.baseZ||0)-leaf.userData.side*.08*a;}
   }return amount;
 }

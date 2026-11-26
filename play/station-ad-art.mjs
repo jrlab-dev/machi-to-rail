@@ -1,9 +1,9 @@
 export const AD_SLOTS=[
  {id:'fuwapoko',title:'ふわポコ',tag:'ちいさな ともだち',copy:'声をかけて、いっしょに遊ぼう。',footer:'声まね・お世話・ふたりの毎日',bg:'#efe6fb',ink:'#49366c',accent:'#af87d4'},
- {id:'kanjimon',title:'かんじもん',tag:'漢字が、冒険になる。',copy:'あそんで おぼえる かんじゲーム',footer:'かんじモンRPG',bg:'#e0efe8',ink:'#184d44',accent:'#e8ad45'},
- {id:'pigs',title:'3匹のコブタ',tag:'同じお話、ちがう結末。',copy:'性格次第でストーリーが変わる',footer:'新しい物語のゲーム、制作中',bg:'#fff0df',ink:'#794433',accent:'#da8068'},
+ {id:'kanjimon',title:'かんじもん',tag:'漢字が、ぼうけんになる。',copy:'あそんで おぼえる かんじゲーム',footer:'かんじモンRPG',bg:'#e0efe8',ink:'#184d44',accent:'#e8ad45'},
+ {id:'pigs',title:'3びきのコブタ',tag:'同じお話、ちがう結末。',copy:'性格次第でストーリーが変わる',footer:'新しい物語のゲーム、制作中',bg:'#fff0df',ink:'#794433',accent:'#da8068'},
  {id:'bigfive',title:'ビッグファイブ診断',tag:'あなたらしさを、見つけよう。',copy:'5つの性格特性から、自分を知る。',footer:'自分を知る、新しいきっかけに。',bg:'#e3edf9',ink:'#253c64',accent:'#608cc8'},
- {id:'recruit',title:'広告募集',tag:'この駅に、あなたの広告を。',copy:'まちとレール 駅広告スペース',footer:'ゲーム・サービス・作品のご紹介に',bg:'#143e39',ink:'#fff9e8',accent:'#e6c87c'}
+ {id:'recruit',title:'広告ぼしゅう',tag:'この駅に、あなたの広告を。',copy:'まちとレール 駅広告スペース',footer:'ゲーム・サービス・作品のごしょうかいに',bg:'#143e39',ink:'#fff9e8',accent:'#e6c87c'}
 ];
 const art=new Map();
 const artFiles={pigs:'pigs.webp',fuwapoko:'fuwapoko.png',kanjimon:'kanjimon.webp',bigfive:'bigfive-character.webp',logo:'bigfive-logo.webp'};
@@ -18,7 +18,7 @@ export function defaultAdCanvas(slot){
  x.fillStyle=slot.bg;x.fillRect(0,0,1536,512);x.fillStyle=slot.accent;x.fillRect(0,0,18,512);
  x.globalAlpha=.12;x.fillStyle=slot.accent;x.beginPath();x.arc(1340,250,320,0,Math.PI*2);x.fill();x.globalAlpha=1;
  const original=art.get(slot.id);
- if(slot.id in artFiles&&!original){text('画像を読み込めませんでした',24,945,250);text('駅の広告メニューで再読み込み',21,945,290);}
+ if(slot.id in artFiles&&!original){text('画像を読みこめませんでした',24,945,250);text('駅の広告メニューで再読みこみ',21,945,290);}
  if(original){
   if(slot.id==='kanjimon')x.drawImage(original,768,0,768,512);
   if(slot.id==='pigs')x.drawImage(original,800,0,720,512);

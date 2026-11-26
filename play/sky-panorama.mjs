@@ -1,5 +1,5 @@
 import * as T from 'three';
-import {SKY_FACE_SIZE,SKY_SOURCE_WIDTH,SKY_SOURCE_HEIGHT,skyImageBudget,createSkyRegionPolicy,skyCameraCovered,skyBlendAt} from './sky-policy.mjs?v=nature-sky-24';
+import {SKY_FACE_SIZE,SKY_SOURCE_WIDTH,SKY_SOURCE_HEIGHT,skyImageBudget,createSkyRegionPolicy,skyCameraCovered,skyBlendAt} from './sky-policy.mjs?v=rail-90';
 const memory=skyImageBudget();
 export function createNatureSky(renderer){
  const policy=createSkyRegionPolicy(),status={state:'idle',requests:0,faceSize:SKY_FACE_SIZE,sourceWidth:SKY_SOURCE_WIDTH,sourceHeight:SKY_SOURCE_HEIGHT,readyMs:0,conversionMs:0,memory,active:false};
