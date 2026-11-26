@@ -79,7 +79,14 @@ export function createTrafficRenderer(){
  let currentPhase='day';
  let frame=[];
  function update(time,customFrame=null){lastTime=time;frame=customFrame||trafficFrame(time,selection);for(let i=0;i<items.length;i++)for(let part=0;part<items[i].groups.length;part++){const f=frame.find(f=>f.id===items[i].id);items[i].groups[part].visible=!!f;if(!f)continue;const p=part?f.trailer:f.body;items[i].groups[part].position.set(p[0],Number.isFinite(p[3])?p[3]:-.415,-p[1]);items[i].groups[part].rotation.set(-(p[4]||0),p[2]+Math.PI/2,0,'YXZ');}}
- function camera(index,portrait=false){const id=typeof index==='string'?index:TRAFFIC_VEHICLES[index]?.id,f=frame.find(v=>v.id===id)||frame[0],item=items.find(v=>v.id===f?.id);if(!f)return null;const p=f.body,a=p[2],b=item?.bounds,length=b?b.max.z-b.min.z:6,large=f.id==='scania';
+ function camera(index,portrait=false,look="outside"){const id=typeof index==='string'?index:TRAFFIC_VEHICLES[index]?.id,f=frame.find(v=>v.id===id)||frame[0],item=items.find(v=>v.id===f?.id);if(!f)return null;const p=f.body,a=p[2],b=item?.bounds,length=b?b.max.z-b.min.z:6,large=f.id==='scania';
+  if(item&&look!=='outside'){
+   const seat=item.groups[0],side=look==='left'?1:look==='right'?-1:0;
+   const position=seat.localToWorld(new T.Vector3(-.34,Math.min(b.max.y*.79,2.55),b.max.z*.55));
+   const target=seat.localToWorld(new T.Vector3(-.34+side*25,Math.min(b.max.y*.79,2.55)-.4,b.max.z*.55+(side?2:25)));
+   for(const group of item.groups)group.visible=false;
+   return {position,target};
+  }
   if(f.id===MOUNTAIN_BUS_ID){
    const d=portrait?14:10,side=portrait?12:8;
    return {

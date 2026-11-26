@@ -345,3 +345,11 @@ body #transport{position:relative;inset:auto;grid-row:3;height:auto;min-height:8
 #palette .station-options{grid-column:1/-1;display:flex;flex-wrap:wrap;gap:6px}#palette .station-options button{flex:1 1 calc(50% - 6px);min-width:0;text-align:center;padding:9px 6px;font-size:12px;min-height:40px;word-break:keep-all;overflow-wrap:normal}#palette .station-options .station-small{flex:0 1 auto;font-size:11px;min-height:32px;padding:5px 9px}#palette .station-edit{border-top:1px dashed #c4d2c5;padding-top:6px}.station-name-form{display:flex;gap:6px;flex:1 1 100%}.station-name-form input{flex:1;min-width:0;font-size:16px;padding:6px 8px;border:1px solid #b7cabb;border-radius:8px;background:#fff}.station-name-form button{flex:0 0 auto!important}
 /* 型えらび：言葉の途中で折り返さない（リニア／モーターカー の切れ目だけで折れる） */
 .train-kind-cards strong{word-break:keep-all;overflow-wrap:normal;line-height:1.2}
+
+#road-controls{position:absolute;bottom:8px;left:50%;transform:translateX(-50%);width:max-content;max-width:calc(100% - 12px);z-index:4;background:#f8faf4f2;border-radius:12px;padding:5px;display:flex;align-items:center;justify-content:center;flex-wrap:wrap;gap:4px}
+#road-controls[hidden],#road-pedals[hidden]{display:none}
+#road-pedals{display:inline-flex;align-items:center;gap:3px}#road-controls button,#road-controls select{padding:4px 8px;min-height:40px}#road-speed{min-width:54px;font-variant-numeric:tabular-nums}
+
+#stage:has(#road-controls:not([hidden])) .zoom{bottom:110px}
+#stage:has(#road-controls:not([hidden])) #toast{bottom:110px}
+#road-controls{background:#f8faf4}
