@@ -2,7 +2,9 @@ import {hitDecorationIndex} from './train-decoration-3d.mjs?v=rail-90';
 import {decoratePaint} from './train-decorated-paint.mjs?v=rail-90';
 import {setupDecorationEditor} from './train-decoration-editor.mjs?v=rail-90';
 import {getCollection,collectionStorage} from './collection-store.mjs?v=rail-90';
-import {suspendedShot} from './suspended-camera.mjs?v=rail-90';
+import {tokyoTourShot} from './tokyo-auto-camera.mjs?v=rail-92';
+import {islandTourShot} from './island-camera.mjs?v=rail-92';
+import {suspendedShot} from './suspended-camera.mjs?v=rail-92';
 import {startHorn,bindHorn,loadHornSample} from './cab-horn.mjs?v=rail-90';
 import {attachHiddenRiders} from './hidden-riders.mjs?v=rail-90';
 import {isSuspended,suspendedStations,startSuspended,advanceSuspended,lineFor,platformCenter as suspendedPlatform,portal as suspendedPortal} from './suspended-route.mjs?v=rail-90';
@@ -13,9 +15,9 @@ import {initialLoop,stepLoop} from './station-loop.mjs?v=rail-90';
 import {createIsland} from './island-renderer.mjs?v=rail-90';
 import {createIslandTrain} from './island-train.mjs?v=rail-90';
 import {tokyoRoute,tokyoStations,tokyoInnerRoute,tokyoInnerStations,initialTokyoInner,isTokyo} from './tokyo-route.mjs?v=rail-90';
-import {undergroundStationAt} from './tokyo-platform-interior.mjs?v=rail-90';
-import {createTokyoRenderer} from './tokyo-renderer.mjs?v=rail-90';
-import {stepMountainDirector} from './mountain-auto-camera.mjs?v=rail-90';
+import {undergroundStationAt} from './tokyo-platform-interior.mjs?v=rail-92';
+import {createTokyoRenderer} from './tokyo-renderer.mjs?v=rail-92';
+import {stepMountainDirector} from './mountain-auto-camera.mjs?v=rail-92';
 import {crossingAudibility} from './crossing-audibility.mjs?v=rail-90';
 import {windowMode,adjustableMode,neutralAdjustment,dragAdjustment,zoomAdjustment,passengerView,hideViewedTrain,adjustedCamera,bindViewGestures} from './camera-adjustment.mjs?v=rail-90';
 import {connectRailPorts} from './rail-connector.mjs?v=rail-90';
@@ -28,24 +30,24 @@ import {storageUsage,createReplayEpoch} from './replay-storage.mjs?v=rail-90';
 import {setupStoragePanel} from './storage-panel.mjs?v=rail-90';
 import {soundFor,normalizeSoundProfile,copySound,hasWorkshopSound} from './train-sound-recipe.mjs?v=rail-90';
 import {setupSoundEditor} from './train-sound-editor.mjs?v=rail-90';
-import {usePosterStorage,setupStationAdControls} from "./station-ads.mjs?v=rail-90";
+import {usePosterStorage,setupStationAdControls} from "./station-ads.mjs?v=rail-92";
 import {readTownStore,commitTownStore,TOWN_CHOICES,setupTownChooser} from './town-switcher.mjs?v=rail-90';
 import {isDepartureTemplateProp} from './departure-city-layout.mjs?v=rail-90';
 import {countryAvailable,countryAnchor,countryCamera,countryGeometry,countryExtent,countryRemaining,countryObstacles,heroCandidate,passCandidate,countryShotPose,countryShotSafe} from './country-camera.mjs?v=rail-90';
-import {createDirector,stepDirector,createRecordRequest,invalidateRecordRequest,recordRequestResult,cameraFollowDelta} from './camera-director.mjs?v=rail-90';
+import {localSceneryWindow,createDirector,stepDirector,createRecordRequest,invalidateRecordRequest,recordRequestResult,cameraFollowDelta} from './camera-director.mjs?v=rail-92';
 import {safeViewport} from './camera-composition.mjs?v=rail-90';
 import {pairDoorLeaves,platformDoorShot,mountainDoorShot} from './door-camera.mjs?v=rail-90';
-import {freightPlatformView} from './freight-view.mjs?v=rail-90';
+import {freightPlatformView} from './freight-view.mjs?v=rail-92';
 import {prepareSteamMotion,animateSteamMotion} from './steam-motion.mjs?v=rail-90';
 import {mountainExteriorCamera,clearMountainTerrain,smoothMountainCamera,mountainSceneryCamera} from './mountain-camera.mjs?v=rail-90';
 import {isMountain,mountainTown,mountainTypeAllowed,mountainRoute,initialMountainState,advanceMountain,mountainPoses,mountainLead,mountainPlatformCenter,mountainHeight,mountainSurfaceHeight} from './mountain-data.mjs?v=rail-90';
 import {initialMountainOpponent,advanceMountainPair} from './mountain-traffic.mjs?v=rail-90';
 import {createMountainRenderer} from './mountain-renderer.mjs?v=rail-90';
-import {STATIONS,stationAt,platformZ,stationCamera,initialIntercityService,advanceIntercityService,reverseIntercityService} from './intercity-stations.mjs?v=rail-90';
-import {createIntercityTraffic} from './intercity-traffic.mjs?v=rail-90';
+import {STATIONS,stationAt,platformZ,stationCamera,initialIntercityService,advanceIntercityService,reverseIntercityService} from './intercity-stations.mjs?v=rail-92';
+import {createIntercityTraffic} from './intercity-traffic.mjs?v=rail-92';
 import {createTrainPreview} from './train-preview.mjs?v=rail-90';
 import {intercityTown,isIntercity,intercityZone,intercitySpeedLimit,intercityObstructs} from './intercity-data.mjs?v=rail-90';
-import {createIntercityRenderer} from './intercity-renderer.mjs?v=rail-90';
+import {createIntercityRenderer} from './intercity-renderer.mjs?v=rail-92';
 import {isArrivalTemplateProp} from './arrival-city-layout.mjs?v=rail-90';
 import {elevatedSupportPlan} from './elevated-supports.mjs?v=rail-90';
 import {STATION_TEXT,planStation,chooseSide,stationGeometry,stationFootprint,townStationConflicts,stationsAfterRailRemoval,nextStationName,validStationName,activeStations,STATION_NAME_MAX,stopsOnRoute,advanceFreeService,initialFreeService,reverseFreeService,freeDoorSide,nextFreeStop,freeStationOf,formationOverhangs,freeServiceText,freeStationView,toLocal} from './free-station.mjs?v=rail-90';
@@ -55,7 +57,7 @@ import {elevatedTown} from './elevated-town.mjs?v=rail-90';
 import {prepareDoors,animateDoors} from './train-doors.mjs?v=rail-90';
 import {doorOpening,trainView,movingView} from './service-presentation.mjs?v=rail-90';
 import {selectedVehicles,VEHICLE_IDS} from './traffic-selection.mjs?v=rail-90';
-import {pedestrianCrossingView,platformDoorView,landscapeCandidates,landscapePose,landscapeSafe,serviceExteriorCandidate,serviceExteriorPose,serviceExteriorSafe} from './scenic-cameras.mjs?v=rail-90';
+import {pedestrianCrossingView,platformDoorView,landscapeCandidates,landscapePose,landscapeSafe,serviceExteriorCandidate,serviceExteriorPose,serviceExteriorSafe} from './scenic-cameras.mjs?v=rail-92';
 import {PENDING_KEY,readPending,saveUniqueTrain,planRetention,restorePending,mergeRetainedScene} from './train-retention.mjs?v=rail-90';
 import {USAGE_KEY,normalizeUsage,readUsage,markCreated,markUsed,rankTrains} from './train-ranking.mjs?v=rail-90';
 import {readLibrary,mergeSceneLibrary,saveTrain,removeTrain,commitLibrary,applySavedTrain,applyBaseTrain,selectedTrainId,LIBRARY_KEY,LEGACY_LIBRARY_KEY} from './train-library.mjs?v=rail-90';
@@ -438,7 +440,7 @@ function syncTrainChoices(){
   if(isMountain(town))for(const option of select.options){const type=trainLibrary.find(e=>e.id===option.value)?.type||option.value;option.disabled=!mountainTypeAllowed(type);}
  }
 }
-function ui(){if(!syncPanoramaOption()&&camMode==='panorama')setCamera('front',true);syncColorButtons();$('#window-view').disabled=!!paintDraft||loadingModel||townSwitchBusy||townImportBusy;syncTrafficChoice();const highSpeed=isIntercity(town)&&isHighSpeed(town.train);const nextMax=normalTopSpeed(town.train),previousMax=Number($('#speed').max);otherSpeedBarLimit=normalTopSpeed(town.oppositeTrain||town.train);$('#speed').step=highSpeed?'any':'1';$('#speed').max=String(nextMax);if(highSpeed&&Math.abs(nextMax-previousMax)>.001)$('#speed').value=String(nextMax);if(Number($('#speed').value)>Number($('#speed').max))$('#speed').value=$('#speed').max;updateSpeedBar();$('#view-train').disabled=!!paintDraft||loadingModel;$('#auto-camera').disabled=!!paintDraft||loadingModel;$('#auto-record').disabled=!mime||!!recording||recordStarting||!!paintDraft||loadingModel||trafficSelecting;syncTrainChoices();const allTrams=!isMountain(town)&&town.train==='tram'&&(!hasSecondTrain()||town.oppositeTrain==='tram');$('#formation').hidden=allTrams;
+function ui(){if(!syncPanoramaOption()&&camMode==='panorama')setCamera('front',true);syncColorButtons();$('#window-view').disabled=!!paintDraft||loadingModel||townSwitchBusy||townImportBusy;syncTrafficChoice();const highSpeed=isIntercity(town)&&isHighSpeed(town.train);const nextMax=normalTopSpeed(town.train),previousMax=Number($('#speed').max);otherSpeedBarLimit=normalTopSpeed(town.oppositeTrain||town.train);$('#speed').step=highSpeed?'any':'1';$('#speed').max=String(nextMax);if(highSpeed&&Math.abs(nextMax-previousMax)>.001)$('#speed').value=String(nextMax);if(Number($('#speed').value)>Number($('#speed').max))$('#speed').value=$('#speed').max;updateSpeedBar();$('#view-train').disabled=!!paintDraft||loadingModel;const noTourRoute=!replay&&!route?.length;if(noTourRoute&&autoCamera)setAutoCamera(false);$('#auto-camera').disabled=!!paintDraft||loadingModel||noTourRoute;$('#auto-record').disabled=noTourRoute||!mime||!!recording||recordStarting||!!paintDraft||loadingModel||trafficSelecting;syncTrainChoices();const allTrams=!isMountain(town)&&town.train==='tram'&&(!hasSecondTrain()||town.oppositeTrain==='tram');$('#formation').hidden=allTrams;
  const playing=replay?replayPlaying:trainState.playing;$('#play').textContent=playing?'Ⅱ 停止':'▶ 発車';$('#undo').disabled=!history.length;$('#redo').disabled=!future.length;$('#train').value=pickerValue(false);$('#opposite-train').value=pickerValue(true);for(const [id,other]of [['train',false],['opposite-train',true]]){const type=other?(town.oppositeTrain||town.train):town.train,opt=[...$('#'+id).options].find(o=>o.value===type);if(opt)opt.textContent=town[other?'oppositeTrainId':'trainId']&&selectedTrainId(town,trainLibrary,other)===type?'この街の電車（変えたもの）':typeName(type)+'（基本）';}$('#opposite-picker').hidden=!hasSecondTrain();document.body.classList.toggle('dual-trains',hasSecondTrain());$('#opposite-picker small').textContent=isIntercity(town)?(isHighSpeed(town.oppositeTrain||town.train)?'列車2（内側・高速線）':'列車2（外側・ふつう線）'):'列車2（反対側）';$('#opposite-train').disabled=!!replay||loadingModel||!!recording;$('#opposite-dot').style.background=designFor(town,true).stripe;$('.formation-picker small').textContent=isMountain(town)?'登山鉄道は2両固定':allTrams?'路面電車は1両':(expressLimit(town)===8?'車両の数（高速型は8両まで）':'車両の数');$('#formation').value=String(Math.min(town.formation.count,expressLimit(town)));for(const option of $('#formation').options)option.disabled=Number(option.value)>expressLimit(town)||Number(option.value)<2;$('#formation').disabled=isMountain(town)||(town.train==='tram'&&(!hasSecondTrain()||town.oppositeTrain==='tram'))||!!replay||loadingModel||!!recording||trainState.playing||trainState.speed>.1;$('#train-dot').style.background=designFor(town).stripe;$('#selection').textContent=selected?.kind==='station'?`えき「${town.stations?.find(s=>s.id===selected.id)?.name||''}」を選んでいます`:selected?`${selected.kind==='prop'?'建物・道路':'線路'} ${selected.uid} を選んでいます`:'何も選んでいません';$('#replay').disabled=journeyCapturing||!journey||journey.frames.length<2;$('#export-replay').disabled=journeyCapturing||!journey||journey.frames.length<2;$('#reverse').disabled=isStationLoop(town)||isMountain(town)||trainState.speed>.1||!!replay;$('#train').disabled=!!replay||loadingModel||!!recording;$('#journey-start').disabled=journeyCapturing||townBlocked();$('#journey-stop').hidden=!journeyCapturing;$('#import-replay').disabled=journeyCapturing;$('#replay-info').textContent=journeyCapturing?'記録中 · '+Math.floor(captureElapsed)+'秒（最大10分）':journey?.frames.length?`${Math.floor(journey.frames.at(-1).t)}秒の走行記録・${journey.scene.rails.length}個の線路`:'まだ走行記録がありません';for(const id of ['paint-save','paint-cancel','paint-type-change'])$('#'+id).disabled=loadingModel||savingTrain;$('#paint-open').disabled=!!paintDraft||!!replay||!!recording||loadingModel;for(const id of ['play','train','opposite-train','formation','reverse','menu','mode-build','mode-memories'])if(paintDraft)$('#'+id).disabled=true;else if(['play','menu','mode-build','mode-memories'].includes(id))$('#'+id).disabled=false;$$('[data-camera]').forEach(b=>b.disabled=!!paintDraft);$('#mode-build').disabled=false;if(townSwitchBusy||townImportBusy)for(const id of ['play','train','opposite-train','formation','reverse','paint-open','mode-memories'])$('#'+id).disabled=true;if(isSuspended(town)){$('#formation').disabled=true;$('.formation-picker small').textContent='けんすいしきは2両固定';}if(isIsland(town)){$('#formation').disabled=true;$('.formation-picker small').textContent='モノレールは3両固定';}syncChooserButtons();if(isMountain(town))for(const option of $('#train').options)option.disabled=!mountainTypeAllowed(trainLibrary.find(e=>e.id===option.value)?.type||option.value);}
 function readDoorTargets(body,leaves){
  body.updateMatrixWorld(true);const inverse=body.matrixWorld.clone().invert(),rows=[];
@@ -506,7 +508,7 @@ let mountainCameraPose=null,mountainCameraKey=null;
 let connectorMode=false,connectorStart=null;
 function setMode(next){orbitGoal=null;if(next!=='build'){connectorMode=false;connectorStart=null;stationTool=false;}if(next==='build'&&isStationLoop(town)){say(loopName(town)+'は'+loopStations(town).length+'駅をめぐる専用コースです。');return;}if(next==='build'&&isMountain(town)){say('登山鉄道は地形に合わせた固定コースです。電車の色や音を変えて楽しめます。');return;}if(recording&&next==='build'){say('録画を終えてから編集してください。');return}if(next!==mode)viewGestures.cancel();if(replay&&next==='build')exitReplay();if(mode==='build'&&next!=='build')orbit.pitch=.88;mode=next;$('#editor').hidden=next!=='build';$('#memories').hidden=next!=='memories';document.body.classList.toggle('editing',next==='build');for(const b of $$('header nav button'))b.classList.toggle('active',b.id==='mode-'+next);if(next==='build'){invalidateAutoRecord(true);intercityFleet?.stop();if(isIntercity(town))fit();setAutoCamera(false);trainState.playing=false;trainState.speed=0;camMode='orbit';$('#window-view').value='';orbit.pitch=1.47;$$('[data-camera]').forEach(b=>b.classList.toggle('active',b.dataset.camera==='orbit'));$('#view-name').textContent='街全体';finishJourney();ui();}updateMarkers();}
 function setCamera(name,automatic=false){if(name==='traffic'||camMode==='traffic')resetRoadView();if(!syncPanoramaOption()&&name==='panorama')name='front';lastShotTime=null;viewGestures.cancel();viewAdjustment=neutralAdjustment();mountainCameraPose=null;mountainCameraKey=null;countryShotKey=countryKey();countryReplayTime=replay?replayTime:null;if(intercityLocked&&!countryViewAllowed(name))name='front';if(!automatic)setAutoCamera(false);scenicLook=null;camMode=name;$('#window-view').value=['left','right','panorama'].includes(name)?name:'';if(mode==='build')setMode('watch');if(name==='orbit'){orbit.pitch=.88;orbit.distance=Math.max(orbit.distance,120)}if(name==='trackside'&&lastVisual){const p=trainView(lastVisual,viewTrain===1).body;trackside.set(p[0]+10,(p[3]||0)+2.5,-p[1]+16);if(isMountain(town)){const view=trainView(lastVisual,viewTrain===1),shot=mountainExteriorCamera(view,'trackside',{carLength:viewTrain===1?oppositeCarLength:carLength,aspect:camera.aspect,height:mountainSurfaceHeight});trackside.fromArray(shot.position);}if(isIntercity(town)&&countryAvailable(movingView(trainView(lastVisual,viewTrain===1))))trackside.fromArray(countryAnchor(movingView(trainView(lastVisual,viewTrain===1)),camera.aspect<1))}$$('[data-camera]').forEach(b=>b.classList.toggle('active',b.dataset.camera===name));$('#view-name').textContent=$(`[data-camera="${name}"]`)?.textContent||($('#window-view').value?$('#window-view').selectedOptions[0].textContent:'色ぬりを確認');}
-function setAutoCamera(on){invalidateAutoRecord(false);autoCamera=on;autoElapsed=0;resetDirector();directorPose=null;director=createDirector();directorCut=-1;$('#auto-camera').setAttribute('aria-pressed',String(on));$('#auto-camera').classList.toggle('active',on);$('#auto-camera').textContent=on?'オート視点 ON':'オート視点';if(on){if(mode==='build')setMode('watch');updateAutoCamera();}}
+function setAutoCamera(on){if(on&&!replay&&!route?.length){say('線路をつなぐとオート視点で走れます。');return;}invalidateAutoRecord(false);autoCamera=on;autoElapsed=0;resetDirector();directorPose=null;director=createDirector();directorCut=-1;$('#auto-camera').setAttribute('aria-pressed',String(on));$('#auto-camera').classList.toggle('active',on);$('#auto-camera').textContent=on?'オート視点 ON':'オート視点';if(on){if(mode==='build')setMode('watch');updateAutoCamera();}}
 $('#auto-camera').onclick=()=>setAutoCamera(!autoCamera);
 $('#view-train').onchange=()=>{invalidateAutoRecord(false);viewTrain=hasSecondTrain()?Number($('#view-train').value):0;scenicLook=null;autoPhase=null;autoElapsed=0;resetDirector();if(autoCamera)updateAutoCamera();else setCamera(camMode,true);if(lastVisual){applyVisual(lastVisual);moveCamera(lastVisual);}say(`列車${viewTrain+1}を見る視点に切りかえました。`);};
 const trackside=new T.Vector3(5,2.5,18);
@@ -805,11 +807,13 @@ function updateAutoCamera(){
  const workStart=performance.now();
  const v=movingView(trainView(lastVisual,viewTrain===1)),valid=!!v?.cars?.length&&v.cars.every(c=>c.body?.every(Number.isFinite)),time=replay?replayTime:simulationTime;
  if(!valid){director=stepDirector(director,{enabled:true,time,trainId:viewTrain,direction:1,routeId:townStore.active,epoch:directorEpoch,visualAvailable:false});directorPose=null;if(camMode!=='front')setCamera('front',true);return;}
- if(isSuspended(town)){
-  const shot=suspendedShot(v,camera.aspect);
+ if(isIsland(town)||isTokyo(town)||isSuspended(town)){
+  const island=isIsland(town),tokyo=isTokyo(town);
+  const shot=island?islandTourShot(v,camera.aspect):tokyo?tokyoTourShot(v,time):suspendedShot(v,camera.aspect);
   if(director.shotId!==shot.id||directorCut<0){
-   director={...director,shotId:shot.id,mode:shot.mode,reason:'suspended-location',cut:director.cut+1};
+   director={...director,shotId:shot.id,mode:shot.mode,reason:island?'island-location':tokyo?'tokyo-location':'suspended-location',cut:director.cut+1};
    directorCut=director.cut;autoRenderedPose=null;setCamera(shot.mode,true);applyVisual(lastVisual);
+   if(shot.label)$('#view-name').textContent=shot.label;
   }
   directorPose=shot.pose;
   return;
@@ -822,6 +826,7 @@ function updateAutoCamera(){
  }
  const intercity=isIntercity(town),countrySafe=intercity&&countryAvailable(v),g=countryGeometry(v),type=viewTrain===1?(town.oppositeTrain||town.train):town.train,maxSpeed=intercity?intercityTrainSpeed(type):15,profile=CONSIST?.trains?.[type]?.paintProfile||{},length=viewTrain===1?oppositeCarLength:carLength;
  const selected=trainView(lastVisual,viewTrain===1),routeId=townStore.active+'/'+(replay?'replay':'live'),occupied=intercity&&v.cars.some(c=>c.body[0]>1450&&c.body[0]<4550&&Math.abs(Math.sin(c.body[2]))<.01),stationVisible=(isMountain(town)&&selected.service?.stationPhase==='dwell')||(activeDistrict&&v.cars.some(c=>Math.abs(c.body[1])<16&&c.body[0]>75&&c.body[0]<345))||(town.intercityStations===1&&v.cars.some(c=>stationAt(c.body)))||(freeStops.length>0&&!!freeStationOf(v.cars,freeStopGeometries));
+ const localTown=!intercity&&!isStationLoop(town)&&!isMountain(town);
  const freshPlan=director.identity!==[viewTrain,selected.service?.dir||g.dir,routeId].join('/')||director.epoch!==directorEpoch||(occupied&&!director.occupied);
  const orientation=canvas.clientWidth+'x'+canvas.clientHeight,orientationChanged=director.orientation!==null&&director.orientation!==orientation,shouldEvaluate=time-directorCandidateTime>=.2||!directorCandidates||orientationChanged||freshPlan;
  if(shouldEvaluate){
@@ -830,7 +835,7 @@ function updateAutoCamera(){
   const options={viewport:directorViewport,carLength:length,carHeight:type==='tram'?3.1:3.3,maxSpeed,profile,tram:type==='tram',phase:lightingPhase,obstacles:directorObstacles,reducedMotion:reducedCameraMotion.matches,locomotive:isLocomotive(type),atStation:activeDistrict?v.cars.some(c=>Math.abs(c.body[1])<24&&c.body[0]>90&&c.body[0]<330):!!stationAt(v.body)};
   const needs=cameraCandidateNeeds(director,orientationChanged,freshPlan),active=director.candidate,reframePass=!freshPlan&&orientationChanged&&active?.id==='pass';
   const hero=countrySafe&&needs.hero?heroCandidate(v,options):{},pass=countrySafe&&needs.pass?passCandidate(v,reframePass?{...options,anchorAxis:active.axis,reframe:active}:options):{},land=countrySafe&&needs.landscape?landscapeCandidates(v,options):{candidates:[],rejected:[]},departure=!countrySafe&&(!intercity||stationVisible||(orientationChanged&&active?.localPosition))?serviceExteriorCandidate(v,options):null;
-  directorCandidates={hero:hero.id?{...hero,minimum:reducedCameraMotion.matches?8:5,duration:reducedCameraMotion.matches?8:5}:null,pass:pass.id?pass:null,departure:departure?.id?departure:null,landscapes:land.candidates,rejected:[hero.rejected,pass.rejected,departure?.rejected,...land.rejected].filter(Boolean),options};
+  directorCandidates={localWindow:localTown?localSceneryWindow(v.body,town.props):null,hero:hero.id?{...hero,minimum:reducedCameraMotion.matches?8:5,duration:reducedCameraMotion.matches?8:5}:null,pass:pass.id?pass:null,departure:departure?.id?departure:null,landscapes:land.candidates,rejected:[hero.rejected,pass.rejected,departure?.rejected,...land.rejected].filter(Boolean),options};
  }
  const options={...directorCandidates.options,phase:lightingPhase},active=director.candidate;
  let reframed=null;
@@ -844,7 +849,7 @@ function updateAutoCamera(){
  const checked=orientationChanged?(reframed||null):active,exterior=checked?.id==='hero'||checked?.id==='pass',activeUnsafe=!!checked&&(exterior?!countryShotSafe(v,checked,safeOptions):checked.subject?!landscapeSafe(v,checked,safeOptions):checked.localPosition?!serviceExteriorSafe(v,checked,safeOptions):false);
  const cross=activeDistrict?pedestrianCrossingView(v,length):null;
  const straight=v.cars.some(c=>c.body[1]>270&&c.body[1]<301&&Math.abs(Math.cos(c.body[2]))>.9),front=g.dir*(v.cars[0].body[0]-185)+length/2,rear=g.dir*(v.cars.at(-1).body[0]-185)-length/2;
- const next=stepDirector(director,{enabled:true,time,trainId:viewTrain,direction:selected.service?.dir||g.dir,routeId,epoch:directorEpoch,orientation,visualAvailable:true,running:replay?replayPlaying:trainState.playing,loading:loadingModel||townSwitchBusy||townImportBusy||sceneReading,speed:v.speed,intercity,locked:intercity&&intercityZone(v.body).locked,countrySafe,occupied,section:g.z>-400?'outbound':'inbound',exterior,activeUnsafe,reframed,stationVisible,servicePhase:selected.service?.stationPhase,doorClosing:selected.service?.stationPhase==='dwell'&&selected.service.dwell<2.5, crossingActive:!!cross&&straight&&front>=-105&&rear<6&&cross.phase!=='idle',crossingComplete:!straight||rear>=6,passComplete:active?.id==='pass'&&countryExtent(v,length).rear>=active.axis,remaining:countrySafe?countryRemaining(v,maxSpeed,length):0,...directorCandidates,reducedMotion:reducedCameraMotion.matches});
+ const next=stepDirector(director,{enabled:true,time,trainId:viewTrain,direction:selected.service?.dir||g.dir,routeId,epoch:directorEpoch,orientation,visualAvailable:true,running:replay?replayPlaying:trainState.playing,loading:loadingModel||townSwitchBusy||townImportBusy||sceneReading,speed:v.speed,intercity,localTown,localShort:localTown&&!!route&&!route.closed&&route.length<120,locked:intercity&&intercityZone(v.body).locked,countrySafe,occupied,section:g.z>-400?'outbound':'inbound',exterior,activeUnsafe,reframed,stationVisible,servicePhase:selected.service?.stationPhase,doorClosing:selected.service?.stationPhase==='dwell'&&selected.service.dwell<2.5, crossingActive:!!cross&&straight&&front>=-105&&rear<6&&cross.phase!=='idle',crossingComplete:!straight||rear>=6,passComplete:active?.id==='pass'&&countryExtent(v,length).rear>=active.axis,remaining:countrySafe?countryRemaining(v,maxSpeed,length):0,...directorCandidates,reducedMotion:reducedCameraMotion.matches});
  director=next;
  if(director.cut!==directorCut){directorCut=director.cut;directorFollow=null;autoRenderedPose=null;setCamera(director.mode||'front',true);applyVisual(lastVisual);}
  const candidate=director.candidate;
@@ -906,7 +911,7 @@ function moveCamera(v){camera.far=(isIntercity(town)||isIsland(town)||isSuspende
   else if(camMode==='trackside'){pos=trackside;target=world(0,2,0);camera.fov=46;}
   else if(camMode==='panorama'){pos=world(7.45,2.22,0);target=world(60,2.20,0);camera.fov=68;}
   else if(camMode==='front'){pos=world(profile?.cabX??(tram?5.45:8.8),profile?.cabHeight??(tram?2.25:2.45),profile?.cabSide??0);target=world(35,profile?.cabHeight??2.1,profile?.cabSide??0);camera.fov=66;}
-  else{const side=camMode==='left'?-1:1;const portrait=camera.aspect<1;pos=world(profile?.passengerX??(tram?.7:1.1),profile?.passengerHeight??(tram?2.13:2.32),side*(profile?.passengerSide??.06));target=world(profile?.passengerX!=null?profile.passengerX+(portrait?6.9:2.6):(portrait?8:3.7),profile?.passengerHeight??(tram?2.1:2.28),side*20);camera.fov=62;}
+  else{const side=camMode==='left'?-1:1;const portrait=camera.aspect<1;pos=world(profile?.passengerX??(tram?.7:1.1),profile?.passengerHeight??(tram?2.13:2.32),side*(profile?.passengerSide??.06));const ahead=autoCamera&&director.shotId?.startsWith('local-window-')?16:(portrait?6.9:2.6);target=world((profile?.passengerX??1.1)+ahead,profile?.passengerHeight??(tram?2.1:2.28),side*20);camera.fov=62;}
   if(town.intercityStations===1&&camMode==='station'){const sx=(p[0]<3000?300:5700),f=camera.aspect<1?1.7:1;pos=sx===5700?new T.Vector3(sx,125*f,-210*f):new T.Vector3(sx+190*f,135*f,160*f);target=new T.Vector3(sx,sx===300?12:7,sx===300?-120:4.5);camera.fov=52;}if(autoCamera&&camMode==='front-exterior'){const f=camera.aspect<1?1.4:1;pos=world(viewLength/2+26*f,18*f,8);target=world(0,2,0);camera.fov=48;}
   if(activeDistrict&&!autoCamera&&!paintDraft&&camMode==='front-exterior'&&(isLimitedExpress(cameraType)||isExpress(cameraType))){
     // Below the platform canopy, the first departure shows the selected train's nose.

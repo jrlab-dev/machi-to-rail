@@ -2,7 +2,7 @@ import * as T from 'three';
 import {glassHall,plazaCrowns} from './tokyo-landmarks.mjs?v=rail-90';
 import {createSurfaceArt} from './tokyo-surface-art.mjs?v=rail-90';
 import {createSurfaceDetails,platformSlab} from './tokyo-surface-platform.mjs?v=rail-90';
-import {createPlatformInteriors} from './tokyo-platform-interior.mjs?v=rail-90';
+import {createPlatformInteriors} from './tokyo-platform-interior.mjs?v=rail-92';
 import {tokyoStations,tokyoLength,tokyoTrackSpacing,tokyoInnerDistance,tokyoPose} from './tokyo-route.mjs?v=rail-90';
 
 function facadeTexture(){

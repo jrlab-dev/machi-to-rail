@@ -84,7 +84,13 @@ export function landscapeCandidates(v,options){
  if(options.viewport.height<200)return{candidates:[],rejected:['short-canvas-window-unreadable']};
  if(options.locomotive)return{candidates:[],rejected:['locomotive-window-unverified']};
  const g=countryGeometry(v),vp=options.viewport,candidates=[],rejected=[],duration=options.reducedMotion?8:6;
- const subjects=[{subject:'mountain',aim:[3200,380,-3400]},...(g.z>-400?[...BOATS.slice().sort((a,b)=>Math.hypot(a.x-g.x,a.z-g.z)-Math.hypot(b.x-g.x,b.z-g.z)).map(boat=>({subject:'boat',boat,aim:[boat.x,boat.height/2,boat.z]})),{subject:'sea',aim:[g.x,(v.body[3]||0)+2.32,12000]}]:[])];
+ const subjects=[];
+ if(g.z>-400){
+  const nearest=[...BOATS].sort((a,b)=>Math.hypot(a.x-g.x,a.z-g.z)-Math.hypot(b.x-g.x,b.z-g.z));
+  for(const boat of nearest)subjects.push({subject:'boat',boat,aim:[boat.x,boat.height/2,boat.z]});
+ }
+ subjects.push({subject:'mountain',aim:[3200,380,-3400]});
+ if(g.z>-400)subjects.push({subject:'sea',aim:[g.x,(v.body[3]||0)+2.32,12000]});
  for(const subject of subjects){
   const side=Math.sign(subject.aim[2]-g.z)||1,mode=side*g.dir<0?'left':'right',passengerX=options.profile?.passengerX??(options.tram?.7:1.1),passengerSide=options.tram?.74:.98;let accepted=null;
   for(const offset of[0,.5,-.5,1,-1]){

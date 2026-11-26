@@ -28,7 +28,7 @@ export function stepMountainDirector(previous,{v,time,identity,aspect,carLength,
  else if(Math.abs(p[0]-485)<85&&Math.abs(-p[2]-723)<35)kind='crossing';
  else if(Math.hypot(p[0]-MOUNTAIN_MUSEUM.pose[0],-p[2]-MOUNTAIN_MUSEUM.pose[1])<155)kind='museum';
  else if(p[0]>410&&-p[2]>680)kind='summit';
- else {const bus=traffic.find(t=>t.id==='mountain-tour-bus'),near=bus&&Math.hypot(bus.body[0]-p[0],bus.body[1]+p[2],bus.body[3]-p[1])<140,slot=Math.floor(time/10)%5;kind=near&&slot===1?'bus':slot===3?'train':'scenery';}
+ else {const bus=traffic.find(t=>t.id==='mountain-tour-bus'),near=bus&&Math.hypot(bus.body[0]-p[0],bus.body[1]+p[2],bus.body[3]-p[1])<140,slot=Math.floor(time/10)%5;kind=near&&slot===1?'bus':slot===0||slot===3?'train':'scenery';}
  const old=previous.candidate?.mountainKind;
  if(old&&kind!==old&&!reset&&held<8&&kind!=='doors'&&old!=='doors')kind=old;
  const id='mountain-'+kind,changed=reset||previous.shotId!==id,pose=kind==='doors'?null:mountainFeatureCamera(v,kind,{aspect,carLength,traffic,height});

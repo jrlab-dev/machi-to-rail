@@ -1,6 +1,6 @@
 import * as T from 'three';
 import {tokyoPose,tokyoTrackSpacing,tokyoStations} from './tokyo-route.mjs?v=rail-90';
-import {createStationAds} from './station-ads.mjs?v=rail-90';
+import {createStationAds} from './station-ads.mjs?v=rail-92';
 
 function painted(w,h,draw){
   const c=document.createElement('canvas');c.width=w;c.height=h;

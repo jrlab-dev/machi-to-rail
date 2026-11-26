@@ -1,4 +1,4 @@
-import {floorHeight,lane,northing,portal,rockCuts,suspendedStations} from './suspended-route.mjs?v=rail-90';
+import {floorHeight,lane,northing,portal,railSample,rockCuts,suspendedStations} from './suspended-route.mjs?v=rail-90';
 
 // Use the consist midpoint so reversing at a terminus keeps the platform shot continuous.
 export function suspendedShot(v,aspect){
@@ -33,6 +33,13 @@ export function suspendedShot(v,aspect){
         [2188,6,-116],portrait?54:36);
     }
     return shot('coast-wide','trackside',[x-38,h+14,z+42],[x+8,h+3,z-4],portrait?64:40);
+  }
+  // The footbridge at 1296 is below the suspended line on the stream side.
+  // Hold a bank-side overview as both cars pass above the bridge.
+  if(Math.abs(x-1296)<=57){
+    const bank=railSample(1308,34),bridge=railSample(1296,16);
+    const target=[x*.82+bridge[0]*.18,h-1.5,z*.82-bridge[1]*.18];
+    return shot('stream-footbridge','trackside',[bank[0],bank[3]+10,-bank[1]-5],target,portrait?70:50);
   }
   if(x>=897&&x<1450)return shot('valley-wide','trackside',[x-18,h+14,z+28],[x+1,h+2,z],portrait?62:41);
   return shot('city-cab','front');

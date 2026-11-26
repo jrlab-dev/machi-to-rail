@@ -1,5 +1,23 @@
 const MIN_CUT=4;
 const FRONT={id:'cruise',mode:'front',minimum:4,duration:Infinity};
+const sceneryTypes=new Set(['office','apartment','hotel','shop','warehouse','house','tree']);
+
+// Map y points to world -z. A positive lateral distance is the left-hand window.
+export function localSceneryWindow(body,props=[]){
+ if(!body)return null;
+ const [x,y,yaw]=body,c=Math.cos(yaw),s=Math.sin(yaw);
+ let left=0,right=0;
+ for(const prop of props){
+  if(!sceneryTypes.has(prop.type))continue;
+  const dx=prop.pose[0]-x,dy=prop.pose[1]-y,ahead=dx*c+dy*s,lateral=dy*c-dx*s;
+  const distance=Math.abs(lateral);
+  if(distance<8||distance>125||ahead<0||ahead>distance*.9+12)continue;
+  // Prefer the row of buildings ahead of the window over a lone passing tree.
+  const score=(prop.type==='tree'?.35:1)/(1+distance/40+Math.abs(ahead-distance*.25)/28);
+  if(lateral>0)left+=score;else right+=score;
+ }
+ return left||right?(left>=right?'left':'right'):null;
+}
 export function cameraFollowDelta(dt,{blocked=false,replay=false,running=false,speed=0}={}){return !blocked&&(replay?running:running||Math.abs(speed)>.01)?Math.max(0,dt):0;}
 export function createDirector(){return{shotId:'off',mode:null,reason:'off',held:0,time:null,lastEvaluation:-Infinity,identity:null,orientation:null,epoch:null,traversalId:0,occupied:false,section:null,used:[],stable:0,candidate:null,side:0,pending:null,cut:0,history:[],rejected:[]};}
 function select(state,candidate,reason,exception=false){
@@ -50,6 +68,19 @@ export function stepDirector(previous,input){
  state.lastEvaluation=time;
  state.rejected=input.rejected||[];
  if(!input.countrySafe){
+  if(input.localTown){
+   if(input.localShort&&input.departure&&state.mode==='front'&&!state.used.includes('short-exterior')){
+    state.used=[...state.used,'short-exterior'];
+    return select(state,{...input.departure,id:'local-exterior'},'short-route-departure');
+   }
+   const duration=input.reducedMotion?10:6;
+   if(state.held<duration)return state;
+   const side=input.localWindow;
+   if(state.mode==='front'&&input.departure)return select(state,{...input.departure,id:'local-exterior'},'local-train');
+   if((state.mode==='front'||state.mode==='front-exterior')&&side)
+    return select(state,{id:'local-window-'+side,mode:side,minimum:duration,duration},'local-scenery');
+   return front(state,'local-forward');
+  }
   if(state.shotId==='departure'&&state.held<5&&!input.locked)return state;
   if(input.intercity)return state.mode==='front'?{...state,reason:'tunnel-or-city-cruise'}:front(state,'exterior-boundary',true);
   if(state.shotId==='departure'&&state.held<5)return state;
