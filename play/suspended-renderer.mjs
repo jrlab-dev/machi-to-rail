@@ -625,10 +625,14 @@ export function createSuspendedTown(){
       for(let j=0;j<36;j++)box(s+30+j*.40,h+1-j*.28-.15,z,.42,.32,2.35,'#abae9f');
     }
   });
+  let disposed=false,releaseUrbanGround;
+  import('./urban-route-scenes.mjs?v=rail-93').then(({dressSuspended})=>{
+    if(!disposed)releaseUrbanGround=dressSuspended(T,root,groundHeight);
+  });
   finishSigns();
   for(const {shape,list} of rows.values()){
     const mesh=new T.InstancedMesh(models[shape],skins[shape]||mat,list.length);
     list.forEach(([m,c],i)=>{mesh.setMatrixAt(i,m);mesh.setColorAt(i,new T.Color(c));});root.add(mesh);
   }
-  return {root,groundHeight,update:updateSea,dispose(){root.traverse(o=>{if(o.isInstancedMesh)o.dispose();});resources.forEach(r=>r.dispose());}};
+  return {root,groundHeight,update:updateSea,dispose(){disposed=true;releaseUrbanGround?.();root.traverse(o=>{if(o.isInstancedMesh)o.dispose();});resources.forEach(r=>r.dispose());}};
 }

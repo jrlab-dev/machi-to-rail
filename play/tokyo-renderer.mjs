@@ -263,7 +263,9 @@ export function createTokyoRenderer(loader,onError){
     stationPlatform(760,-12.7,18,245,9,'有楽町',0,false,'#909b92');
     stationPlatform(760,6.1,18,245,9,'有楽町',0,false,'#7d9689');
   }
+  const existingBlocks=[];
   function building(x,y,w,d,height,body,base=11){
+    existingBlocks.push({x,y,w:w+.25,d:d+.25});
     const finish=(Math.round(x)+Math.round(y))%3===0?'stone':'glass';
     box(x,y,base+height/2,w,d,height,body,0,0,finish);
     box(x,y,base+height+.21,w+.25,d+.25,.55,'#a4afb0');
@@ -352,6 +354,9 @@ export function createTokyoRenderer(loader,onError){
     for(let x=-290;x<830;x+=32){
       box(x,-201,14.2,.47,.5,6.0,'#7b6756');tree(x,-201,18.1,1.22+.13*Math.cos(x));
     }
+    import('./urban-route-scenes.mjs?v=rail-93').then(({dressTokyo})=>{
+      if(!disposed)dressTokyo(T,surface,existingBlocks);
+    });
     plazaCrowns(surface,materials,trees);
     for(let x=250;x<900;x+=22){
       box(x,-5.8,14.4,1.6,2.4,6.55,'#aca69d');

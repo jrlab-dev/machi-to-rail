@@ -1,6 +1,6 @@
 import * as T from 'three';
 import {mergeGeometries} from './vendor/utils/BufferGeometryUtils.js';
-import {cityPlan,cityFootprint,overlaps} from './arrival-city-layout.mjs?v=rail-90';
+import {cityPlan,cityFootprint,arrivalTrees} from './arrival-city-layout.mjs?v=rail-93';
 
 // City coordinates use the same map convention as the railway (world z = -map y).
 export function createArrivalCity(blockers=[]){
@@ -73,14 +73,10 @@ export function createArrivalCity(blockers=[]){
  for(const y of[170,630])for(let x=5410;x<6010;x+=40){furniture.push(box(x,4,y,.18,8,.18,'#637575'));lamps.push(box(x,8,y,1.5,.25,.8));}
  batch(park,furniture,stone);
  batch(park,lamps,lampMaterial);
- let treePositions=[];
- for(let i=0;i<150;i++){const a=i/150*Math.PI*2;treePositions.push([5700+(309+Math.sin(i*7)*10)*Math.cos(a),400+(181+Math.cos(i*5)*8)*Math.sin(a),6+(i%5)*.7]);}
- for(let i=0;i<52;i++)treePositions.push([5430+(i%7)*24+Math.sin(i*9)*12,267+Math.floor(i/7)*18+Math.cos(i*5)*12,6+i%5]);
- for(let i=0;i<30;i++)treePositions.push([5930+Math.sin(i*4)*37,485+Math.cos(i*7)*55,6+i%5]);
- for(const y of[62,740])for(let x=5340;x<6010;x+=28)if(Math.abs(x-5700)>70)treePositions.push([x,y,5+(x%3)]);
- for(const y of[-220,170,630,1020])for(let x=5250;x<6300;x+=32)if(Math.abs(x-5700)>25)treePositions.push([x,y+17,5.5]);
- for(const b of plan.buildings)for(const side of[-1,1])treePositions.push([b.x+side*(b.w/2+15),b.y+b.d/2+14,5+(b.id%3)]);
- treePositions=treePositions.filter(([x,y,h])=>{const f={x,y,w:h*1.24,d:h*1.16};return!plan.reserved.some(p=>overlaps(f,p,1))&&!plan.buildings.some(b=>overlaps(f,cityFootprint(b)));});
+ const treePositions=arrivalTrees(plan);
+ import('./urban-route-scenes.mjs?v=rail-93').then(({dressIntercity})=>{
+  if(!disposed)dressIntercity(T,root,true,plan,treePositions.map(([x,y,h])=>({x,y,w:h*1.24,d:h*1.16})));
+ });
  const o=new T.Object3D(),tg=new T.IcosahedronGeometry(1,1),trunkG=new T.CylinderGeometry(.25,.4,1,5);owned.push(tg,trunkG);
  const leaves=new T.InstancedMesh(tg,material('#ffffff',{vertexColors:false}),treePositions.length),trunks=new T.InstancedMesh(trunkG,material('#776c54'),treePositions.length);
  treePositions.forEach(([x,y,h],i)=>{o.position.set(x,h*.72,-y);o.scale.set(h*.62,h*.62,h*.58);o.updateMatrix();leaves.setMatrixAt(i,o.matrix);leaves.setColorAt(i,new T.Color(['#54825b','#71925b','#60885d','#88a36c'][i%4]));o.position.y=h*.28;o.scale.set(1,h*.55,1);o.updateMatrix();trunks.setMatrixAt(i,o.matrix);});

@@ -8,7 +8,7 @@ import {suspendedShot} from './suspended-camera.mjs?v=rail-92';
 import {startHorn,bindHorn,loadHornSample} from './cab-horn.mjs?v=rail-90';
 import {attachHiddenRiders} from './hidden-riders.mjs?v=rail-90';
 import {isSuspended,suspendedStations,startSuspended,advanceSuspended,lineFor,platformCenter as suspendedPlatform,portal as suspendedPortal} from './suspended-route.mjs?v=rail-90';
-import {createSuspendedTown} from './suspended-renderer.mjs?v=rail-90';
+import {createSuspendedTown} from './suspended-renderer.mjs?v=rail-93';
 import {openRailDatabase} from './rail-database.mjs?v=rail-90';
 import {isIsland,islandRoute,islandStations,islandOuterRoute,islandOuterStations,initialIslandOuter,islandCarLength} from './island-route.mjs?v=rail-90';
 import {initialLoop,stepLoop} from './station-loop.mjs?v=rail-90';
@@ -16,7 +16,7 @@ import {createIsland} from './island-renderer.mjs?v=rail-90';
 import {createIslandTrain} from './island-train.mjs?v=rail-90';
 import {tokyoRoute,tokyoStations,tokyoInnerRoute,tokyoInnerStations,initialTokyoInner,isTokyo} from './tokyo-route.mjs?v=rail-90';
 import {undergroundStationAt} from './tokyo-platform-interior.mjs?v=rail-92';
-import {createTokyoRenderer} from './tokyo-renderer.mjs?v=rail-92';
+import {createTokyoRenderer} from './tokyo-renderer.mjs?v=rail-93';
 import {stepMountainDirector} from './mountain-auto-camera.mjs?v=rail-92';
 import {crossingAudibility} from './crossing-audibility.mjs?v=rail-90';
 import {windowMode,adjustableMode,neutralAdjustment,dragAdjustment,zoomAdjustment,passengerView,hideViewedTrain,adjustedCamera,bindViewGestures} from './camera-adjustment.mjs?v=rail-90';
@@ -32,7 +32,7 @@ import {soundFor,normalizeSoundProfile,copySound,hasWorkshopSound} from './train
 import {setupSoundEditor} from './train-sound-editor.mjs?v=rail-90';
 import {usePosterStorage,setupStationAdControls} from "./station-ads.mjs?v=rail-92";
 import {readTownStore,commitTownStore,TOWN_CHOICES,setupTownChooser} from './town-switcher.mjs?v=rail-90';
-import {isDepartureTemplateProp} from './departure-city-layout.mjs?v=rail-90';
+import {isDepartureTemplateProp} from './departure-city-layout.mjs?v=rail-93';
 import {countryAvailable,countryAnchor,countryCamera,countryGeometry,countryExtent,countryRemaining,countryObstacles,heroCandidate,passCandidate,countryShotPose,countryShotSafe} from './country-camera.mjs?v=rail-90';
 import {localSceneryWindow,createDirector,stepDirector,createRecordRequest,invalidateRecordRequest,recordRequestResult,cameraFollowDelta} from './camera-director.mjs?v=rail-92';
 import {safeViewport} from './camera-composition.mjs?v=rail-90';
@@ -47,8 +47,8 @@ import {STATIONS,stationAt,platformZ,stationCamera,initialIntercityService,advan
 import {createIntercityTraffic} from './intercity-traffic.mjs?v=rail-92';
 import {createTrainPreview} from './train-preview.mjs?v=rail-90';
 import {intercityTown,isIntercity,intercityZone,intercitySpeedLimit,intercityObstructs} from './intercity-data.mjs?v=rail-90';
-import {createIntercityRenderer} from './intercity-renderer.mjs?v=rail-92';
-import {isArrivalTemplateProp} from './arrival-city-layout.mjs?v=rail-90';
+import {createIntercityRenderer} from './intercity-renderer.mjs?v=rail-93';
+import {isArrivalTemplateProp} from './arrival-city-layout.mjs?v=rail-93';
 import {elevatedSupportPlan} from './elevated-supports.mjs?v=rail-90';
 import {STATION_TEXT,planStation,chooseSide,stationGeometry,stationFootprint,townStationConflicts,stationsAfterRailRemoval,nextStationName,validStationName,activeStations,STATION_NAME_MAX,stopsOnRoute,advanceFreeService,initialFreeService,reverseFreeService,freeDoorSide,nextFreeStop,freeStationOf,formationOverhangs,freeServiceText,freeStationView,toLocal} from './free-station.mjs?v=rail-90';
 import {createFreeStationRenderer} from './free-station-renderer.mjs?v=rail-90';
@@ -234,11 +234,37 @@ const pavementMat=new T.MeshStandardMaterial({map:texture(pavementCanvas),roughn
 const pavementTemplates=new Map([...templates].map(([type,t])=>{const g=new T.BoxGeometry(t.w+3,.16,t.d+3);g.translate(0,.02,0);return[type,g]}));
 function selectTownTraffic(value){return traffic.select(value.trafficVehicles,{mountain:isMountain(value)});}
 function visibleTownProps(){return isIntercity(town)&&town.intercityStations===1?town.props.filter(p=>!isArrivalTemplateProp(p)&&!isDepartureTemplateProp(p)):town.props;}
-function rebuildTown(){if(suspendedRenderer){scene.remove(suspendedRenderer.root);suspendedRenderer.dispose();suspendedRenderer=null;}if(islandRenderer){scene.remove(islandRenderer.root);islandRenderer.dispose();islandRenderer=null;}$('.scene-label h1').textContent=isStationLoop(town)?loopName(town):'街の息づかい、レールの先へ。';$('#tokyo-attribution').hidden=!isTokyo(town);if(tokyoRenderer){scene.remove(tokyoRenderer.root);tokyoRenderer.dispose();tokyoRenderer=null;}$('#bridge-town-view').hidden=!isMountain(town);if(!isMountain(town)&&camMode==='bridge-town')setCamera('orbit');if(mountainRenderer){scene.remove(mountainRenderer.root);mountainRenderer.dispose();mountainRenderer=null;}if(isIntercity(town)&&!replay)town.intercityStations=1;if(intercityLocked&&returnCamera){intercityLocked=false;setCamera(returnCamera,true);}if(intercityRenderer){scene.remove(intercityRenderer.root);intercityRenderer.dispose();intercityRenderer=null;}intercityLocked=false;returnCamera=null;cleanGroup(townRoot);cleanGroup(districtRoot);buildingBatches=[];activeDistrict=isDistrict(town,KIT);if(!hasSecondTrain())viewTrain=0;$('#view-train').value=String(viewTrain);$('#view-train').hidden=!hasSecondTrain();trafficEnabled=isMountain(town)||(activeDistrict&&hasTrafficRoads(town,KIT));trafficLoad=selectTownTraffic(town);trafficLoad.then(syncTrafficChoice).catch(e=>say(e.message,true));traffic.root.visible=trafficEnabled;$('#traffic-view').hidden=!trafficEnabled;$('#traffic-vehicle').hidden=!trafficEnabled;if(!trafficEnabled&&camMode==='traffic')setCamera('orbit');distant.visible=!activeDistrict;if(!activeDistrict&&(['crossing','crossing-person'].includes(camMode)||!freeStationTown()&&['station','station-doors'].includes(camMode)))setCamera('orbit');$('#station-view').hidden=!activeDistrict&&!(isIntercity(town)&&town.intercityStations===1);$('#crossing-view').hidden=!activeDistrict;$('#crossing-person-view').hidden=!activeDistrict;$('#station-doors-view').hidden=!activeDistrict&&!(isIntercity(town)&&town.intercityStations===1);$('#service-info').hidden=!activeDistrict&&!(isIntercity(town)&&town.intercityStations===1);document.body.classList.toggle('district',activeDistrict);
+// Scenery stays outside the editable town and its saved snapshot.
+let localUrbanAnchor=null;
+function addLocalUrbanScenery(){
+  if(!activeDistrict&&!['crossing','ramp_up'].includes(town.rails[0]?.piece))return;
+  const anchor=new T.Group(),snapshot=town,district=activeDistrict;
+  localUrbanAnchor=anchor;townRoot.add(anchor);
+  async function dress(){
+    if(!anchor.parent)return;
+    try{
+      const [{localUrbanLots,localUrbanGround,drawLocalUrbanGround},{addUrbanBuildings}]=await Promise.all([import('./local-urban-layout.mjs?v=rail-93'),import('./urban-buildings.mjs?v=rail-93')]);
+      if(!anchor.parent)return;
+      const lots=localUrbanLots(snapshot,KIT,district);
+      drawLocalUrbanGround(T,anchor,localUrbanGround(snapshot,KIT,lots,district));
+      addUrbanBuildings(T,anchor,lots);
+      anchor.userData.obstacles=lots.map(({x,y,z,w,h,d})=>({min:[x-w/2-1,y,z-d/2-1],max:[x+w/2+1,y+h+4,z+d/2+1]}));
+      directorCandidates=null;
+    }catch(error){console.error('街並みの読み込み',error);}
+  }
+  function afterStartup(){
+    if(!anchor.parent)return;
+    if(!$('#loading').hidden){requestAnimationFrame(afterStartup);return;}
+    requestAnimationFrame(dress);
+  }
+  requestAnimationFrame(afterStartup);
+}
+function rebuildTown(){localUrbanAnchor=null;if(suspendedRenderer){scene.remove(suspendedRenderer.root);suspendedRenderer.dispose();suspendedRenderer=null;}if(islandRenderer){scene.remove(islandRenderer.root);islandRenderer.dispose();islandRenderer=null;}$('.scene-label h1').textContent=isStationLoop(town)?loopName(town):'街の息づかい、レールの先へ。';$('#tokyo-attribution').hidden=!isTokyo(town);if(tokyoRenderer){scene.remove(tokyoRenderer.root);tokyoRenderer.dispose();tokyoRenderer=null;}$('#bridge-town-view').hidden=!isMountain(town);if(!isMountain(town)&&camMode==='bridge-town')setCamera('orbit');if(mountainRenderer){scene.remove(mountainRenderer.root);mountainRenderer.dispose();mountainRenderer=null;}if(isIntercity(town)&&!replay)town.intercityStations=1;if(intercityLocked&&returnCamera){intercityLocked=false;setCamera(returnCamera,true);}if(intercityRenderer){scene.remove(intercityRenderer.root);intercityRenderer.dispose();intercityRenderer=null;}intercityLocked=false;returnCamera=null;cleanGroup(townRoot);cleanGroup(districtRoot);buildingBatches=[];activeDistrict=isDistrict(town,KIT);if(!hasSecondTrain())viewTrain=0;$('#view-train').value=String(viewTrain);$('#view-train').hidden=!hasSecondTrain();trafficEnabled=isMountain(town)||(activeDistrict&&hasTrafficRoads(town,KIT));trafficLoad=selectTownTraffic(town);trafficLoad.then(syncTrafficChoice).catch(e=>say(e.message,true));traffic.root.visible=trafficEnabled;$('#traffic-view').hidden=!trafficEnabled;$('#traffic-vehicle').hidden=!trafficEnabled;if(!trafficEnabled&&camMode==='traffic')setCamera('orbit');distant.visible=!activeDistrict;if(!activeDistrict&&(['crossing','crossing-person'].includes(camMode)||!freeStationTown()&&['station','station-doors'].includes(camMode)))setCamera('orbit');$('#station-view').hidden=!activeDistrict&&!(isIntercity(town)&&town.intercityStations===1);$('#crossing-view').hidden=!activeDistrict;$('#crossing-person-view').hidden=!activeDistrict;$('#station-doors-view').hidden=!activeDistrict&&!(isIntercity(town)&&town.intercityStations===1);$('#service-info').hidden=!activeDistrict&&!(isIntercity(town)&&town.intercityStations===1);document.body.classList.toggle('district',activeDistrict);
   if(isSuspended(town)){distant.visible=false;suspendedRenderer=createSuspendedTown();scene.add(suspendedRenderer.root);$('#station-view').hidden=false;$('#service-info').hidden=false;return;}
   if(isIsland(town)){distant.visible=false;islandRenderer=createIsland();scene.add(islandRenderer.root);$('#station-view').hidden=false;$('#service-info').hidden=false;return;}
   if(isTokyo(town)){distant.visible=false;tokyoRenderer=createTokyoRenderer(loader,say);scene.add(tokyoRenderer.root);$('#station-view').hidden=false;$('#service-info').hidden=false;return;}
   if(isMountain(town)){distant.visible=false;mountainRenderer=createMountainRenderer();scene.add(mountainRenderer.root);$('#service-info').hidden=false;return;}
+  if(!isIntercity(town))addLocalUrbanScenery();
   if(activeDistrict){const r=makeRoute(town.rails,KIT);districtRoot.add(districtRenderer.build(town,r,parallelRoute(r)));townRoot.add(roadRenderer.build(town.props.filter(p=>ROAD_TYPES.includes(p.type)),town.rails,KIT,trafficEnabled?TRAFFIC_CORNERS:[]));return;}
   const visibleProps=visibleTownProps();
   for(const[type,g]of pavementTemplates)addInstances(townRoot,g,pavementMat,visibleProps.filter(p=>p.type===type).map(p=>({...p,tint:'#ffffff'})),o=>o.scale.set(1,1,1));
@@ -784,6 +810,7 @@ function applyVisual(v){lastVisual=v;const freightView=(viewTrain===1?town.oppos
 }
 function prepareCameraObstacles(){
  directorObstacles=isIntercity(town)?countryObstacles(town.intercityStations===1):[];
+ if(localUrbanAnchor?.userData.obstacles)directorObstacles.push(...localUrbanAnchor.userData.obstacles);
  if(isIntercity(town)&&town.intercityStations===1)for(const x of[300,5700])for(const z of[-4.5,13.5]){
   directorObstacles.push({min:[x-122,13.04,z-2.9],max:[x+122,13.26,z+2.9]});
   directorObstacles.push({min:[x-17,12.4,z-1.5],max:[x+17,12.6,z+1.5]});

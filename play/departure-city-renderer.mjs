@@ -1,6 +1,6 @@
 import * as T from 'three';
 import {mergeGeometries} from './vendor/utils/BufferGeometryUtils.js';
-import {departurePlan,departureFootprint} from './departure-city-layout.mjs?v=rail-90';
+import {departurePlan,departureFootprint} from './departure-city-layout.mjs?v=rail-93';
 export function createDepartureCity(blockers=[]){const root=new T.Group(),details=new T.Group();root.name='akatsuki-city';root.add(details);const materials=[],textures=[],buckets=new Map(),detailBuckets=new Map(),plan=departurePlan(blockers);
  const mat=(color,extra={})=>{const m=new T.MeshStandardMaterial({color,roughness:.85,...extra});materials.push(m);return m;};
  const paving=mat('#c6c5b9'),road=mat('#687778'),line=mat('#e5e2cb'),roof=mat('#6c7778'),garden=mat('#97a47c'),base=mat('#dbd7c7'),shopGlass=mat('#3f636d',{emissive:'#d9c7a0',emissiveIntensity:0,roughness:.3}),accents=['#5c807c','#84705c','#7b8170'].map(color=>mat(color));
@@ -42,6 +42,9 @@ export function createDepartureCity(blockers=[]){const root=new T.Group(),detail
  // Pedestrian route connects the station forecourt to the central avenue.
  box(300,.045,92,12,.04,18,paving);
  for(const [pool,parent]of[[buckets,root],[detailBuckets,details]])for(const [m,list]of pool){const g=mergeGeometries(list,false);list.forEach(a=>a.dispose());const mesh=new T.Mesh(g,m);mesh.receiveShadow=true;mesh.castShadow=true;parent.add(mesh);}
- let lighting='';
- return{root,update(body,phase,camera,light=false){root.visible=(body?.[0]||0)<1800;const x=camera?.position.x??body?.[0]??0,y=-(camera?.position.z??-(body?.[1]??0));details.visible=!light&&Math.hypot(x-340,y-80)<1000;if(lighting!==phase){lighting=phase;for(const m of facades)m.emissiveIntensity=phase==='night'?.22:phase==='sunset'?.06:0;shopGlass.emissiveIntensity=phase==='night'?.6:phase==='sunset'?.18:0;}},dispose(){root.traverse(o=>o.geometry?.dispose());materials.forEach(m=>m.dispose());textures.forEach(t=>t.dispose());}};
+ let disposed=false,lighting='';
+ import('./urban-route-scenes.mjs?v=rail-93').then(({dressIntercity})=>{
+  if(!disposed)dressIntercity(T,root,false,plan);
+ });
+ return{root,update(body,phase,camera,light=false){root.visible=(body?.[0]||0)<1800;const x=camera?.position.x??body?.[0]??0,y=-(camera?.position.z??-(body?.[1]??0));details.visible=!light&&Math.hypot(x-340,y-80)<1000;if(lighting!==phase){lighting=phase;for(const m of facades)m.emissiveIntensity=phase==='night'?.22:phase==='sunset'?.06:0;shopGlass.emissiveIntensity=phase==='night'?.6:phase==='sunset'?.18:0;}},dispose(){disposed=true;root.traverse(o=>{if(o.isInstancedMesh)o.dispose();else o.geometry?.dispose();});materials.forEach(m=>m.dispose());textures.forEach(t=>t.dispose());}};
 }

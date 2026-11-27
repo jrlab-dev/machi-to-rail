@@ -1,5 +1,5 @@
 import {intercityTown} from './intercity-data.mjs?v=rail-90';
-import {overlaps,propFootprint,splitRoads,buildingClearance} from './arrival-city-layout.mjs?v=rail-90';
+import {overlaps,propFootprint,splitRoads,buildingClearance} from './arrival-city-layout.mjs?v=rail-93';
 const originals=new Map(intercityTown().props.filter(p=>p.pose[0]<1000).map(p=>[p.uid,JSON.stringify(p)]));
 export const isDepartureTemplateProp=p=>originals.get(p.uid)===JSON.stringify(p);
 export function departureFootprint(b){const extra=b.kind==='house'||b.kind==='rural'?10:b.kind==='commercial'?10:3;return{x:b.x,y:b.y,w:b.kind==='house'&&b.x===468?13.4:b.w+extra,d:b.d+extra};}

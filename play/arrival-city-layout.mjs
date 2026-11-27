@@ -59,3 +59,14 @@ export function cityPlan(blockers=[]){
  }
  return {buildings,towers,roads:splitRoads(roads,reserved,32),reserved,park:{x:5700,y:400,w:650,d:390}};
 }
+
+export function arrivalTrees(plan){
+ const treePositions=[];
+ for(let i=0;i<150;i++){const a=i/150*Math.PI*2;treePositions.push([5700+(309+Math.sin(i*7)*10)*Math.cos(a),400+(181+Math.cos(i*5)*8)*Math.sin(a),6+(i%5)*.7]);}
+ for(let i=0;i<52;i++)treePositions.push([5430+(i%7)*24+Math.sin(i*9)*12,267+Math.floor(i/7)*18+Math.cos(i*5)*12,6+i%5]);
+ for(let i=0;i<30;i++)treePositions.push([5930+Math.sin(i*4)*37,485+Math.cos(i*7)*55,6+i%5]);
+ for(const y of[62,740])for(let x=5340;x<6010;x+=28)if(Math.abs(x-5700)>70)treePositions.push([x,y,5+(x%3)]);
+ for(const y of[-220,170,630,1020])for(let x=5250;x<6300;x+=32)if(Math.abs(x-5700)>25)treePositions.push([x,y+17,5.5]);
+ for(const b of plan.buildings)for(const side of[-1,1])treePositions.push([b.x+side*(b.w/2+15),b.y+b.d/2+14,5+(b.id%3)]);
+ return treePositions.filter(([x,y,h])=>{const f={x,y,w:h*1.24,d:h*1.16};return!plan.reserved.some(p=>overlaps(f,p,1))&&!plan.buildings.some(b=>overlaps(f,cityFootprint(b)));});
+}
