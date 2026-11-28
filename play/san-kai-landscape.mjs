@@ -5,7 +5,11 @@ export function track(m,lane=-2.2,h=0){return new T.Vector3(center(m)+lane,h,-m)
 const cube=new T.BoxGeometry(1,1,1),pine=new T.ConeGeometry(1,1,7),hill=new T.ConeGeometry(1,1,13);
 const stone=new T.MeshStandardMaterial({color:0xffffff,roughness:.85});
 const lit=new T.MeshBasicMaterial({color:0xffffff});
-const signCache=new Map();
+const signCache=new Map(),colors=new Map();
+function paint(color){
+ if(!colors.has(color))colors.set(color,new T.Color(color));
+ return colors.get(color);
+}
 function signTexture(name){
  if(signCache.has(name))return signCache.get(name);
  const c=document.createElement('canvas');c.width=384;c.height=96;const g=c.getContext('2d');
@@ -28,7 +32,7 @@ function makeChunk(index){
   if(!batches.has(material))batches.set(material,new Map());
   const map=batches.get(material);if(!map.has(geo))map.set(geo,[]);
   matrices.position.set(x,y,start-m);matrices.scale.set(w,h,d);matrices.rotation.set(0,ry,rz);matrices.updateMatrix();
-  map.get(geo).push([matrices.matrix.clone(),new T.Color(color)]);
+  map.get(geo).push([matrices.matrix.clone(),paint(color)]);
  }
  const box=(...args)=>shape(cube,...args);
  let seed=(Math.imul(index+99,1597334677)>>>0)||1;
@@ -76,7 +80,7 @@ function makeChunk(index){
     const beam=new T.Vector3(center(m+10)-center(m),5.8,-10);
     matrices.position.set(x+side*5.2,3.9,start-m-5);matrices.scale.set(.22,beam.length(),.24);
     matrices.quaternion.setFromUnitVectors(new T.Vector3(0,1,0),beam.normalize());matrices.updateMatrix();
-    batches.get(stone).get(cube).push([matrices.matrix.clone(),new T.Color('#a25c50')]);
+    batches.get(stone).get(cube).push([matrices.matrix.clone(),paint('#a25c50')]);
    }
    if(m%20===0)box(x,6.8,m,10.6,.25,.4,'#944d42');
   }
@@ -145,14 +149,24 @@ function makeChunk(index){
  return group;
 }
 export function landscape(scene){
- const chunks=new Map();let current;
- return m=>{
-  const id=Math.floor(m/100);if(id===current)return;current=id;
-  for(const [key,g] of chunks)if(key<id-3||key>id+10){
-   scene.remove(g);g.traverse(o=>{if(o.isInstancedMesh)o.dispose()});chunks.delete(key);
+ const chunks=new Map();
+ let current,previousDirection,pending=[];
+ return (m,forward=1)=>{
+  const id=Math.floor(m/100),direction=forward>.25?1:forward<-.25?-1:0;
+  if(id!==current||direction!==previousDirection){
+   current=id;previousDirection=direction;
+   const first=Math.max(-3,id-(direction<0?10:direction>0?3:6));
+   const last=Math.min(Math.ceil(length/100)+8,id+(direction>0?10:direction<0?3:7));
+   for(const [key,g] of chunks)if(key<first||key>last){
+    scene.remove(g);g.traverse(o=>{if(o.isInstancedMesh)o.dispose()});chunks.delete(key);
+   }
+   pending=[];
+   for(let k=first;k<=last;k++)if(!chunks.has(k))pending.push(k);
+   pending.sort((a,b)=>Math.abs(a-id)-Math.abs(b-id)||direction*(b-a));
   }
-  for(let k=Math.max(-3,id-3);k<=Math.min(Math.ceil(length/100)+8,id+10);k++)if(!chunks.has(k)){
-   const g=makeChunk(k);chunks.set(k,g);scene.add(g);
+  // A camera cut can replace the entire window. Build only the nearest missing chunk this frame.
+  if(pending.length){
+   const key=pending.shift(),g=makeChunk(key);chunks.set(key,g);scene.add(g);
   }
  };
 }

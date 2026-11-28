@@ -1,5 +1,5 @@
 import {lanes as tripLanes,newService,advanceTrip,tripLabel,tripStation} from './san-kai-service.mjs?v=rail-97';
-import {landscape as tripLandscape} from './san-kai-landscape.mjs?v=rail-97';
+import {landscape as tripLandscape} from './san-kai-landscape.mjs?v=trip-stream-1';
 import {clock as tripClock,clockText,stations as tripStops,services as tripPlans} from './san-kai-route.mjs?v=rail-97';
 import {createLand,landAt} from './growing-land.mjs?v=rail-94';
 import {hitDecorationIndex} from './train-decoration-3d.mjs?v=rail-90';
@@ -128,6 +128,7 @@ let countryShotKey=null,countryReplayTime=null;
 const isStationLoop=t=>isIsland(t)||isTokyo(t)||isSuspended(t);
 const loopStations=t=>isSuspended(t)?suspendedStations:isIsland(t)?islandStations:tokyoStations;
 const loopName=t=>isSuspended(t)?'潮見けんすい線':isIsland(t)?'未来島モノレール':'東京地下かんじょう線';
+const tripViewDirection=new T.Vector3();
 let tripWorld=null, updateTripLand=null, lastTripPhase=null;
 const tripPanel=$('#trip-panel'),tripSelect=$('#trip-service');
 function resetTrip(){
@@ -1192,7 +1193,7 @@ function animate(now){requestAnimationFrame(animate);const dt=Math.min(.06,(now-
   updateSpeedBar();moveCamera(lastVisual);if(tripWorld){
    tripWorld.visible=!paintDraft;
    const body=trainView(lastVisual,viewTrain===1)?.body;
-   if(body&&!paintDraft)updateTripLand(camMode==='station'?-camera.position.z:body[1]);
+   if(body&&!paintDraft){camera.getWorldDirection(tripViewDirection);updateTripLand(-camera.position.z,-tripViewDirection.z);}
    const h=tripClock(lastVisual?.tripTime||0).hour,phase=h>=19||h<5?'night':h>=17||h<7?'sunset':'day';
    if(phase!==lastTripPhase){setLighting(phase);lastTripPhase=phase;}
   }ground.visible=!town.trip&&!town.land&&!isMountain(town)&&!isStationLoop(town);if(landScene){landScene.root.visible=!paintDraft;if(!paintDraft)landScene.update(town,camera);}if(suspendedRenderer)suspendedRenderer.update(replay?replayTime:simulationTime);if(islandRenderer)islandRenderer.update(lastVisual?.islandFlightTime??simulationTime,lastVisual?.body);if(tokyoRenderer)tokyoRenderer.update(trainView(lastVisual,viewTrain===1)?.body,camMode,!!paintDraft);if(mountainRenderer){mountainRenderer.root.visible=!paintDraft;mountainRenderer.update(camMode,replay?{owner:lastVisual.mountainSignal?0:null}:mountainControl,replay?[{trip:lastVisual.mountainSignal}]:[trainState,oppositeState],lastVisual,replay?replayTime:simulationTime);}if(isIntercity(town)){const p=trainView(lastVisual,viewTrain===1)?.body||[200,0];townRoot.visible=!paintDraft&&(!intercityLocked||intercityZone(p).tunnel);distant.visible=false;ground.position.set(p[0],-.5,-p[1]);scene.fog.near=intercityLocked?200:600;scene.fog.far=intercityLocked?850:1500;sun.position.x=p[0]-140;sun.position.z=-p[1]+110;sun.target.position.set(p[0],0,-p[1]);}else{ground.position.set(0,-.5,0);scene.fog.near=isIsland(town)?1550:800;scene.fog.far=isIsland(town)?6500:2400;const dusk=lightingPhase==='sunset';sun.position.set(dusk?-100:-140,dusk?75:240,dusk?180:110);sun.target.position.set(200,0,-140);}updateTrainSound();if(now-lodTime>500){lodTime=now;for(const b of buildingBatches){b.items.forEach((p,i)=>{const near=!light&&Math.hypot(camera.position.x-p.pose[0],camera.position.z+p.pose[1])<700;dummy.position.set(p.pose[0],-.45,-p.pose[1]);dummy.rotation.set(0,p.pose[2],0);dummy.scale.set(near?1:0,near?p.scale:0,near?1:0);dummy.updateMatrix();b.mesh.setMatrixAt(i,dummy.matrix);dummy.scale.set(near?0:1,near?0:p.scale,near?0:1);dummy.updateMatrix();b.far.setMatrixAt(i,dummy.matrix)});b.mesh.instanceMatrix.needsUpdate=true;b.far.instanceMatrix.needsUpdate=true;}}
