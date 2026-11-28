@@ -1,5 +1,5 @@
 import * as T from 'three';
-import {STATIONS} from './intercity-stations.mjs?v=rail-94';
+import {STATIONS} from './intercity-stations.mjs?v=rail-97';
 import {AD_SLOTS,defaultAdCanvas,adArtReady,retryAdArt,missingAdArt} from './station-ad-art.mjs?v=rail-90';
 const KEY='rail.stationAds.v1',listeners=new Set();
 let posterStorage;

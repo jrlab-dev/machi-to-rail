@@ -1,6 +1,6 @@
-import {point,sampleItem,transform,ROAD_TYPES,propLimit} from './core.mjs?v=rail-94';
+import {point,sampleItem,transform,ROAD_TYPES,propLimit} from './core.mjs?v=rail-97';
 import {landAt} from './growing-land.mjs?v=rail-94';
-import {rectsOverlap,roadRects,stationGeometry,stationFootprint} from './free-station.mjs?v=rail-94';
+import {rectsOverlap,roadRects,stationGeometry,stationFootprint} from './free-station.mjs?v=rail-97';
 
 const outside='土地の 外だよ。地図で 土地を ふやしてね。';
 const shore='水や 岸には おけないよ。川を わたる ところは 高架に しよう。';

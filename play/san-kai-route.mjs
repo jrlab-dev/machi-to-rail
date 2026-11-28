@@ -25,10 +25,13 @@ function plan(local){
  }
  return {segments,arrivals,duration:time};
 }
-export const services={express:plan(false),local:plan(true)};
-const minutesPerSecond=16*60/services.express.duration;
+let expressPlan,localPlan;
+export const services={
+ get express(){return expressPlan??=plan(false)},
+ get local(){return localPlan??=plan(true)}
+};
 export function clock(t){
- const minutes=900+Math.floor(t*minutesPerSecond+1e-8);
+ const minutes=900+Math.floor(t*(960/services.express.duration)+1e-8);
  return {day:1+Math.floor(minutes/1440),hour:Math.floor(minutes/60)%24,minute:minutes%60};
 }
 export function clockText(t){

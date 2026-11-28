@@ -1,5 +1,5 @@
 import {normalizeDesign} from './train-design.mjs?v=rail-90';
-import {defaultFormation,transform,point} from './core.mjs?v=rail-94';
+import {defaultFormation,transform,point} from './core.mjs?v=rail-97';
 // Larger example; existing saved towns remain untouched.
 export function largeTown(kit){
   const rails=[];let pose=[0,0,0];

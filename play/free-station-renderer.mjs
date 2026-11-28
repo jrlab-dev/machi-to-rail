@@ -1,7 +1,7 @@
 // 自由編集の駅の描画。見本の district-renderer.mjs には手を入れず、寸法と色だけ写す。
 // 軽さ：色の違う箱は全部の駅で1つの InstancedMesh（色は1個ずつ）、灯りは1つ、駅名標は1枚の絵にまとめた1つのメッシュ。
 import * as T from 'three';
-import {PLATFORM,STATION_COLORS,toWorld,platformSides,buildingSide} from './free-station.mjs?v=rail-94';
+import {PLATFORM,STATION_COLORS,toWorld,platformSides,buildingSide} from './free-station.mjs?v=rail-97';
 const C={...STATION_COLORS,wall:'#e8e3d4',dark:'#39474a',bench:'#7a5b40',glass:'#6f8f96',white:'#f4f2ea'};
 export function createFreeStationRenderer(){
  const solid=new T.MeshStandardMaterial({color:'#ffffff',roughness:.82,metalness:.08});

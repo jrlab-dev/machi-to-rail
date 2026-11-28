@@ -1,6 +1,6 @@
 import * as T from 'three';
-import {stations,length} from './san-kai-route.mjs';
-const center=m=>18*Math.sin(m/430)+12*Math.sin(m/318);
+import {stations,length} from './san-kai-route.mjs?v=rail-97';
+import {center} from './san-kai-service.mjs?v=rail-97';
 export function track(m,lane=-2.2,h=0){return new T.Vector3(center(m)+lane,h,-m)}
 const cube=new T.BoxGeometry(1,1,1),pine=new T.ConeGeometry(1,1,7),hill=new T.ConeGeometry(1,1,13);
 const stone=new T.MeshStandardMaterial({color:0xffffff,roughness:.85});

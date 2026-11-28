@@ -1,6 +1,6 @@
 import * as T from 'three';
-import {stations,length,services,sample,clock,clockText} from './san-kai-route.mjs';
-import {landscape,track,region} from './san-kai-landscape.mjs';
+import {stations,length,services,sample,clock,clockText} from './san-kai-route.mjs?v=rail-97';
+import {landscape,track,region} from './san-kai-landscape.mjs?v=rail-97';
 import {createLimitedExpress} from './limited-express-model.mjs';
 const el=id=>document.getElementById(id);
 const renderer=new T.WebGLRenderer({canvas:el('view'),antialias:true});

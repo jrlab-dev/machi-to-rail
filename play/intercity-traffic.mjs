@@ -1,8 +1,8 @@
 import {fullPowerLimit,tractionAcceleration} from './cab-power.mjs?v=rail-90';
-import {parallelRoute,trainPoses} from './district.mjs?v=rail-94';
-import {formationAdvance,sampleRoute} from './core.mjs?v=rail-94';
+import {parallelRoute,trainPoses} from './district.mjs?v=rail-97';
+import {formationAdvance,sampleRoute} from './core.mjs?v=rail-97';
 import {intercitySpeedLimit} from './intercity-data.mjs?v=rail-90';
-import {STATION_LANES,advanceIntercityService,reverseIntercityService} from './intercity-stations.mjs?v=rail-94';
+import {STATION_LANES,advanceIntercityService,reverseIntercityService} from './intercity-stations.mjs?v=rail-97';
 import {isHighSpeed,intercityTrainSpeed} from './train-types.mjs?v=rail-90';
 export const INTERCITY_LANES=[-5,0,5,10];
 export const LOCAL_SPEED=20;

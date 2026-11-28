@@ -1,6 +1,6 @@
 import {normalizeDesign} from './train-design.mjs?v=rail-90';
-import {largeTown} from './large-town.mjs?v=rail-94';
-import {ROAD_TYPES,defaultFormation,makeRoute,transform,point,sampleRoute,formationLength} from './core.mjs?v=rail-94';
+import {largeTown} from './large-town.mjs?v=rail-97';
+import {ROAD_TYPES,defaultFormation,makeRoute,transform,point,sampleRoute,formationLength} from './core.mjs?v=rail-97';
 export const DISTRICT='midori-central-v1';
 export const STATION={name:'みどり中央',start:90,end:330,offset:10,dwell:8};
 export function districtTown(kit){

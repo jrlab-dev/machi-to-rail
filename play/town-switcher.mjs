@@ -4,6 +4,7 @@ import {commitStorage} from './train-storage.mjs?v=rail-90';
 
 export const TOWN_STORE_KEY='rail-town-slots-v1',CURRENT_TOWN_KEY='rail-town-v2';
 export const TOWN_CHOICES=[
+ {id:'san-kai',name:'特急の旅',image:'towns/san-kai.webp',description:'午後の都会から山と海へ。特急と普通で20駅を旅する複線。'},
  {id:'suspended',name:'潮見けんすい線',image:'towns/shiomi.webp',description:'ビルの中から住宅街と山のトンネルをぬけて海へ。上下線の列車がすれちがう5駅。'},
  {id:'island',name:'未来島モノレール',image:'towns/island.webp',description:'ななめのケーブルでつる橋をわたり、空港や灯台のある7つの島を結ぶ海上モノレール。'},
  {id:'tokyo',name:'東京地下かんじょう線',image:'towns/tokyo.webp',description:'地下から東京駅へ。丸の内と有楽町をめぐる4駅のかんじょう線。'},
@@ -18,7 +19,7 @@ export const TOWN_CHOICES=[
  ...[['plain','平地'],['river','川のある平地'],['coast','海辺']].map(([kind,name])=>({id:'field-'+kind,name,image:null,description:'鉄道と街を育てる土地'})),
  {id:'empty',name:'空の土地',image:null,description:'線路も建物も自由につくる'}
 ];
-export const visibleTownChoices=state=>TOWN_CHOICES.filter(t=>['mine','district','intercity','mountain','tokyo','island','suspended'].includes(t.id)||state.saved.includes(t.id)||t.id===state.active).sort((a,b)=>{const rank=id=>({district:0,intercity:1,mountain:2,tokyo:3,island:4,suspended:5,mine:6}[id]??4);return rank(a.id)-rank(b.id);});
+export const visibleTownChoices=state=>TOWN_CHOICES.filter(t=>['mine','district','intercity','mountain','tokyo','island','suspended','san-kai'].includes(t.id)||state.saved.includes(t.id)||t.id===state.active).sort((a,b)=>{const rank=id=>({district:0,intercity:1,mountain:2,tokyo:3,island:4,suspended:5,'san-kai':6,mine:7}[id]??4);return rank(a.id)-rank(b.id);});
 const ids=new Set(TOWN_CHOICES.map(t=>t.id)),copy=v=>JSON.parse(JSON.stringify(v));
 function townSnapshot(scene,validate){const next=validate(copy(scene));delete next.trainLibrary;return next;}
 export function readTownStore(storage,validate){

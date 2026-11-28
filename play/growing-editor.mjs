@@ -1,7 +1,7 @@
 import {landAt,landCells,expandLand,LAND_CELL_SIZE as cell} from './growing-land.mjs?v=rail-94';
-import {growingStarter,growingStamp,checkGrowingPlacement} from './growing-plans.mjs?v=rail-94';
-import {sampleItem} from './core.mjs?v=rail-94';
-import {stationGeometry,stationFootprint} from './free-station.mjs?v=rail-94';
+import {growingStarter,growingStamp,checkGrowingPlacement} from './growing-plans.mjs?v=rail-97';
+import {sampleItem} from './core.mjs?v=rail-97';
+import {stationGeometry,stationFootprint} from './free-station.mjs?v=rail-97';
 export {checkGrowingPlacement};
 const names={shop:'商店街',residential:'住宅街',office:'駅前ビル街',starter:'最初の路線'};
 const types={shop:[16,5,14],apartment:[16,19,14],hotel:[16,24,14],office:[16,19,14],warehouse:[20,8,16],tree:[5,8,5],road:[20,.25,8]};

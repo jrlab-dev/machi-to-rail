@@ -1,8 +1,8 @@
 // Only loaded while the player is in a growing land. Terrain, water and plants
 // are derived from the save's coordinates; none of their meshes enter a save.
 import {LAND_CELL_SIZE as SIZE,landSurfaceAt,landCells,landSection} from './growing-land.mjs?v=rail-94';
-import {sampleItem} from './core.mjs?v=rail-94';
-import {stationGeometry,stationFootprint} from './free-station.mjs?v=rail-94';
+import {sampleItem} from './core.mjs?v=rail-97';
+import {stationGeometry,stationFootprint} from './free-station.mjs?v=rail-97';
 
 const clamp=(x,lo,hi)=>Math.min(hi,Math.max(lo,x));
 const tileOf=x=>Math.floor(x/SIZE+.5);

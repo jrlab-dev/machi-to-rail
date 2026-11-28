@@ -1,6 +1,6 @@
-import {createStationAds} from "./station-ads.mjs?v=rail-94";
+import {createStationAds} from "./station-ads.mjs?v=rail-97";
 import * as T from 'three';
-import {STATIONS} from './intercity-stations.mjs?v=rail-94';
+import {STATIONS} from './intercity-stations.mjs?v=rail-97';
 export function createStations(){
  const root=new T.Group();root.name='intercity-stations';const groups=new Map(),materials=[],textures=[],lamps=[],dummy=new T.Object3D();
  const material=(color,extra={})=>{const m=new T.MeshStandardMaterial({color,roughness:.8,...extra});materials.push(m);return m;};

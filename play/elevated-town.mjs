@@ -1,4 +1,4 @@
-import {transform,defaultFormation} from './core.mjs?v=rail-94';
+import {transform,defaultFormation} from './core.mjs?v=rail-97';
 export function elevatedTown(kit){
  const rails=[];let pose=[0,0,0];
  const add=piece=>{const spec=kit.pieces[piece];rails.push({uid:rails.length+1,piece,pose:[...pose],branch:'B'});const p=spec.ports[1];pose=transform([p.position[0],p.position[1],p.outward],pose);};

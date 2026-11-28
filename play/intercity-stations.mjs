@@ -1,4 +1,4 @@
-import {formationAdvance} from './core.mjs?v=rail-94';
+import {formationAdvance} from './core.mjs?v=rail-97';
 import {coachDoorPositions} from './scenic-cameras.mjs?v=rail-92';
 export const STATIONS=[{id:'akatsuki',name:'あかつき中央',x:300,color:'#c46b42'},{id:'minato',name:'みなと中央',x:5700,color:'#29888c'}];
 export const STATION_LANES=[-9,0,9,18],PLATFORM_LENGTH=260;

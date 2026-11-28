@@ -4,7 +4,7 @@ import {MOUNTAIN_BUS_ID,MOUNTAIN_MINIBUS_ID} from './mountain-road.mjs?v=rail-90
 import {carTex,vehicleRaw} from './vehicle-source.mjs?v=rail-90';
 import {loadRoadVehicle} from './road-vehicle-assets.mjs?v=rail-90';
 import {selectedVehicles} from './traffic-selection.mjs?v=rail-90';
-import {TRAFFIC_VEHICLES,trafficFrame} from './traffic-route.mjs?v=rail-94';
+import {TRAFFIC_VEHICLES,trafficFrame} from './traffic-route.mjs?v=rail-97';
 export function createTrafficRenderer(){
  const root=new T.Group();root.name='street-traffic';
  const texture=new T.CanvasTexture(carTex());texture.flipY=false;texture.colorSpace=T.SRGBColorSpace;texture.anisotropy=4;
