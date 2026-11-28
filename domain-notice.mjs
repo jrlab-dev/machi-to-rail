@@ -23,6 +23,11 @@ if(banner&&(old||trip)){
     previous.textContent='前の住所のセーブで特急の旅を遊ぶ';
     banner.replaceChildren(previous);
   }
+  const label=document.querySelector('#stage .scene-label');
+  if(label){
+    label.append(banner);
+    banner.style.cssText='position:static;display:block;pointer-events:auto;margin-top:5px;padding:2px 0;text-align:left;background:transparent';
+  }
   banner.hidden=false;
 }
 import('/rail-analytics.mjs?v=20261126').catch(()=>{});
