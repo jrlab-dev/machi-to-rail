@@ -17,7 +17,7 @@
 <dialog id="town-chooser" aria-labelledby="town-title">
 <div class="town-heading"><div><h2 id="town-title">街を選ぶ・つくる</h2><p id="town-current"></p></div><button id="town-close" aria-label="街えらびを閉じる">×</button></div>
 <div class="town-tabs" role="tablist" aria-label="街の選び方"><button id="town-choose-tab" role="tab" data-town-tab="choose" aria-controls="town-choose-panel" aria-selected="true">街を選ぶ</button><button id="town-edit-tab" role="tab" data-town-tab="edit" aria-controls="town-edit-panel" aria-selected="false" tabindex="-1">つくる・編集</button></div>
-<section id="town-choose-panel" data-town-panel="choose" role="tabpanel" aria-labelledby="town-choose-tab"><div id="town-cards"></div><p><a class="primary" href="./san-kai.html">山海特急の旅に乗る（特急・普通）</a></p></section>
+<section id="town-choose-panel" data-town-panel="choose" role="tabpanel" aria-labelledby="town-choose-tab"><div id="town-cards"></div><p><a class="primary" href="./san-kai.html">特急の旅に乗る（特急・普通）</a></p></section>
 <section id="town-edit-panel" data-town-panel="edit" role="tabpanel" aria-labelledby="town-edit-tab" hidden><h3>今の街を、自由につくる</h3><p>線路・建物・道路を置いたり、位置を変えたりできます。別の街を選んでも、保存した続きからもどれます。</p><div class="town-edit-actions"><button id="town-edit-current" class="primary">今の街を編集する</button><button id="town-empty">空の土地からつくる</button></div><h3>広げて育てる土地</h3><div class="town-edit-actions field-choices"><button data-field="plain">平地</button><button data-field="river">川のある平地</button><button data-field="coast">海辺</button></div><p class="help">空の土地も専用の保存場所です。以前につくった内容があれば、その続きから開きます。</p></section>
 <p id="town-status" role="status" aria-live="polite"></p>
 </dialog>
