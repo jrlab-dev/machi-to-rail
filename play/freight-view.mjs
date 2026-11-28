@@ -1,4 +1,4 @@
-import {STATIONS,platformZ} from './intercity-stations.mjs?v=rail-92';
+import {STATIONS,platformZ} from './intercity-stations.mjs?v=rail-94';
 // Keep a platform view aimed at an actual vehicle rather than a passenger doorway.
 export function freightPlatformView(visual,elevated=false,other=false,portrait=false){
  const cars=visual.cars||[],p=cars[0]?.body||visual.body||[210,0,0],center=elevated?STATIONS.reduce((a,b)=>Math.abs(a.x-p[0])<Math.abs(b.x-p[0])?a:b).x:210;

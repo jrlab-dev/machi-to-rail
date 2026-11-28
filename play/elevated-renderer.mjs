@@ -1,9 +1,9 @@
-import {elevatedSupportPlan} from './elevated-supports.mjs?v=rail-90';
+import {elevatedSupportPlan} from './elevated-supports.mjs?v=rail-94';
 import * as T from 'three';
 import {mergeGeometries} from './vendor/utils/BufferGeometryUtils.js';
-import {sampleItem} from './core.mjs?v=rail-90';
+import {sampleItem} from './core.mjs?v=rail-94';
 // All repeating structures share instanced geometry, including the ramp sleepers.
-export function buildElevatedRails(town,kit){
+export function buildElevatedRails(town,kit,groundHeight=null){
  const root=new T.Group(),buckets=new Map(),strips=new Map(),colors={concrete:'#c1c4be',edge:'#d9dbd4',bed:'#888c89',sleeper:'#b9b9ac',rail:'#77838a',wire:'#54646b',cap:'#858e8a'};
  const add=(kind,w,h,d,x,y,z,yaw=0,pitch=0)=>{if(!buckets.has(kind))buckets.set(kind,[]);buckets.get(kind).push({w,h,d,x,y,z,yaw,pitch});};
  const at=(p,side=0)=>[p[0]+Math.sin(p[2])*side,(p[3]||0),-p[1]+Math.cos(p[2])*side];
@@ -14,7 +14,11 @@ export function buildElevatedRails(town,kit){
   for(const side of(spec.procedural?[-5.5,5.5]:[])){sweep('edge',it,r,side,.2,.1,1.1);sweep('cap',it,r,side,.27,.69,.09);}
   for(const side of[-kit.gauge_center/2,kit.gauge_center/2])sweep('rail',it,r,side,.065,-.07,.14);
   const count=Math.ceil(r.length/.65);for(let i=0;i<count;i++){const p=sampleItem(it,r,(i+.5)/count),[x,y,z]=at(p);add('sleeper',.22,.16,2.5,x,y-.22,z,p[2],p[4]||0);}
-  const spans=Math.max(1,Math.ceil(r.length/24));for(let i=0;i<spans;i++){const p=sampleItem(it,r,(i+.5)/spans),[x,y,z]=at(p);if(supportPlan.byUid.get(it.uid)?.includes(i)){for(const side of[-2.7,2.7]){const q=at(p,side);add('concrete',1.1,y-.9,1.1,q[0],(y-1.4)/2,q[2],p[2]);add('cap',2,.3,2,q[0],-.3,q[2],p[2]);}add('concrete',1.4,.6,8,x,y-1.5,z,p[2]);}
+  const spans=Math.max(1,Math.ceil(r.length/24));for(let i=0;i<spans;i++){const p=sampleItem(it,r,(i+.5)/spans),[x,y,z]=at(p);if(supportPlan.byUid.get(it.uid)?.includes(i)){for(const side of[-2.7,2.7]){const q=at(p,side);
+    // Rail height stays fixed. On a riverbed the pier grows down to its footing.
+    const floor=groundHeight?groundHeight(q[0],-q[2]):-.5,delta=floor+.5;
+    add('concrete',1.1,y-.9-delta,1.1,q[0],(y-1.4+delta)/2,q[2],p[2]);
+    add('cap',2,.3,2,q[0],-.3+delta,q[2],p[2]);}add('concrete',1.4,.6,8,x,y-1.5,z,p[2]);}
    const side=at(p,-5.1);add('wire',.18,6.45,.18,side[0],y+2.9,side[2],p[2]);add('wire',.12,.13,5.5,x+Math.sin(p[2])*-2.4,y+6.12,z+Math.cos(p[2])*-2.4,p[2]);
   }
   const wires=Math.ceil(r.length/4);for(let i=0;i<wires;i++){const a=sampleItem(it,r,i/wires),b=sampleItem(it,r,(i+1)/wires),p=sampleItem(it,r,(i+.5)/wires),[x,y,z]=at(p);add('wire',Math.hypot(b[0]-a[0],b[1]-a[1],b[3]-a[3])+.01,.025,.025,x,y+6.12,z,p[2],p[4]||0);}

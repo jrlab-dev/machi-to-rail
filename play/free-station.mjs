@@ -1,6 +1,6 @@
 // 自由編集の駅（設計書/自由編集の駅_20261126.md）。描画を持たない計算だけの部品。
 // core.mjs とは循環 import になるので、core の値はモジュールの上の段では使わない（関数の中だけで使う）。
-import {allPorts,matches,sampleItem,makeRoute,sampleRoute,formationAdvance,formationLength,formationFitsRoute,distanceOnRoute,BUILDING_TYPES,ROAD_TYPES} from './core.mjs?v=rail-90';
+import {allPorts,matches,sampleItem,makeRoute,sampleRoute,formationAdvance,formationLength,formationFitsRoute,distanceOnRoute,BUILDING_TYPES,ROAD_TYPES} from './core.mjs?v=rail-94';
 import {ROAD_CATALOG} from './road-network.mjs?v=rail-90';
 import {CLEARANCE} from './rail-elevation.mjs?v=rail-90';
 

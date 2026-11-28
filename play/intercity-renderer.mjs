@@ -3,12 +3,12 @@ import {createFuji} from './fuji-renderer.mjs?v=rail-90';
 import {createCoast} from './coast-renderer.mjs?v=rail-90';
 import {coastalLand} from './coast-data.mjs?v=rail-90';
 import * as T from 'three';
-import {trackSamples,trackRibbon} from './intercity-track.mjs?v=rail-90';
-import {INTERCITY_LANES} from './intercity-traffic.mjs?v=rail-92';
-import {STATIONS,STATION_LANES} from './intercity-stations.mjs?v=rail-92';
-import {createStations} from './intercity-station-renderer.mjs?v=rail-92';
+import {trackSamples,trackRibbon} from './intercity-track.mjs?v=rail-94';
+import {INTERCITY_LANES} from './intercity-traffic.mjs?v=rail-94';
+import {STATIONS,STATION_LANES} from './intercity-stations.mjs?v=rail-94';
+import {createStations} from './intercity-station-renderer.mjs?v=rail-94';
 import {createArrivalCity} from './arrival-city-renderer.mjs?v=rail-93';
-import {sampleRoute} from './core.mjs?v=rail-90';
+import {sampleRoute} from './core.mjs?v=rail-94';
 import {TURN_LENGTH,INTERCITY_LENGTH,intercityZone} from './intercity-data.mjs?v=rail-90';
 export function distanceForBody(p){const [x,y]=p;if(x>=0&&x<=6000)return y<400?x:6000+TURN_LENGTH+6000-x;if(x>6000)return 6000+Math.atan2(x-6000,400-y)*400;return 12000+TURN_LENGTH+Math.atan2(-x,y-400)*400;}
 export function createIntercityRenderer(route,stationsEnabled=false,customProps=[]){

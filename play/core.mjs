@@ -1,3 +1,4 @@
+import {normalizeLand} from './growing-land.mjs?v=rail-94';
 import {isSuspended} from './suspended-route.mjs?v=rail-90';
 import {isIsland} from './island-route.mjs?v=rail-90';
 import {registerConnector,connectorPoint} from './rail-connector.mjs?v=rail-90';
@@ -7,7 +8,7 @@ import {isIntercity,INTERCITY_ID} from './intercity-data.mjs?v=rail-90';
 import {railHeight,railPitch,validRailPose,CLEARANCE} from './rail-elevation.mjs?v=rail-90';
 import {normalizeLibrary,validTrainId} from './train-library.mjs?v=rail-90';
 import {normalizeSoundProfile} from './train-sound-recipe.mjs?v=rail-90';
-import {normalizeStations} from './free-station.mjs?v=rail-90';
+import {normalizeStations} from './free-station.mjs?v=rail-94';
 import {selectedVehicles} from './traffic-selection.mjs?v=rail-90';
 import {normalizeDesign,TRAIN_EXAMPLES} from './train-design.mjs?v=rail-90';
 import {trainType,TRAIN_TYPES,shinkansenTypes,limitedExpressTypes,designKey,expressLimit,isHighSpeed,intercityTrainSpeed,isLocomotive} from './train-types.mjs?v=rail-90';
@@ -102,9 +103,13 @@ export const BUILDING_TYPES=['shop','warehouse','hotel','office','apartment'];
 export const ROAD_TYPES=['road','corner','tee','junction','crossing'];
 // 自由編集の駅。だめな駅だけ捨てる。空なら項目を出さない（駅の無い街の保存結果を変えない）。
 function stationField(raw,rails,kit){if(raw===undefined)return {};const stations=normalizeStations(raw,rails,kit);return stations.length?{stations}:{};}
+export const propLimit=town=>town?.version===4&&town.land?800:200;
 export function validateScene(raw,kit){
   if(raw?.version===1&&Array.isArray(raw.items))raw={format:'rail-town',version:2,rails:raw.items,props:[],train:'original'};
-  if(!raw||raw.format!=='rail-town'||![2,3].includes(raw.version)||!Array.isArray(raw.rails)||raw.rails.length>300||!Array.isArray(raw.props)||raw.props.length>200)throw Error('この街ファイルは読みこめません。');
+  if(!raw||raw.format!=='rail-town'||![2,3,4].includes(raw.version)||!Array.isArray(raw.rails)||raw.rails.length>300||!Array.isArray(raw.props)||raw.props.length>propLimit(raw))throw Error('この街ファイルは読みこめません。');
+  if((raw.version===4)!==(raw.land!==undefined))throw Error('この土地の保存形式を確認してください。');
+  const land=raw.version===4?normalizeLand(raw.land):null;
+  if(land&&['mountain','district','intercity','tokyo','suspended','island'].some(key=>raw[key]!==undefined))throw Error('地形と路線の種類が合いません。');
   if(raw.rails.some(r=>r.piece?.startsWith('intercity_'))&&!isIntercity(raw))throw Error('都市間路線の形が合いません。');
   if(raw.mountain!==undefined&&(!isMountain(raw)||raw.rails.length||raw.props.length||(!mountainTypeAllowed(raw.train)||!mountainTypeAllowed(raw.oppositeTrain||raw.train))||raw.formation?.count!==2))throw Error('登山鉄道は2両編成です。新幹線とリニアは走れません。');
   const ids=new Set();
@@ -112,7 +117,9 @@ export function validateScene(raw,kit){
   ids.clear();const props=raw.props.map(x=>{if(!Number.isInteger(x.uid)||ids.has(x.uid)||![...BUILDING_TYPES,...ROAD_TYPES,'tree'].includes(x.type)||!Array.isArray(x.pose)||x.pose.length!==3||!x.pose.every(finite)||!Number.isFinite(x.scale)||x.scale<.5||x.scale>2||!/^#[0-9a-f]{6}$/i.test(x.tint||''))throw Error('建物データに不正な値があります。');ids.add(x.uid);return{uid:x.uid,type:x.type,pose:[...x.pose],scale:x.scale,tint:x.tint}});
   const special=isSuspended(raw)?'suspended-monorail':isIsland(raw)?'monorail':null;
   const routeTrain=type=>special?(type===special?special:'original'):trainType(type==='monorail'||type==='suspended-monorail'?'original':type);
-  return{format:'rail-town',version:3,rails,props,...(isSuspended(raw)?{suspended:raw.suspended}:{}),...(isIsland(raw)?{island:raw.island}:{}),...(isTokyo(raw)?{tokyo:raw.tokyo}:{}),...(isMountain(raw)?{mountain:MOUNTAIN_ID}:{}),...(raw.soundProfile!==undefined?{soundProfile:normalizeSoundProfile(raw.soundProfile)}:{}),...(raw.oppositeSoundProfile!==undefined?{oppositeSoundProfile:normalizeSoundProfile(raw.oppositeSoundProfile)}:{}),...(raw.trafficVehicles!==undefined?{trafficVehicles:selectedVehicles(raw.trafficVehicles)}:{}),...(isIntercity(raw)?{intercity:INTERCITY_ID,...(raw.intercityStations===1?{intercityStations:1}:{})}:{}),...(raw.trainLibrary?{trainLibrary:normalizeLibrary(raw.trainLibrary)}:{}),...(validTrainId(raw.trainId)?{trainId:raw.trainId}:{}),...(validTrainId(raw.oppositeTrainId)?{oppositeTrainId:raw.oppositeTrainId}:{}),train:routeTrain(raw.train),oppositeTrain:routeTrain(oppositeType(raw)),...Object.fromEntries([...shinkansenTypes,'steam','maglev','freight','monorail','suspended-monorail',...limitedExpressTypes].flatMap(type=>[false,true].map(other=>designKey(type,other))).filter(key=>raw[key]).map(key=>[key,normalizeDesign(raw[key])])),formation:isSuspended(raw)?defaultFormation(2):isIsland(raw)?defaultFormation(3):normalizeFormation(raw.version===3?raw.formation:null),...(raw.trainDesign||raw.train!=='tram'?{trainDesign:normalizeDesign(raw.trainDesign||legacyExample(raw.train))}:{}),...(raw.oppositeTrainDesign||(raw.oppositeTrain||raw.train)!=='tram'?{oppositeTrainDesign:normalizeDesign(raw.oppositeTrainDesign||legacyExample(raw.oppositeTrain||raw.train),1)}:{}),...(raw.tramDesign?{tramDesign:normalizeDesign(raw.tramDesign)}:{}),...(raw.oppositeTramDesign?{oppositeTramDesign:normalizeDesign(raw.oppositeTramDesign)}:{}),...(raw.district==='midori-central-v1'?{district:raw.district}:{}),...stationField(raw.stations,rails,kit)};
+  const stations=stationField(raw.stations,rails,kit);
+  if(land&&raw.stations!==undefined&&(!Array.isArray(raw.stations)||raw.stations.length!==(stations.stations?.length||0)))throw Error('この土地の駅の記録を確認してください。');
+  return{format:'rail-town',version:land?4:3,...(land?{land}:{}),rails,props,...(isSuspended(raw)?{suspended:raw.suspended}:{}),...(isIsland(raw)?{island:raw.island}:{}),...(isTokyo(raw)?{tokyo:raw.tokyo}:{}),...(isMountain(raw)?{mountain:MOUNTAIN_ID}:{}),...(raw.soundProfile!==undefined?{soundProfile:normalizeSoundProfile(raw.soundProfile)}:{}),...(raw.oppositeSoundProfile!==undefined?{oppositeSoundProfile:normalizeSoundProfile(raw.oppositeSoundProfile)}:{}),...(raw.trafficVehicles!==undefined?{trafficVehicles:selectedVehicles(raw.trafficVehicles)}:{}),...(isIntercity(raw)?{intercity:INTERCITY_ID,...(raw.intercityStations===1?{intercityStations:1}:{})}:{}),...(raw.trainLibrary?{trainLibrary:normalizeLibrary(raw.trainLibrary)}:{}),...(validTrainId(raw.trainId)?{trainId:raw.trainId}:{}),...(validTrainId(raw.oppositeTrainId)?{oppositeTrainId:raw.oppositeTrainId}:{}),train:routeTrain(raw.train),oppositeTrain:routeTrain(oppositeType(raw)),...Object.fromEntries([...shinkansenTypes,'steam','maglev','freight','monorail','suspended-monorail',...limitedExpressTypes].flatMap(type=>[false,true].map(other=>designKey(type,other))).filter(key=>raw[key]).map(key=>[key,normalizeDesign(raw[key])])),formation:isSuspended(raw)?defaultFormation(2):isIsland(raw)?defaultFormation(3):normalizeFormation(raw.version>=3?raw.formation:null),...(raw.trainDesign||raw.train!=='tram'?{trainDesign:normalizeDesign(raw.trainDesign||legacyExample(raw.train))}:{}),...(raw.oppositeTrainDesign||(raw.oppositeTrain||raw.train)!=='tram'?{oppositeTrainDesign:normalizeDesign(raw.oppositeTrainDesign||legacyExample(raw.oppositeTrain||raw.train),1)}:{}),...(raw.tramDesign?{tramDesign:normalizeDesign(raw.tramDesign)}:{}),...(raw.oppositeTramDesign?{oppositeTramDesign:normalizeDesign(raw.oppositeTramDesign)}:{}),...(raw.district==='midori-central-v1'?{district:raw.district}:{}),...stations};
 }
 export function effectiveFormation(scene,other=false){
   const type=other?(scene.oppositeTrain||scene.train):scene.train;

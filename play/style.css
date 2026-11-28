@@ -353,3 +353,23 @@ body #transport{position:relative;inset:auto;grid-row:3;height:auto;min-height:8
 #stage:has(#road-controls:not([hidden])) .zoom{bottom:110px}
 #stage:has(#road-controls:not([hidden])) #toast{bottom:110px}
 #road-controls{background:#f8faf4}
+
+#land-tools{margin:0 0 9px;border-bottom:1px solid #cad4bd;padding-bottom:7px}
+.land-tools-row,.field-choices{display:flex;gap:5px;flex-wrap:wrap;margin:3px 0}
+.land-tools-row button,.field-choices button,#land-go{min-height:40px;flex:1;padding:5px 8px;border:1px solid #a4baa8;background:#edf3e7;color:#264c40;border-radius:8px;font-weight:bold}
+#land-preview{border-left:3px solid #d79c51;padding-left:6px}
+#land-preview p,#land-map p{margin:7px 0;font-size:13px}
+#land-tools button.primary,#land-go{background:#245949;color:white}
+#land-map{width:min(620px,94vw);max-height:90dvh;padding:16px;box-sizing:border-box;border:1px solid #9aab9c;color:#213d34;border-radius:14px;background:#fffdf6}
+#land-map::backdrop{background:#0d242abe}
+#land-map .panel-title{display:flex;align-items:center;justify-content:space-between}
+#land-map h2{font-size:20px;margin:0}
+#land-map-close{font-size:20px;min-width:40px;min-height:40px}
+.land-scroll{overflow:auto;max-height:55dvh;overscroll-behavior:contain;background:#e3eade;border-radius:8px}
+#land-grid{display:grid;width:max-content;margin:auto}
+#land-grid button{border:1px solid #f8faf4;width:52px;height:52px;position:relative;padding:0;overflow:hidden;color:#153b36;background:#d2dfcf}
+#land-grid canvas{width:100%;height:100%;display:block;pointer-events:none}
+#land-grid button span{position:absolute;inset:0;display:grid;place-items:center;font-size:24px;font-weight:bold;color:#193b35;text-shadow:0 0 4px white}
+#land-grid button[aria-pressed=true]{outline:3px solid #be772a;outline-offset:-3px;z-index:1}
+#land-map #land-go{width:100%}
+@media(max-width:650px){body.editing:has(#land-tools:not([hidden])) main{grid-template-rows:minmax(0,1.4fr) minmax(0,1fr) auto}body.editing:has(#land-tools:not([hidden])) .scene-label{display:none}#land-tools button{min-height:40px;font-size:12px}}

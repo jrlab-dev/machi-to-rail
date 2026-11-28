@@ -1,4 +1,4 @@
-import {sampleRoute,distanceOnRoute,formationOccupiesDistance} from './core.mjs?v=rail-90';
+import {sampleRoute,distanceOnRoute,formationOccupiesDistance} from './core.mjs?v=rail-94';
 
 export const CROSSING={uid:900001,x:185,y:280,outerY:290,width:6};
 export function crossingDistance(route,y){

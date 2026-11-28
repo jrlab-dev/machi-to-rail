@@ -1,5 +1,5 @@
-import {sampleItem} from './core.mjs?v=rail-90';
-import {stationGeometry,stationFootprint} from './free-station.mjs?v=rail-90';
+import {sampleItem} from './core.mjs?v=rail-94';
+import {stationGeometry,stationFootprint} from './free-station.mjs?v=rail-94';
 // 自由編集の駅の足あとの中には柱を立てない（道路と同じく間引く）。
 function stationAreas(town,kit){const out=[];for(const st of town.stations||[]){const g=stationGeometry(st,town.rails,kit);if(g)out.push(...stationFootprint(g,st.side));}return out;}
 const insideArea=(r,x,y)=>{const c=Math.cos(r.angle),s=Math.sin(r.angle),dx=x-r.cx,dy=y-r.cy;return Math.abs(c*dx+s*dy)<=r.hx+.5&&Math.abs(-s*dx+c*dy)<=r.hy+.5;};

@@ -1,5 +1,5 @@
 import {isUnmodifiedPreset} from './town-save-format.mjs?v=rail-90';
-import {readTownStore,TOWN_STORE_KEY,CURRENT_TOWN_KEY,TOWN_CHOICES} from './town-switcher.mjs?v=rail-90';
+import {readTownStore,TOWN_STORE_KEY,CURRENT_TOWN_KEY,TOWN_CHOICES} from './town-switcher.mjs?v=rail-94';
 import {commitStorage} from './train-storage.mjs?v=rail-90';
 export function deleteTown(storage,snapshot,id,validate,empty){
  const current=readTownStore(storage,validate);

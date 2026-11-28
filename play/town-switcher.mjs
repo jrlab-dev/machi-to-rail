@@ -15,6 +15,7 @@ export const TOWN_CHOICES=[
  {id:'large',name:'広い街',image:'towns/large.webp',description:'長い線路と広い街並み'},
  {id:'small',name:'小さな街',image:'towns/small.webp',description:'小さな一周線路から楽しむ'},
  {id:'branch',name:'分岐の街',image:'towns/branch.webp',description:'線路の分かれ道をつくる'},
+ ...[['plain','平地'],['river','川のある平地'],['coast','海辺']].map(([kind,name])=>({id:'field-'+kind,name,image:null,description:'鉄道と街を育てる土地'})),
  {id:'empty',name:'空の土地',image:null,description:'線路も建物も自由につくる'}
 ];
 export const visibleTownChoices=state=>TOWN_CHOICES.filter(t=>['mine','district','intercity','mountain','tokyo','island','suspended'].includes(t.id)||state.saved.includes(t.id)||t.id===state.active).sort((a,b)=>{const rank=id=>({district:0,intercity:1,mountain:2,tokyo:3,island:4,suspended:5,mine:6}[id]??4);return rank(a.id)-rank(b.id);});
@@ -57,6 +58,7 @@ for(const choice of visibleTownChoices(state)){const b=document.createElement('b
  document.querySelector('#town-close').onclick=close;dialog.addEventListener('cancel',event=>{event.preventDefault();close();});
  tabs.forEach((b,i)=>{b.onclick=()=>tab(b.dataset.townTab);b.onkeydown=e=>{if(!['ArrowLeft','ArrowRight','Home','End'].includes(e.key))return;e.preventDefault();const next=e.key==='Home'?0:e.key==='End'?tabs.length-1:(i+(e.key==='ArrowRight'?1:-1)+tabs.length)%tabs.length;tab(tabs[next].dataset.townTab);tabs[next].focus();};});
  document.querySelector('#town-edit-current').onclick=()=>{if(blocked())return;dialog.close();edit();};
+ for(const b of dialog.querySelectorAll('[data-field]'))b.onclick=()=>run(()=>select('field-'+b.dataset.field,true));
  document.querySelector('#town-empty').onclick=()=>run(()=>select('empty',true));
  return {open(name='choose'){refresh();blockedMessage();tab(name);if(!dialog.open)dialog.showModal();document.querySelector('#town-close').focus();},refresh};
 }
