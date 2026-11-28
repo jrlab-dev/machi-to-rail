@@ -74,7 +74,7 @@ import {createRoadDrive} from './road-drive.mjs?v=rail-91';
 import {trafficFrame,hasTrafficRoads,TRAFFIC_CORNERS} from './traffic-route.mjs?v=rail-97';
 import {loadTrainSamples} from './train-samples.mjs?v=rail-90';
 import * as T from 'three';
-import {createTrainAudio,trainSoundGain} from './train-audio.mjs?v=rail-90';
+import {createTrainAudio,trainSoundGain} from './train-audio.mjs?v=trip-cabin-1';
 import {observeTrainThumbnails} from './train-thumbnail.mjs?v=rail-90';
 import {largeTown} from './large-town.mjs?v=rail-97';
 import {districtTown,isDistrict,parallelRoute,initialService,advanceService,reverseService,trainPoses,STATION} from './district.mjs?v=rail-97';
@@ -815,10 +815,13 @@ function updateTrainSound(){
     const cars=v.cars||[{body:v.body}],nearest=cars.reduce((best,c)=>{const d=Math.hypot(c.body[0]-camera.position.x,c.body[1]+camera.position.z,(c.body[3]||0)+2-camera.position.y);return !best||d<best.d?{d,p:c.body}:best;},null);
     const inside=i===viewTrain&&['left','right','front','panorama'].includes(camMode),dx=nearest.p[0]-camera.position.x,dz=-nearest.p[1]-camera.position.z;
     const service=v.service;
-    return{soundProfile:soundFor(town,!!(i%2)),kind:guidewaySound??soundKind(i%2?(town.oppositeTrain||town.train):town.train),speed:v.speed,gain:trainSoundGain(nearest.d,inside),distance:nearest.d,pan:inside?0:Math.max(-.9,Math.min(.9,(dx*right[0]+dz*right[2])/Math.max(12,nearest.d))),phase:service?.stationPhase,dwell:service?.dwell,playing:replay?replayPlaying:trainState.playing};
+    const type=i%2?(town.oppositeTrain||town.train):town.train;
+    const expressService=town.trip&&(i===0?town.tripService!=='local':town.tripService==='local');
+    const quietCabin=inside&&(isLimitedExpress(type)||(type==='original'&&expressService));
+    return{soundProfile:soundFor(town,!!(i%2)),kind:guidewaySound??soundKind(type),quietCabin,speed:v.speed,gain:trainSoundGain(nearest.d,inside),distance:nearest.d,pan:inside?0:Math.max(-.9,Math.min(.9,(dx*right[0]+dz*right[2])/Math.max(12,nearest.d))),phase:service?.stationPhase,dwell:service?.dwell,playing:replay?replayPlaying:trainState.playing};
   });
   soundscape.update(trains,{time:now,dt:Math.min(.1,dt),audible,events:dt<.25});
-  canvas.dataset.sound=JSON.stringify({time:now,renderDoor:doorOpening(lastVisual?.service,lastVisual?.speed),enabled:audioEnabled,state:audioContext.state,voices:trains.length,audible,sources:trains.map(t=>({kind:t.kind,speed:t.speed,gain:t.gain,distance:t.distance,phase:t.phase,dwell:t.dwell})),events:soundscape.stats,activeShots:soundscape.activeShots});
+  canvas.dataset.sound=JSON.stringify({time:now,renderDoor:doorOpening(lastVisual?.service,lastVisual?.speed),enabled:audioEnabled,state:audioContext.state,voices:trains.length,audible,sources:trains.map(t=>({kind:t.kind,quietCabin:t.quietCabin,speed:t.speed,gain:t.gain,distance:t.distance,phase:t.phase,dwell:t.dwell})),events:soundscape.stats,activeShots:soundscape.activeShots});
 }
 const crossingSounds=new Set();
 function stopSceneAudio(){

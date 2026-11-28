@@ -10,7 +10,7 @@ export function trainSoundGain(distance,inside=false){
   return fade/(1+Math.pow(d/65,1.3));
 }
 
-export function soundParameters(speed,acceleration=0,kind='electric',sampledExpress=false){
+export function soundParameters(speed,acceleration=0,kind='electric',sampledExpress=false,quietCabin=false){
   const actual=clamp(Number.isFinite(speed)?speed:0,0,100),v=Math.min(actual,20),moving=clamp(v/.7,0,1),braking=acceleration<-.15;
   const p={kind,speed:actual,motorHz:52+v*24+(actual-v)*3,carrierHz:260+v*27,
     motor:moving*(acceleration>.12?.082:braking?.060:.023),
@@ -26,6 +26,10 @@ export function soundParameters(speed,acceleration=0,kind='electric',sampledExpr
     p.roll=moving*(.13+v*.009);
     p.rumble*=suspended?.44:.60;
     p.body*=.32;
+  }
+  if(quietCabin&&kind==='electric'){
+    const cruise=clamp((actual-10)/20,0,1);
+    p.jointGain=.65-.40*cruise;
   }
   if(kind==='tram'){p.motorHz=95+v*30;p.carrierHz=380+v*32;p.motor*=.8;p.roll*=.6;p.rumble*=.35;p.body*=.5;p.wind*=.45;p.brake*=.65;p.jointGain=.45;}
   if(kind==='freight'){p.motorHz=34+v*13;p.carrierHz=150+v*17;p.motor*=1.35;p.roll*=1.1;p.rumble*=1.3;p.body*=1.15;p.wind*=.7;p.jointGain=1.05;}
@@ -111,7 +115,7 @@ export function createTrainAudio(context,output,{seed=817,voices=2,samples={}}={
       }
       const a=previous&&dt>0?(speed-previous.speed)/dt:0;
       r.acceleration+=(clamp(a,-3,2)-r.acceleration)*Math.min(1,dt*5);
-      const p=soundParameters(speed,r.acceleration,kind,!!expressBuffer),ripple=1+.035*Math.sin(time*2.7+r.index*2.1)+.022*Math.sin(time*7.3);
+      const p=soundParameters(speed,r.acceleration,kind,!!expressBuffer,state.quietCabin),ripple=1+.035*Math.sin(time*2.7+r.index*2.1)+.022*Math.sin(time*7.3);
       r.jointGain=p.jointGain;
       if(r.expressSample){smooth(r.expressSample.g.gain,p.expressGain,time,.2);smooth(r.expressSample.source.playbackRate,.85+Math.min(speed,56)/56*.2,time,.3);}
       smooth(r.gain.gain,clamp(state.gain??1,0,1),time,.09);smooth(r.pan.pan,clamp(state.pan||0,-1,1),time,.09);
