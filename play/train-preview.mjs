@@ -27,7 +27,7 @@ export function createTrainPreview(canvas,loadAsset,onManual=()=>{}){
   async show(type,design,spec){const own=++ticket;clear();
    let root;
    if(isLimitedExpress(type)){
-     const {createLimitedExpress}=await import('./limited-express-model.mjs?v=rail-90');
+     const {createLimitedExpress}=await import('./limited-express-model.mjs?v=trip-door-1');
      if(own!==ticket||!active)return false;
      const model=createLimitedExpress(type,{count:1,cars:[{kind:'cab',orientation:'front',roofVariant:'plain'}]},design);
      root=model.root;paint=decoratePaint(model,design).paint;

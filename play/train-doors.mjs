@@ -64,6 +64,6 @@ export function animateDoors(parts,cars,visual,enabled,platformCenter=5){
     // 数なら今まで通り（x軸沿いの線路）。{side} の形なら側をそのまま使う：0＝開けない、±1＝片側、2＝両側（自由編集の駅）。
     const platformSide=center&&typeof center==='object'?center.side:Math.sign((center+c.body[1])*Math.cos(c.body[2]+(c.tail?Math.PI:0))),opens=side=>platformSide===2?side!==0:side===platformSide;
     for(const {row,side} of parts[i].riderRows||[])row.visible=opens(side)&&amount>0;
-    for(const leaf of parts[i].doors||[]){const a=opens(leaf.userData.side)?amount:0;leaf.position.x=(leaf.userData.baseX||0)+leaf.userData.half*(leaf.userData.travel||.69)*a;leaf.position.z=(leaf.userData.baseZ||0)-leaf.userData.side*.08*a;}
+    for(const leaf of parts[i].doors||[]){const a=opens(leaf.userData.side)?amount:0;leaf.position.x=(leaf.userData.baseX||0)+leaf.userData.half*(leaf.userData.travel||.69)*a;leaf.position.z=(leaf.userData.baseZ||0)-leaf.userData.side*(leaf.userData.depthTravel??.08)*a;}
   }return amount;
 }

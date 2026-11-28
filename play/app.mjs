@@ -49,7 +49,7 @@ import {initialMountainOpponent,advanceMountainPair} from './mountain-traffic.mj
 import {createMountainRenderer} from './mountain-renderer.mjs?v=rail-90';
 import {STATIONS,stationAt,platformZ,stationCamera,initialIntercityService,advanceIntercityService,reverseIntercityService} from './intercity-stations.mjs?v=rail-97';
 import {createIntercityTraffic} from './intercity-traffic.mjs?v=rail-97';
-import {createTrainPreview} from './train-preview.mjs?v=rail-90';
+import {createTrainPreview} from './train-preview.mjs?v=trip-door-1';
 import {intercityTown,isIntercity,intercityZone,intercitySpeedLimit,intercityObstructs} from './intercity-data.mjs?v=rail-90';
 import {createIntercityRenderer} from './intercity-renderer.mjs?v=rail-97';
 import {isArrivalTemplateProp} from './arrival-city-layout.mjs?v=rail-93';
@@ -58,7 +58,7 @@ import {STATION_TEXT,planStation,chooseSide,stationGeometry,stationFootprint,tow
 import {createFreeStationRenderer} from './free-station-renderer.mjs?v=rail-97';
 import {buildElevatedRails} from './elevated-renderer.mjs?v=rail-97';
 import {elevatedTown} from './elevated-town.mjs?v=rail-97';
-import {prepareDoors,animateDoors} from './train-doors.mjs?v=rail-90';
+import {prepareDoors,animateDoors} from './train-doors.mjs?v=trip-door-1';
 import {doorOpening,trainView,movingView} from './service-presentation.mjs?v=rail-90';
 import {selectedVehicles,VEHICLE_IDS} from './traffic-selection.mjs?v=rail-90';
 import {pedestrianCrossingView,platformDoorView,landscapeCandidates,landscapePose,landscapeSafe,serviceExteriorCandidate,serviceExteriorPose,serviceExteriorSafe} from './scenic-cameras.mjs?v=rail-92';
@@ -550,7 +550,7 @@ async function loadTrain(key){const skyPreparation=isIntercity(town)&&!light&&li
     const preview=paintDrafts?.[other?'other':'main'];const design=preview||designFor(town,other);
     const spec=CONSIST?.trains?.[train],formation=effectiveFormation({...town,train:other?town.train:train,oppositeTrain:other?train:town.oppositeTrain},other);
     if(isLimitedExpress(train)){
-      const {createLimitedExpress}=await import('./limited-express-model.mjs?v=rail-90');
+      const {createLimitedExpress}=await import('./limited-express-model.mjs?v=trip-door-1');
       const model=createLimitedExpress(train,formation,design);
       for(const car of model.cars)car.doorTargets=readDoorTargets(car.parts.body,car.doors);
       return decoratePaint(model,design);

@@ -69,6 +69,10 @@ function paintDoor(ctx,d){
   ctx.fillStyle=d.stripe2;ctx.fillRect(0,210,128,7);
   ctx.fillStyle='#505c60';ctx.fillRect(0,0,3,256);ctx.fillRect(125,0,3,256);
   ctx.fillStyle='#a3aba5';ctx.fillRect(14,221,10,21);
+  // The opposite closed door is seen from inside the vestibule.
+  ctx.fillStyle='#687570';ctx.fillRect(128,0,128,256);
+  drawWindow(ctx,147,20,90,87);
+  ctx.fillStyle='#384644';ctx.fillRect(128,0,3,256);ctx.fillRect(253,0,3,256);
 }
 function paintWindshield(ctx){
   const g=ctx.createLinearGradient(0,0,0,256);
@@ -131,7 +135,7 @@ class Panels{
 export function createLimitedExpress(type,formation,design){
   const profile=noses[type];if(!profile)throw Error('特急模型の形式を確認してください。');
   const resources=[],materials={},root=new T.Group(),templates=new Map();
-  const doorSkin=canvasSkin(128,256),glassSkin=canvasSkin(512,256);paintWindshield(glassSkin.ctx);
+  const doorSkin=canvasSkin(256,256),glassSkin=canvasSkin(512,256);paintWindshield(glassSkin.ctx);
   const side=canvasSkin(1536,192),badge=canvasSkin(384,128),headmark=canvasSkin(384,224);
   const palette={body:'#dddcca',stripe:'#a2524b',stripe2:'#bd9854',roof:'#777d7b',door:'#dbd9c7',face:'#dddcca',
     skirt:'#49565b',hardware:'#334047',wheel:'#263136',rim:'#839393',vent:'#697878',window:'#395b68',sill:'#b7c1bc',
@@ -269,11 +273,13 @@ export function createLimitedExpress(type,formation,design){
     const body=template(cab?'cab-'+tail:'middle',p=>shell(p,cab,tail)),doors=[];
     for(const side of [-1,1])for(const x of [-7.38,4.21])for(const half of [-1,1]){
       const leaf=template('door-'+side,p=>{
-        const z=side*.04;
-        p.quad('doorSkin',[-.31,1.035,z],[.31,1.035,z],[.31,3.325,z],[-.31,3.325,z]);
+        const z=0; // Recess the sliding leaves behind the exterior side panel.
+        p.quad('doorSkin',[-.315,1.02,z],[.315,1.02,z],[.315,3.4,z],[-.315,3.4,z],0,0,.5,1);
+        const inside=-side*.025;
+        p.quad('doorSkin',[-.315,1.02,inside],[.315,1.02,inside],[.315,3.4,inside],[-.315,3.4,inside],.5,0,1,1);
       });
-      const baseX=x+half*.314,baseZ=side*1.475;
-      leaf.position.set(baseX,0,baseZ);leaf.userData={side,half,baseX,baseZ,travel:.65};
+      const baseX=x+half*.315,baseZ=side*1.445;
+      leaf.position.set(baseX,0,baseZ);leaf.userData={side,half,baseX,baseZ,travel:.65,depthTravel:0};
       body.add(leaf);doors.push(leaf);
     }
     const parts={body,bogieFront:template('bogieFront',p=>bogie(p,6.8)),bogieBack:template('bogieBack',p=>bogie(p,-6.8))};
